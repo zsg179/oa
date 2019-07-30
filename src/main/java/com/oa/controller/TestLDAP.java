@@ -16,6 +16,7 @@ import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 import com.oa.mapper.PersonAttributeMapper;
@@ -27,7 +28,20 @@ public class TestLDAP {
 	@Autowired
 	private LdapTemplate ldapTemplate;
 	
+	@RequestMapping("/")
+	private String showIndex() {
+		return "index";
+	}
 
+	@RequestMapping("/{page}")
+	public String showPage(@PathVariable String page) {
+		return page;
+	}
+
+	@RequestMapping("/rest/page/{page}")
+	public String showEditPage(@PathVariable String page) {
+		return page;
+	}
 	
 	protected Name buildDn(Employee p) {
 	    return LdapNameBuilder.newInstance("dc=poke_domain,dc=com")
@@ -76,7 +90,7 @@ public class TestLDAP {
 		for (Employee employee : list) {
 			System.out.println(employee);
 		}
-		return "index";
+		return "test";
 	}
 
 	/**
@@ -88,7 +102,7 @@ public class TestLDAP {
 		// ldapTemplate.lookup("cn=张三,ou=财务部,ou=所有部门,ou=总部");
 		Employee employee = ldapTemplate.lookup("cn=李四,ou=市场部,ou=产品市场中心,ou=所有部门,ou=分部", new PersonAttributeMapper());
 		System.out.println(employee);
-		return "index";
+		return "test";
 	}
 
 	/**
@@ -96,9 +110,9 @@ public class TestLDAP {
 	 */
 	@RequestMapping("/finddept")
 	public String findDept() {
-		DirContextAdapter dept = (DirContextAdapter) ldapTemplate.lookup("ou=市场部,ou=产品市场中心,ou=所有部门,ou=总部");
+		DirContextAdapter dept = (DirContextAdapter) ldapTemplate.lookup("ou=市场部,o=总部");
 		System.out.println(dept);
-		return "index";
+		return "test";
 	}
 
 	@RequestMapping("/findperson")
@@ -113,7 +127,7 @@ public class TestLDAP {
 		for (String string : list) {
 			System.out.println(string);
 		}
-		return "index";
+		return "test";
 	}
 	@RequestMapping("/delete")
 	public String delete(){
@@ -128,7 +142,7 @@ public class TestLDAP {
 		person.setTitle("市场部经理");
 		Name dn = buildDn(person);
 		ldapTemplate.unbind(dn);
-		return "index";
+		return "test";
 	}
 	/*public Employee findByPrimaryKey(
 		      String name, String company, String country) {

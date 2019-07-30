@@ -9,7 +9,7 @@ public class Employee {
 	private String phone;
 	private String department;// ou
 	private String company;// o
-	private String description;
+	private String description;//标签
 
 	public String getDescription() {
 		return description;
