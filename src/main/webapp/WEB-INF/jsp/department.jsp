@@ -4,7 +4,6 @@
         <div data-options="region:'west',split:false" style="width:250px;padding:5px">
             <ul id="contentCategoryTree" class="easyui-tree" data-options="url:'/dept/list',animate: true,method : 'GET'">
             </ul>
-             此处放一棵部门树
         </div>
         <div data-options="region:'center'" style="padding:5px">
             <table class="easyui-datagrid" id="contentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/content/query/list',queryParams:{categoryId:0}">
