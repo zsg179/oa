@@ -4,6 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>基于LDAP的组织架构管理系统</title>
+<!-- 引入jquery文件/css文件/js文件 -->
 <link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.4.1/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="js/jquery-easyui-1.4.1/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="css/taotao.css" />
@@ -25,7 +26,7 @@
          		<ul>
 	         		<li data-options="attributes:{'url':'department'}">部门管理</li>
 	         		<li data-options="attributes:{'url':'staff'}">员工管理</li>
-	         		<li data-options="attributes:{'url':'label'}">标签管理</li>  	
+	         		<li data-options="attributes:{'url':'label'}">标签管理</li> 	
 	         	</ul>
          	</li>
        </ul>
