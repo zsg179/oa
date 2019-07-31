@@ -10,5 +10,10 @@ public class Department {
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
 	}
+
+	@Override
+	public String toString() {
+		return "Department [deptName=" + deptName + "]";
+	}
 	
 }

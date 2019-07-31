@@ -19,8 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
+
+import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
 import com.oa.mapper.PersonContextMapper;
+import com.oa.pojo.Department;
 import com.oa.pojo.Employee;
 
 @Controller
@@ -89,6 +92,18 @@ public class TestLDAP {
 				new PersonAttributeMapper());
 		for (Employee employee : list) {
 			System.out.println(employee);
+		}
+		return "test";
+	}
+	
+	@RequestMapping("/findDepts")
+	public String findDepts(){
+		//AndFilter filter = new AndFilter();
+		//filter.and(new EqualsFilter("objectClass", "organizationalUnit"));
+		List<Department> list = ldapTemplate.search(query().where("objectclass").is("organizationalUnit"),
+				new DepartmentAttributeMapper());
+		for (Department department : list) {
+			System.out.println(department);
 		}
 		return "test";
 	}
