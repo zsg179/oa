@@ -15,7 +15,7 @@
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:120">部门编号</th>
-		            <th data-options="field:'Name',width:300">部门名称</th>
+		            <th data-options="field:'deptName',width:300">部门名称</th>
 		        </tr>
 		    </thead>
 		</table>
