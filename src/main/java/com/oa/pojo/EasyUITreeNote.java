@@ -24,5 +24,10 @@ public class EasyUITreeNote implements Serializable{
 	public void setState(String state) {
 		this.state = state;
 	}
+	@Override
+	public String toString() {
+		return "EasyUITreeNote [id=" + id + ", text=" + text + ", state=" + state + "]";
+	}
+	
 	
 }
