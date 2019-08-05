@@ -3,6 +3,7 @@ package com.oa.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.oa.dao.DeptDao;
 import com.oa.pojo.EasyUITreeNote;
@@ -13,6 +14,7 @@ import com.oa.service.DeptService;
 * @date 2019年8月5日 上午11:17:22 
 * @version 1.0 
 */
+@Service(value="deptService")
 public class DeptServiceImpl implements DeptService {
 	@Autowired
 	private DeptDao deptDao;
