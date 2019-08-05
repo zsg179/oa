@@ -1,5 +1,14 @@
 package com.oa.dao;
 
-public interface DeptDao {
+import java.util.List;
 
+import com.oa.pojo.EasyUITreeNote;
+
+public interface DeptDao {
+	/**
+	 * 获取部门列表
+	 * @param parentId
+	 * @return
+	 */
+	List<EasyUITreeNote> getDeptList(Long parentId);
 }
