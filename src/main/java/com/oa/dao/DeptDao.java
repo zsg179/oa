@@ -10,5 +10,5 @@ public interface DeptDao {
 	 * @param parentId
 	 * @return
 	 */
-	List<EasyUITreeNote> getDeptList(Long parentId);
+	List<EasyUITreeNote> getDeptList(String parentId);
 }
