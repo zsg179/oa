@@ -10,13 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.filter.AndFilter;
-import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
@@ -24,27 +21,13 @@ import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
 import com.oa.mapper.PersonContextMapper;
 import com.oa.pojo.Department;
+import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
 
 @Controller
 public class TestLDAP {
 	@Autowired
 	private LdapTemplate ldapTemplate;
-	
-	@RequestMapping("/")
-	private String showIndex() {
-		return "index";
-	}
-
-	@RequestMapping("/{page}")
-	public String showPage(@PathVariable String page) {
-		return page;
-	}
-
-	@RequestMapping("/rest/page/{page}")
-	public String showEditPage(@PathVariable String page) {
-		return page;
-	}
 	
 	protected Name buildDn(Employee p) {
 	    return LdapNameBuilder.newInstance("dc=poke_domain,dc=com")
@@ -84,8 +67,8 @@ public class TestLDAP {
 		 * LdapTemplate ldapTemplate = context.getBean(LdapTemplate.class);
 		 */
 		// LdapTemplate ldapTemplate = LdapUtil.getLdapTemplate();
-		AndFilter filter = new AndFilter();
-		filter.and(new EqualsFilter("objectClass", "person"));
+		//AndFilter filter = new AndFilter();
+		//filter.and(new EqualsFilter("objectClass", "person"));
 		// List<Employee> list = ldapTemplate.search("ou=财务部,ou=所有部门,ou=总部",
 		// filter.encode(),new PersonAttributeMapper());
 		List<Employee> list = ldapTemplate.search(query().where("objectclass").is("person"),
@@ -164,6 +147,15 @@ public class TestLDAP {
 		      Name dn = buildDn(name, company, country);
 		      return (Employee) ldapTemplate.lookup(dn, new PersonContextMapper());
 		   }*/
+	@RequestMapping("/getDeptList")
+	public String getDeptList() {
+		Long parentId = (long) 0;
+		List<Department> list = ldapTemplate.search(query().where("description").is(parentId.toString()), new DepartmentAttributeMapper());
+		for (Department department : list) {
+			System.out.println(department);
+		}
+		return "index";
+	}
 	
 
 }
