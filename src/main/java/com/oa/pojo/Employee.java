@@ -6,89 +6,71 @@ public class Employee {
 	private String lastName;// sn
 	private String title;
 	private String email;
-	private String phone;
-	private String department;// ou
-	private String company;// o
-	private String description;//标签
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+	private String phone;//telephoneNumber
+	private String id;//description
+	private String isParent;//st
+	private String parentId;//businessCategory
 	public String getEmployeeNumber() {
 		return employeeNumber;
 	}
-
 	public void setEmployeeNumber(String employeeNumber) {
 		this.employeeNumber = employeeNumber;
 	}
-
 	public String getFullName() {
 		return fullName;
 	}
-
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-
 	public String getLastName() {
 		return lastName;
 	}
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 	public String getTitle() {
 		return title;
 	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	public String getPhone() {
 		return phone;
 	}
-
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-
-	public String getDepartment() {
-		return department;
+	public String getId() {
+		return id;
 	}
-
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setId(String id) {
+		this.id = id;
 	}
-
-	public String getCompany() {
-		return company;
+	public String getIsParent() {
+		return isParent;
 	}
-
-	public void setCompany(String company) {
-		this.company = company;
+	public void setIsParent(String isParent) {
+		this.isParent = isParent;
 	}
-
+	public String getParentId() {
+		return parentId;
+	}
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 	@Override
 	public String toString() {
 		return "Employee [employeeNumber=" + employeeNumber + ", fullName=" + fullName + ", lastName=" + lastName
-				+ ", title=" + title + ", email=" + email + ", phone=" + phone + ", department=" + department
-				+ ", company=" + company + ", description=" + description + "]";
+				+ ", title=" + title + ", email=" + email + ", phone=" + phone + ", id=" + id + ", isParent=" + isParent
+				+ ", parentId=" + parentId + "]";
 	}
+
 
 	
 
