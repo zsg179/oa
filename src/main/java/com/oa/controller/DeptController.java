@@ -16,7 +16,7 @@ import com.oa.service.DeptService;
 * @date 2019年8月5日 上午11:26:43 
 * @version 1.0 
 */
-@Controller
+@Controller(value="deptController")
 public class DeptController {
 	@Autowired
 	private DeptService deptService;
