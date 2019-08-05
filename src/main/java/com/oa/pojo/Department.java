@@ -2,30 +2,31 @@ package com.oa.pojo;
 
 public class Department {
 	private String deptName;//ou
-	private String id;//description
-	private String parentId;//businessCategory
+	private Long id;//description
+	private Long parentId;//businessCategory
 	public String getDeptName() {
 		return deptName;
 	}
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
 	}
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getParentId() {
+	public Long getParentId() {
 		return parentId;
 	}
-	public void setParentId(String parentId) {
+	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 	@Override
 	public String toString() {
 		return "Department [deptName=" + deptName + ", id=" + id + ", parentId=" + parentId + "]";
 	}
+	
 	
 	
 }
