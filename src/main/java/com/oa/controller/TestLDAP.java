@@ -14,6 +14,7 @@ import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
@@ -28,6 +29,8 @@ import com.oa.pojo.Employee;
 public class TestLDAP {
 	@Autowired
 	private LdapTemplate ldapTemplate;
+	
+	
 	
 	protected Name buildDn(Employee p) {
 	    return LdapNameBuilder.newInstance("dc=poke_domain,dc=com")
@@ -149,12 +152,11 @@ public class TestLDAP {
 		   }*/
 	@RequestMapping("/getDeptList")
 	public String getDeptList() {
-		Long parentId = (long) 0;
-		List<Department> list = ldapTemplate.search(query().where("description").is(parentId.toString()), new DepartmentAttributeMapper());
+		List<Department> list = ldapTemplate.search(query().where("businessCategory").is("0"), new DepartmentAttributeMapper());
 		for (Department department : list) {
 			System.out.println(department);
 		}
-		return "index";
+		return "test";
 	}
 	
 
