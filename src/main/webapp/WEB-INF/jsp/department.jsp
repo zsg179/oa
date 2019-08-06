@@ -65,7 +65,7 @@ var contentListToolbar = [{
     }
 },{
     text:'编辑部门',
-    iconCls:'icon-edit',
+    iconCls:'icon-editor',
     handler:function(){
     	var ids = TT.getSelectionsIds("#departmentList");
     	if(ids.length == 0){
@@ -82,7 +82,7 @@ var contentListToolbar = [{
     }
 },{
     text:'删除部门',
-    iconCls:'icon-cancel',
+    iconCls:'icon-delete',
     handler:function(){
     	var ids = TT.getSelectionsIds("#departmentList");
     	if(ids.length == 0){

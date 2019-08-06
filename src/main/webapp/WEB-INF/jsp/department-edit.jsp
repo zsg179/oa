@@ -15,11 +15,11 @@
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
-	            <td><input class="easyui-textbox" type="text" name="deptID" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptID" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
-	            <td><input class="easyui-textbox" type="text" name="deptName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptName" style="width: 280px;"></input></td>
 	        </tr>
 	    </table>
 	</form>
@@ -40,11 +40,10 @@ var departmentEditPage = {
 				$.messager.alert('提示','表单还未填写完成!');
 				return ;
 			}
-			departmentEditEditor.sync();
 			
 			$.post("/rest/department/edit",$("#departmentEditForm").serialize(), function(data){
 				if(data.status == 200){
-					$.messager.alert('提示','新增内容成功!');
+					$.messager.alert('提示','编辑内容成功!');
 					$("#departmentList").datagrid("reload");
 					TT.closeCurrentWindow();
 				}

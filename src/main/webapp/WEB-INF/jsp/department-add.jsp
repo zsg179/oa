@@ -16,11 +16,11 @@
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
-	            <td><input class="easyui-textbox" type="text" name="deptID" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptID" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
-	            <td><input class="easyui-textbox" type="text" name="deptName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptName" style="width: 280px;"></input></td>
 	        </tr>      
 	    </table>
 	</form>
@@ -30,20 +30,14 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var departmentAddEditor ;
-	$(function(){
-        /* 把用户选择部门节点的id赋值给隐藏域<input type="hidden" name="departmentId"/> */	
-		$("#departmentAddForm [name=departmentId]").val($("#departmentTree").tree("getSelected").id);
-	});
-	
+
 	var departmentAddPage  = {
 			submitForm : function (){
-/* 如果表单输入不合法，那么会提示”表单还未填写完！” */
+            /* 如果表单输入不合法，那么会提示”表单还未填写完！” */
 				if(!$('#departmentAddForm').form('validate')){
 					$.messager.alert('提示','表单还未填写完成!');
 					return ;
-				}		
-				departmentAddEditor.sync();
+				}
 				
 				/* 发起url为/department/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/department/save",$("#departmentAddForm").serialize(), function(data){
