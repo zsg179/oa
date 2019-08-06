@@ -1,9 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- 引入EasyUI的css文件和js文件 -->
+
+
+<!--  @author 卢春宇
+      @date 2019年8月6日 上午09:36:25
+      @version 3.0  -->
+
+
 <link href="/js/kindeditor-4.1.10/themes/default/default.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/kindeditor-all-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
-<div style="padding:10px 10px 10px 10px">
+<div class=department-add style="padding:10px 10px 10px 10px">
 	<form id="departmentAddForm" class="itemForm" method="post">
 		<input type="hidden" name="departmentId"/>
 	    <table cellpadding="5">
@@ -17,16 +24,15 @@
 	        </tr>      
 	    </table>
 	</form>
-	<div style="padding:5px">
+	<div style="padding:10px">
 	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="departmentAddPage.submitForm()">提交</a>
 	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="departmentAddPage.clearForm()">重置</a>
 	</div>
 </div>
 <script type="text/javascript">
 	var departmentAddEditor ;
-	$(function(){/* 初始化一个富文本编辑器 */
-		departmentAddEditor = TT.createEditor("#departmentAddForm [name=department]");
-/* 把用户选择部门节点的id赋值给隐藏域<input type="hidden" name="departmentId"/> */	
+	$(function(){
+        /* 把用户选择部门节点的id赋值给隐藏域<input type="hidden" name="departmentId"/> */	
 		$("#departmentAddForm [name=departmentId]").val($("#departmentTree").tree("getSelected").id);
 	});
 	
@@ -54,3 +60,7 @@
 			}
 	};
 </script>
+
+<style>
+
+</style>

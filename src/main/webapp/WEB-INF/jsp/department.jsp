@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!--EasyUI的嵌套布局方式-->
+
+
+<!--  @author 卢春宇
+      @date 2019年8月6日 上午09:36:25
+      @version 3.0  -->
+
+
 <div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:500,noheader:true,border:false" style="padding:10px;">
     <div class="easyui-layout" data-options="fit:true">
         <!--面板左部-->
@@ -43,10 +50,13 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
     	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
-/* 如果选中的不是节点或者不是叶子节点，那么这时就弹出一个提示框。如果点击的是叶子节点，会调用common.js文件当中定义的TT的
-createWindow方法初始化一个弹出框，弹出框中显示的页面是由参数url: “/department-add”指定的 */
-    	if(!node || !$("#departmentTree").tree("isLeaf",node.target)){
+/* 如果选中的不是节点或者不是叶子节点，那么这时就弹出一个提示框。如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
+    	if(!node){
     		$.messager.alert('提示','新增部门必须选择一个部门分类!');
+    		return ;
+    	}
+    	else if($("#departmentTree").tree("isLeaf",node.target)){
+    		$.messager.alert('提示','不可对员工进行操作!');
     		return ;
     	}
     	TT.createWindow({
