@@ -27,6 +27,9 @@ public class DepartmentAttributeMapper implements AttributesMapper<Department> {
 		if(attrs.get("st")!=null){
 			department.setIsParent((String) attrs.get("st").get());
 		}
+		if(attrs.get("l")!=null){
+			department.setO((String) attrs.get("l").get());
+		}
 		return department;
 	}
 
