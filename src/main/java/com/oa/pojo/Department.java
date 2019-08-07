@@ -3,10 +3,10 @@ package com.oa.pojo;
 
 public class Department {
 	private String deptName;//ou
-	private String id;//description
+	private String id;//description:部门编号
 	private String parentId;//businessCategory
 	private String isParent;//st
-	private String o;//l
+	private String o;//l:上级部门
 	
 	public String getO() {
 		return o;

@@ -24,7 +24,7 @@
 	        </tr>      
 	        <tr>
 	            <td>上级部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="${param.parentName }" data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
 	        </tr>      
 	    </table>
 	</form>

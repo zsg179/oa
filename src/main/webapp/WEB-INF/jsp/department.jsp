@@ -67,8 +67,11 @@ var contentListToolbar = [{
     			id=data.data
     		}
     	})
+    	//获取父节点名字
+    	
+    	var parentName
     	TT.createWindow({
-			url : "/department-add?id="+id
+			url : "/department-add?id="+id+"&parenetName="+parentName
 		}); 
     }
 },{
