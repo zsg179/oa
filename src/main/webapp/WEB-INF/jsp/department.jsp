@@ -35,7 +35,7 @@
 <script type="text/javascript">
 $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
 	var tree = $("#departmentTree");/* 获取部门树 */
-	var datagrid = $("#departmentTree");/* 是获取部门列表 */
+	var datagrid = $("#departmentList");/* 是获取部门列表 */
 	tree.tree({
 		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
 			if(!tree.tree("isLeaf",node.target)){
