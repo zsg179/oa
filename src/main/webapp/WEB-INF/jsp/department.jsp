@@ -60,8 +60,15 @@ var contentListToolbar = [{
     		$.messager.alert('提示','不可对员工进行操作!');
     		return ;
     	}
+    	//发送请求，生成id
+    	var id
+    	$.post("/department/gen/id",function(data){
+    		if(data.status==200){
+    			id=data.data
+    		}
+    	})
     	TT.createWindow({
-			url : "/department-add"
+			url : "/department-add?id="+id
 		}); 
     }
 },{
