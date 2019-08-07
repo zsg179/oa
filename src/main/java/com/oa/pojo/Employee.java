@@ -10,6 +10,21 @@ public class Employee {
 	private String id;//description
 	private String isParent;//st
 	private String parentId;//businessCategory
+	private String o;//o
+	private String ou;//ou
+	
+	public String getO() {
+		return o;
+	}
+	public void setO(String o) {
+		this.o = o;
+	}
+	public String getOu() {
+		return ou;
+	}
+	public void setOu(String ou) {
+		this.ou = ou;
+	}
 	public String getEmployeeNumber() {
 		return employeeNumber;
 	}
@@ -68,8 +83,9 @@ public class Employee {
 	public String toString() {
 		return "Employee [employeeNumber=" + employeeNumber + ", fullName=" + fullName + ", lastName=" + lastName
 				+ ", title=" + title + ", email=" + email + ", phone=" + phone + ", id=" + id + ", isParent=" + isParent
-				+ ", parentId=" + parentId + "]";
+				+ ", parentId=" + parentId + ", o=" + o + ", ou=" + ou + "]";
 	}
+	
 
 
 	
