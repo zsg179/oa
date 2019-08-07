@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.oa.dao.DeptDao;
+import com.oa.pojo.Department;
+import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.service.DeptService;
+import com.oa.util.OAResult;
 
 /**部门管理服务层实现类 
 * @author 朱树广 
@@ -23,6 +26,37 @@ public class DeptServiceImpl implements DeptService {
 	public List<EasyUITreeNote> getDeptList(String parentId) {
 		List<EasyUITreeNote> list = deptDao.getDeptList(parentId);
 		return list;
+	}
+
+	@Override
+	public OAResult create(Department dept) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public OAResult delete(Department dept) {
+		OAResult result = deptDao.delete(dept);
+		return result;
+	}
+
+	@Override
+	public OAResult edit(Department dept) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EasyUIDataGridResult geteDeptInfoById(String id) {
+		EasyUIDataGridResult result = deptDao.geteDeptInfoById(id);
+		List<Department> list = result.getRows();
+		for (Department dept : list) {
+			if(dept.getO()==null){
+				dept.setO("无上级部门");
+			}
+		}
+		result.setRows(list);
+		return result;
 	}
 
 }
