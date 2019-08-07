@@ -18,11 +18,12 @@
         <div data-options="region:'center'" style="padding:5px">
             <!--EasyUI的数据表格-->
             <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
-            <table class="easyui-datagrid" id="departmentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/department/query/list',queryParams:{categoryId:0}">
+            <table class="easyui-datagrid" id="departmentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/department/query/info',queryParams:{id:0}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:120">部门编号</th>
 		            <th data-options="field:'deptName',width:300">部门名称</th>
+		            <th data-options="field:'o',width:300">上级部门</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -37,9 +38,9 @@ $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
 	var datagrid = $("#departmentTree");/* 是获取部门列表 */
 	tree.tree({
 		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
-			if(tree.tree("isLeaf",node.target)){
+			if(!tree.tree("isLeaf",node.target)){
 				datagrid.datagrid('reload', {
-					categoryId :node.id
+					id :node.id
 		        });
 			}
 		}
