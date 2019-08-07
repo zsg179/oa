@@ -51,8 +51,13 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
     	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
-/* 如果选中的不是节点或者不是叶子节点，那么这时就弹出一个提示框。如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
-    	if(!node){
+        /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
+       /*  $('departmentTree').tree('select', node.target);/* 设置选中该节点 */ 
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /* 通过子节点获取父节点 */
+        var t1=node.text;/* 获取部门节点的值 */
+        var parentName= nodePar.text; /* 获取当前选中的上一级节点的值 */
+        /* $.messager.alert('提示',parentName);测试能否正常显示父节点的值 */
+        if(!node){
     		$.messager.alert('提示','新增部门必须选择一个部门分类!');
     		return ;
     	}
@@ -115,3 +120,4 @@ var contentListToolbar = [{
     }
 }];
 </script>
+
