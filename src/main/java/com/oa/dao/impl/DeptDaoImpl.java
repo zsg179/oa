@@ -8,7 +8,9 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Repository;
@@ -99,9 +101,30 @@ public class DeptDaoImpl implements DeptDao {
 
 	@Override
 	public OAResult delete(Department dept) {
-		Name dn = buildDn(dept);
-		ldapTemplate.unbind(dn);
-		return OAResult.ok();
+		
+		dept.setDeptName("运维部");
+		dept.setO("总部");
+		Name dn =buildDn(dept);
+		/**
+		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
+		 */
+		LdapQuery query = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is("总部").and("ou").is("运维部");
+		List<String> list = ldapTemplate.search(query, new AttributesMapper<String>() {
+			public String mapFromAttributes(Attributes attrs) throws NamingException {
+
+				return (String) attrs.get("cn").get();
+			}
+		});
+		int employNumbur=list.size();	
+		if(employNumbur==0){
+			ldapTemplate.unbind(dn);
+			System.out.println("成功");
+			return OAResult.ok();
+		}
+		else{
+			System.out.println("失败");
+			return OAResult.ok();
+		}
 	}
 
 	@Override
