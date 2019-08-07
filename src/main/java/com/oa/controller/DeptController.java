@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oa.pojo.Department;
+import com.oa.pojo.DeptResult;
+import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.service.DeptService;
+import com.oa.util.OAResult;
 
 /** 
 * @author 朱树广 
@@ -23,8 +27,22 @@ public class DeptController {
 	
 	@RequestMapping("/department/list")
 	@ResponseBody
-	public List<EasyUITreeNote> getDeptList(@RequestParam(value="id",defaultValue="0")  String parentId){
+	public List<EasyUITreeNote> getDeptList(@RequestParam(value="id",defaultValue="-1")  String parentId){
 		List<EasyUITreeNote> result = deptService.getDeptList(parentId);
+		return result;
+	}
+	
+	@RequestMapping("/department/query/info")
+	@ResponseBody
+	public EasyUIDataGridResult geteDeptInfoById(String id){
+		EasyUIDataGridResult result = deptService.geteDeptInfoById(id);
+		return result;
+	}
+	
+	@RequestMapping("/department/delete")
+	@ResponseBody
+	public OAResult delete(Department dept){
+		OAResult result = deptService.delete(dept);
 		return result;
 	}
 }
