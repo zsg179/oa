@@ -92,12 +92,16 @@
 	background:url('icons/large_chart.png') no-repeat center center;
 }
 
+.icon-pencil{
+	background:url('icons/pencil.png') no-repeat center center;
+}
+
 
 /* 自定义图标 */
 
-.icon-add{
+/* .icon-add{
 	background:url('icons/add.png') no-repeat center center;
-}
+} */
 
 .icon-editor{
 	background:url('icons/editor.png') no-repeat center center;

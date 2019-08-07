@@ -2302,16 +2302,14 @@
   background: url('images/tree_icons.png') no-repeat -160px 0;
 }
 .tree-folder {
-  background: url('images/open.png') no-repeat ;
+  background: url('images/tree_icons.png') no-repeat -208px 0 ;
   margin-top:2px;
 }
 .tree-folder-open {
-  background: url('images/close.png') no-repeat ;
-   margin-top:4px;
+  background: url('images/tree_icons.png') no-repeat -224px 0 ;
 }
 .tree-file {
-  background: url('images/file.png') no-repeat ;
-   margin-top:2px;
+  background: url('images/tree_icons.png') no-repeat -240px 0 ;
 }
 .tree-loading {
   background: url('images/loading.gif') no-repeat center center;

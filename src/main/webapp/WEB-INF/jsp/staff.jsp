@@ -54,7 +54,7 @@ var contentListToolbar = [{
     }
 },{
     text:'编辑员工',
-    iconCls:'icon-editor',
+    iconCls:'icon-pencil',
     handler:function(){
     	var ids = TT.getSelectionsIds("#contentList");
     	if(ids.length == 0){
@@ -85,7 +85,7 @@ var contentListToolbar = [{
     }
 },{
     text:'删除员工',
-    iconCls:'icon-delete',
+    iconCls:'icon-cancel',
     handler:function(){
     	var ids = TT.getSelectionsIds("#contentList");
     	if(ids.length == 0){
