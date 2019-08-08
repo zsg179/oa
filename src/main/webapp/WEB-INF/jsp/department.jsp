@@ -69,8 +69,9 @@ var contentListToolbar = [{
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
+    			var parentName= nodePar.text;
     			TT.createWindow({
-    				url : "/department-add?id="+id
+    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');

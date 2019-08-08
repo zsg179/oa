@@ -24,7 +24,10 @@
 	        </tr>      
 	        <tr>
 	            <td>上级部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="${param.parentName }"  type="text" name="o" style="width: 280px;"></input></td>
+	            <%String parentName = request.getParameter("parentName"); 
+	              parentName = java.net.URLDecoder.decode(parentName,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="<%=parentName %>"  type="text" name="o" style="width: 280px;"></input></td>
 	        </tr>      
 	    </table>
 	</form>
