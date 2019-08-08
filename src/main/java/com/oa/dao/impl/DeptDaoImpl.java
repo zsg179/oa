@@ -123,18 +123,16 @@ public class DeptDaoImpl implements DeptDao {
 		         .attributes("ou", "description")
 		         .where("objectclass").is("organizationalUnit")
 		         .and("description").is(description);
+		 
 		 List<String> list = ldapTemplate.search(
 				 query, new AttributesMapper<String>() {
 				public String mapFromAttributes(Attributes attrs) throws NamingException {
-					//System.out.println("o是"+(String) attrs.get("l").get());
 					return (String) attrs.get("ou").get();
 				}
-				//l
 			});
 		 String deptName=null;
 		  for(String str:list){
-			  deptName=str;
-			 
+			  deptName=str;	 
 		  }
 		System.out.println(deptName);
 		//找出o
@@ -149,23 +147,20 @@ public class DeptDaoImpl implements DeptDao {
 					System.out.println("o是"+(String) attrs.get("l").get());
 					return (String) attrs.get("l").get();
 				}
-				//l
 			});
 		 String o=null;
 		  for(String str:list2){
 			  o=str;
-			 
 		  }
 		System.out.println(o);
 		
 		
-		
+
 		Department dept =new Department();
 		dept.setDeptName(deptName);
 		dept.setId(description);
 		dept.setO(o);
 		Name dn =buildDnDept(dept);
-		
 		/**
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
@@ -181,15 +176,10 @@ public class DeptDaoImpl implements DeptDao {
 			ldapTemplate.unbind(dn);
 			System.out.println("成功");
 			return OAResult.ok();
-		}
-		else{
+		} else {
 			System.out.println("失败");
 			return OAResult.unOk();
-		}
-		
-		
-
-		
+		}	
 	}
 	protected Name buildDnDept(Department dept) {//为删除方法服务
 	    return buildDnDept(dept.getO(), dept.getDeptName());
@@ -217,6 +207,39 @@ public class DeptDaoImpl implements DeptDao {
 		result.setRows(list);
 		result.setTotal(list.size());
 		return result;
+	}
+
+	@Override
+	public OAResult getMaxId() {
+		List<Department> list1 = ldapTemplate.search(query().where("st").is("1"), new DepartmentAttributeMapper());
+		long maxId1 = -1;
+		for (Department department : list1) {
+			long id1 = Long.parseLong(department.getId());
+			long id2 = Long.parseLong(department.getParentId());
+			if (maxId1 < id1) {
+				maxId1 = id1;
+			}
+			if (maxId1 < id2) {
+				maxId1 = id2;
+			}
+		}
+		List<Employee> list2 = ldapTemplate.search(query().where("st").is("0"), new PersonAttributeMapper());
+		long maxId2 = -1;
+		for (Employee employee : list2) {
+			long id1 = Long.parseLong(employee.getId());
+			long id2 = Long.parseLong(employee.getParentId());
+			if (maxId2 < id1) {
+				maxId2 = id1;
+			}
+			if (maxId2 < id2) {
+				maxId2 = id2;
+			}
+		}
+		if (maxId1 > maxId2) {
+			return OAResult.ok(maxId1 + 1 + "");
+		} else {
+			return OAResult.ok(maxId2 + 1 + "");
+		}
 	}
 
 }

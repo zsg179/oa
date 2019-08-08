@@ -38,4 +38,9 @@ public interface DeptDao {
 	 * @return
 	 */
 	EasyUIDataGridResult geteDeptInfoById(String id);
+	/**
+	 * 获取最大的编号
+	 * @return
+	 */
+	OAResult getMaxId();
 }

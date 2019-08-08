@@ -59,5 +59,10 @@ public class DeptServiceImpl implements DeptService {
 		return result;
 	}
 
+	@Override
+	public OAResult getMaxId() {
+		return deptDao.getMaxId();
+	}
+
 }
 
