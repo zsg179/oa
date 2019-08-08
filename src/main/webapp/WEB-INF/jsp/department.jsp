@@ -61,18 +61,20 @@ var contentListToolbar = [{
     		return ;
     	}
     	//发送请求，生成id
-    	var id
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
-    			id=data.data
+    			var id=data.data;
+    			TT.createWindow({
+    				url : "/department-add?id="+id
+    			});
+    		}else{
+    			$.messager.alert('提示', '生成id出错！');
     		}
+    		
     	})
     	//获取父节点名字
-    	
-    	var parentName
-    	TT.createWindow({
-			url : "/department-add?id="+id+"&parenetName="+parentName
-		}); 
+    	//alert(id)
+    	 
     }
 },{
     text:'编辑部门',

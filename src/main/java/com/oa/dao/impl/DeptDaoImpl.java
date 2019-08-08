@@ -101,27 +101,27 @@ public class DeptDaoImpl implements DeptDao {
 
 	@Override
 	public OAResult delete(Department dept) {
-		
+
 		dept.setDeptName("运维部");
 		dept.setO("总部");
-		Name dn =buildDn(dept);
+		Name dn = buildDn(dept);
 		/**
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
-		LdapQuery query = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is("总部").and("ou").is("运维部");
+		LdapQuery query = query().attributes("cn", "o", "ou").where("objectclass").is("person").and("o").is("总部")
+				.and("ou").is("运维部");
 		List<String> list = ldapTemplate.search(query, new AttributesMapper<String>() {
 			public String mapFromAttributes(Attributes attrs) throws NamingException {
 
 				return (String) attrs.get("cn").get();
 			}
 		});
-		int employNumbur=list.size();	
-		if(employNumbur==0){
+		int employNumbur = list.size();
+		if (employNumbur == 0) {
 			ldapTemplate.unbind(dn);
 			System.out.println("成功");
 			return OAResult.ok();
-		}
-		else{
+		} else {
 			System.out.println("失败");
 			return OAResult.ok();
 		}
@@ -141,6 +141,39 @@ public class DeptDaoImpl implements DeptDao {
 		result.setRows(list);
 		result.setTotal(list.size());
 		return result;
+	}
+
+	@Override
+	public OAResult getMaxId() {
+		List<Department> list1 = ldapTemplate.search(query().where("st").is("1"), new DepartmentAttributeMapper());
+		long maxId1 = -1;
+		for (Department department : list1) {
+			long id1 = Long.parseLong(department.getId());
+			long id2 = Long.parseLong(department.getParentId());
+			if (maxId1 < id1) {
+				maxId1 = id1;
+			}
+			if (maxId1 < id2) {
+				maxId1 = id2;
+			}
+		}
+		List<Employee> list2 = ldapTemplate.search(query().where("st").is("0"), new PersonAttributeMapper());
+		long maxId2 = -1;
+		for (Employee employee : list2) {
+			long id1 = Long.parseLong(employee.getId());
+			long id2 = Long.parseLong(employee.getParentId());
+			if (maxId2 < id1) {
+				maxId2 = id1;
+			}
+			if (maxId2 < id2) {
+				maxId2 = id2;
+			}
+		}
+		if (maxId1 > maxId2) {
+			return OAResult.ok(maxId1 + 1 + "");
+		} else {
+			return OAResult.ok(maxId2 + 1 + "");
+		}
 	}
 
 }
