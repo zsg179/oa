@@ -25,7 +25,7 @@ public interface DeptDao {
 	 * @param dept
 	 * @return
 	 */
-	OAResult delete(Department dept);
+	OAResult delete(String ids);
 	/**
 	 * 编辑部门
 	 * @param dept

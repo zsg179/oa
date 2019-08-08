@@ -40,9 +40,14 @@ public class DeptController {
 	
 	@RequestMapping("/department/delete")
 	@ResponseBody
-	public OAResult delete(Department dept){
-		OAResult result = deptService.delete(dept);
+	//public OAResult delete(Department dept){
+	//	OAResult result = deptService.delete(dept);
+	//	return result;
+	//}
+	public OAResult deleteContent(String ids){
+		OAResult result = deptService.delete(ids);
 		return result;
 	}
+
 }
 

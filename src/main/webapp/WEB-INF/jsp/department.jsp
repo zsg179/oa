@@ -86,6 +86,7 @@ var contentListToolbar = [{
     iconCls:'icon-cancel',
     handler:function(){
     	var ids = TT.getSelectionsIds("#departmentList");
+    	
     	if(ids.length == 0){
     		$.messager.alert('提示','未选中部门!');
     		return ;
@@ -99,6 +100,13 @@ var contentListToolbar = [{
         					$("#departmentList").datagrid("reload");
         				});
         			}
+        			else{
+        				$.messager.alert('提示','删除部门失败!',undefined,function(){
+        					$("#departmentList").datagrid("reload");
+        				});
+        				
+        			}
+        			
         		});
     	    }
     	});

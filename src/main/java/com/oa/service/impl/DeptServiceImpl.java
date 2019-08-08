@@ -35,8 +35,8 @@ public class DeptServiceImpl implements DeptService {
 	}
 
 	@Override
-	public OAResult delete(Department dept) {
-		OAResult result = deptDao.delete(dept);
+	public OAResult delete(String ids) {
+		OAResult result = deptDao.delete(ids);
 		return result;
 	}
 

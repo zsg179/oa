@@ -6,6 +6,9 @@ import java.util.List;
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
@@ -37,6 +40,10 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 public class DeptDaoImpl implements DeptDao {
 	@Autowired
 	private LdapTemplate ldapTemplate;
+	
+	private DepartmentAttributeMapper contentMapper;
+ 
+
 
 	public static final String BASE_DN = "dc=poke_domain,dc=com";
 
@@ -100,22 +107,76 @@ public class DeptDaoImpl implements DeptDao {
 	}
 
 	@Override
-	public OAResult delete(Department dept) {
+	public OAResult delete(String ids) {
 		
-		dept.setDeptName("运维部");
-		dept.setO("总部");
-		Name dn =buildDn(dept);
+		//获取前台ids
+		String[] idList = ids.split(",");
+		String description=null;
+		for(String id : idList){
+			description=id;//获取到前台的部门编号
+		}
+		//返回结果
+		System.out.println(description);
+		//找出了部门
+		 LdapQuery query = query()
+		         .base("")
+		         .attributes("ou", "description")
+		         .where("objectclass").is("organizationalUnit")
+		         .and("description").is(description);
+		 List<String> list = ldapTemplate.search(
+				 query, new AttributesMapper<String>() {
+				public String mapFromAttributes(Attributes attrs) throws NamingException {
+					//System.out.println("o是"+(String) attrs.get("l").get());
+					return (String) attrs.get("ou").get();
+				}
+				//l
+			});
+		 String deptName=null;
+		  for(String str:list){
+			  deptName=str;
+			 
+		  }
+		System.out.println(deptName);
+		//找出o
+		LdapQuery query2 = query()
+		         .base("")
+		         .attributes("l", "description")
+		         .where("objectclass").is("organizationalUnit")
+		         .and("description").is(description);
+		 List<String> list2 = ldapTemplate.search(
+				 query2, new AttributesMapper<String>() {
+				public String mapFromAttributes(Attributes attrs) throws NamingException {
+					System.out.println("o是"+(String) attrs.get("l").get());
+					return (String) attrs.get("l").get();
+				}
+				//l
+			});
+		 String o=null;
+		  for(String str:list2){
+			  o=str;
+			 
+		  }
+		System.out.println(o);
+		
+		
+		
+		Department dept =new Department();
+		dept.setDeptName(deptName);
+		dept.setId(description);
+		dept.setO(o);
+		Name dn =buildDnDept(dept);
+		
 		/**
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
-		LdapQuery query = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is("总部").and("ou").is("运维部");
-		List<String> list = ldapTemplate.search(query, new AttributesMapper<String>() {
+		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(o).and("ou").is(deptName);
+		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
 			public String mapFromAttributes(Attributes attrs) throws NamingException {
 
 				return (String) attrs.get("cn").get();
 			}
 		});
-		int employNumbur=list.size();	
+		int employNumbur=list3.size();	
 		if(employNumbur==0){
 			ldapTemplate.unbind(dn);
 			System.out.println("成功");
@@ -123,9 +184,24 @@ public class DeptDaoImpl implements DeptDao {
 		}
 		else{
 			System.out.println("失败");
-			return OAResult.ok();
+			return OAResult.unOk();
 		}
+		
+		
+
+		
 	}
+	protected Name buildDnDept(Department dept) {//为删除方法服务
+	    return buildDnDept(dept.getO(), dept.getDeptName());
+	 }
+
+	 protected Name buildDnDept(String company, String department) {//为删除方法服务
+	    return LdapNameBuilder.newInstance()
+	      .add("o", company)
+	      .add("ou", department)
+	      .build();
+	    //"ou=市场部,o=总部"
+	 }
 
 	@Override
 	public OAResult edit(Department dept) {

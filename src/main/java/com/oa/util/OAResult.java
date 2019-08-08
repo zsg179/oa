@@ -34,9 +34,19 @@ public class OAResult implements Serializable {
 	public static OAResult ok() {
 		return new OAResult(null);
 	}
+	
+	public static OAResult unOk() {
+		
+		return new OAResult(0, "UNOK");
+	}
 
 	public OAResult() {
 
+	}
+	public OAResult(Integer status,String msg) {
+		this.status = status;
+		this.msg = msg;
+		
 	}
 
 	public static OAResult build(Integer status, String msg) {
