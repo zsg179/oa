@@ -44,10 +44,6 @@ public class DeptDaoImpl implements DeptDao {
 	private LdapTemplate ldapTemplate;
 	
 	private DepartmentAttributeMapper contentMapper;
- 
-
-
-	public static final String BASE_DN = "dc=poke_domain,dc=com";
 
 	protected Name buildDn(Department dept) {
 		return LdapNameBuilder.newInstance().add("o", dept.getO()).add("ou", dept.getDeptName()).build();
@@ -133,8 +129,6 @@ public class DeptDaoImpl implements DeptDao {
 		for(String id : idList){
 			description=id;//获取到前台的部门编号
 		}
-		//返回结果
-		System.out.println(description);
 		//找出了部门
 		 LdapQuery query = query()
 		         .base("")
@@ -152,7 +146,6 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list){
 			  deptName=str;	 
 		  }
-		System.out.println(deptName);
 		//找出o
 		LdapQuery query2 = query()
 		         .base("")
@@ -162,7 +155,6 @@ public class DeptDaoImpl implements DeptDao {
 		 List<String> list2 = ldapTemplate.search(
 				 query2, new AttributesMapper<String>() {
 				public String mapFromAttributes(Attributes attrs) throws NamingException {
-					System.out.println("o是"+(String) attrs.get("l").get());
 					return (String) attrs.get("l").get();
 				}
 			});
@@ -170,7 +162,6 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list2){
 			  o=str;
 		  }
-		System.out.println(o);
 		
 		
 
@@ -192,10 +183,8 @@ public class DeptDaoImpl implements DeptDao {
 		int employNumbur=list3.size();	
 		if(employNumbur==0){
 			ldapTemplate.unbind(dn);
-			System.out.println("成功");
 			return OAResult.ok();
 		} else {
-			System.out.println("失败");
 			return OAResult.unOk();
 		}	
 	}
@@ -213,8 +202,9 @@ public class DeptDaoImpl implements DeptDao {
 
 	@Override
 	public OAResult edit(Department dept) {
-		// TODO Auto-generated method stub
-		return null;
+		Name dn = buildDn(dept);
+		ldapTemplate.rebind(dn, null, buildAttributes(dept));
+		return OAResult.ok();
 	}
 
 	@Override

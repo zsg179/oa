@@ -41,8 +41,7 @@ public class DeptServiceImpl implements DeptService {
 
 	@Override
 	public OAResult edit(Department dept) {
-		// TODO Auto-generated method stub
-		return null;
+		return deptDao.edit(dept);
 	}
 
 	@Override

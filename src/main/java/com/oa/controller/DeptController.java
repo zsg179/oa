@@ -59,4 +59,10 @@ public class DeptController {
 	public OAResult deptCreate(Department dept) {
 		return deptService.create(dept);
 	}
+	
+	@RequestMapping("/rest/department/edit")
+	@ResponseBody
+	public OAResult deptEdit(Department dept){
+		return deptService.edit(dept);
+	}
 }
