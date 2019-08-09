@@ -30,8 +30,7 @@ public class DeptServiceImpl implements DeptService {
 
 	@Override
 	public OAResult create(Department dept) {
-		// TODO Auto-generated method stub
-		return null;
+		return deptDao.create(dept);
 	}
 
 	@Override

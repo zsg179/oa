@@ -41,18 +41,22 @@ public class DeptController {
 	@RequestMapping("/department/delete")
 	@ResponseBody
 
-	public OAResult deleteContent(String ids){
+	public OAResult deleteContent(String ids) {
 		OAResult result = deptService.delete(ids);
 
 		return result;
 	}
-
-
 
 	@RequestMapping("/department/gen/id")
 	@ResponseBody
 	public OAResult genId() {
 		OAResult result = deptService.getMaxId();
 		return result;
+	}
+
+	@RequestMapping("/department/save")
+	@ResponseBody
+	public OAResult deptCreate(Department dept) {
+		return deptService.create(dept);
 	}
 }

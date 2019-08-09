@@ -52,11 +52,7 @@ var contentListToolbar = [{
     handler:function(){/* 点击‘新增’触发的函数 */
     	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
         /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
-       /*  $('departmentTree').tree('select', node.target);/* 设置选中该节点 */ 
-        var nodePar = $("#departmentTree").tree("getParent",node.target); /* 通过子节点获取父节点 */
-        var t1=node.text;/* 获取部门节点的值 */
-        var parentName= nodePar.text; /* 获取当前选中的上一级节点的值 */
-        /* $.messager.alert('提示',parentName);测试能否正常显示父节点的值 */
+      
         if(!node){
     		$.messager.alert('提示','新增部门必须选择一个部门分类!');
     		return ;
@@ -69,9 +65,10 @@ var contentListToolbar = [{
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
-    			var parentName= nodePar.text;
+    			var parentName= node.text;
+    			var parentId= node.id;
     			TT.createWindow({
-    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
+    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
