@@ -45,4 +45,5 @@ public interface DeptDao {
 	 * @return
 	 */
 	OAResult getMaxId();
+	OAResult edit(Department dept);
 }

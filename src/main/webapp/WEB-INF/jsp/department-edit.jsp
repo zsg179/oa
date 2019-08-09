@@ -10,12 +10,16 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
-		<input type="hidden" name="departmentId"/>
-		<input type="hidden" name="id"/>
+		<input type="hidden" name="isParent" value="${param.isParent }"/>
+		<input type="hidden" name="parentId" value="${param.parentId }"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
+
 	            <td><input class="easyui-textbox" readonly="true"  value="${param.id }" type="text" name="deptID" style="width: 280px;"></input></td>
+
+	            <td><input class="easyui-textbox" readonly="true"  value="${param.id }" type="text" name="id" style="width: 280px;"></input></td>
+
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>

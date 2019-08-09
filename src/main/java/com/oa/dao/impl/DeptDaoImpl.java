@@ -9,8 +9,10 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
+
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -50,13 +52,9 @@ public class DeptDaoImpl implements DeptDao {
 	private LdapTemplate ldapTemplate;
 	
 	private DepartmentAttributeMapper contentMapper;
- 
-
-
-	public static final String BASE_DN = "dc=poke_domain,dc=com";
 
 	protected Name buildDn(Department dept) {
-		return LdapNameBuilder.newInstance(BASE_DN).add("o", dept.getO()).add("ou", dept.getDeptName()).build();
+		return LdapNameBuilder.newInstance().add("o", dept.getO()).add("ou", dept.getDeptName()).build();
 	}
 
 	protected Department buildDept(Name dn, Attributes attrs) {
@@ -110,9 +108,25 @@ public class DeptDaoImpl implements DeptDao {
 
 	@Override
 	public OAResult create(Department dept) {
+		//补全pojo
+		dept.setIsParent("1");
 		Name dn = buildDn(dept);
-		return null;
+		ldapTemplate.bind(dn, null, buildAttributes(dept));
+		return OAResult.ok();
 	}
+	
+	private Attributes buildAttributes(Department dept) {
+	      Attributes attrs = new BasicAttributes();
+	      BasicAttribute ocattr = new BasicAttribute("objectclass");
+	      ocattr.add("top");
+	      ocattr.add("organizationalUnit");
+	      attrs.put(ocattr);
+	      attrs.put("businessCategory", dept.getParentId());
+	      attrs.put("description", dept.getId());
+	      attrs.put("l", dept.getO());
+	      attrs.put("st", dept.getIsParent());
+	      return attrs;
+	   }
 
 	@Override
 	public OAResult delete(String ids) {
@@ -123,8 +137,6 @@ public class DeptDaoImpl implements DeptDao {
 		for(String id : idList){
 			description=id;//获取到前台的部门编号
 		}
-		//返回结果
-		System.out.println(description);
 		//找出了部门
 		 LdapQuery query = query()
 		         .base("")
@@ -142,7 +154,6 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list){
 			  deptName=str;	 
 		  }
-		System.out.println(deptName);
 		//找出o
 		LdapQuery query2 = query()
 		         .base("")
@@ -152,7 +163,6 @@ public class DeptDaoImpl implements DeptDao {
 		 List<String> list2 = ldapTemplate.search(
 				 query2, new AttributesMapper<String>() {
 				public String mapFromAttributes(Attributes attrs) throws NamingException {
-					System.out.println("o是"+(String) attrs.get("l").get());
 					return (String) attrs.get("l").get();
 				}
 			});
@@ -160,7 +170,6 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list2){
 			  o=str;
 		  }
-		System.out.println(o);
 		
 		
 
@@ -182,10 +191,8 @@ public class DeptDaoImpl implements DeptDao {
 		int employNumbur=list3.size();	
 		if(employNumbur==0){
 			ldapTemplate.unbind(dn);
-			System.out.println("成功");
 			return OAResult.ok();
 		} else {
-			System.out.println("失败");
 			return OAResult.unOk();
 		}	
 	}
@@ -224,6 +231,13 @@ public class DeptDaoImpl implements DeptDao {
     	//ldapNameBuilder.add(DN.trim());
     	
         return ldapNameBuilder.build();
+    }
+	@Override
+	public OAResult edit(Department dept) {
+		Name dn = buildDn(dept);
+		ldapTemplate.rebind(dn, null, buildAttributes(dept));
+		return OAResult.ok();
+
 	}
     
     @Override

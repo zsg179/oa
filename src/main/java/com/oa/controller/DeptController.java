@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oa.dao.impl.DeptDaoImpl;
 import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
@@ -42,13 +41,11 @@ public class DeptController {
 	@RequestMapping("/department/delete")
 	@ResponseBody
 
-	public OAResult deleteContent(String ids){
+	public OAResult deleteContent(String ids) {
 		OAResult result = deptService.delete(ids);
 
 		return result;
 	}
-
-
 
 	@RequestMapping("/department/gen/id")
 	@ResponseBody
@@ -56,6 +53,7 @@ public class DeptController {
 		OAResult result = deptService.getMaxId();
 		return result;
 	}
+
 	
 	@RequestMapping("/rest/department/edit")
 	@ResponseBody
@@ -69,5 +67,19 @@ public class DeptController {
 	
 
 	
+
+
+
+	@RequestMapping("/department/save")
+	@ResponseBody
+	public OAResult deptCreate(Department dept) {
+		return deptService.create(dept);
+	}
+	
+	@RequestMapping("/rest/department/edit")
+	@ResponseBody
+	public OAResult deptEdit(Department dept){
+		return deptService.edit(dept);
+	}
 
 }

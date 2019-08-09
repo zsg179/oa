@@ -50,5 +50,6 @@ public interface DeptService {
 	 * @return
 	 */
 	OAResult getMaxId();
+	OAResult edit(Department dept);
 }
 

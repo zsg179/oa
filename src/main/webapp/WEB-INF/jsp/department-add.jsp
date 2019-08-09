@@ -12,11 +12,11 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div class=department-add style="padding:10px 10px 10px 10px">
 	<form id="departmentAddForm" class="itemForm" method="post">
-		<input type="hidden" name="departmentId"/>
+		<input type="hidden" name="parentId" value="${param.parentId }"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
-	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="${param.id }"  type="text" name="deptID" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="${param.id }"  type="text" name="id" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
@@ -50,7 +50,7 @@
 				$.post("/department/save",$("#departmentAddForm").serialize(), function(data){
 					if(data.status == 200){
 						$.messager.alert('提示','新增部门成功!');/*如果返回的状态为200说明部门添加成功*/
-    					$("#departmentList").datagrid("reload");/*部门添加成功后，部门列表要进行重新加载*/
+    					$("#departmentTree").tree("reload");/*部门添加成功后，部门列表要进行重新加载*/
     					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 					}
 				});
