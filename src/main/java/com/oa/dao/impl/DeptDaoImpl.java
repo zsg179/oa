@@ -5,7 +5,12 @@ import java.util.List;
 
 import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -222,7 +227,7 @@ public class DeptDaoImpl implements DeptDao {
 	}
     
     @Override
-    public void update(String DN,Department OU) {//根据提供的条目和OU更新组织
+    public OAResult update(String DN,Department OU) {//根据提供的条目和OU更新组织
     	
     	
     	Name dn = buildDn(DN);
@@ -232,6 +237,8 @@ public class DeptDaoImpl implements DeptDao {
     	mapToContext(OU, context);
         
         ldapTemplate.modifyAttributes(context);
+        
+        return OAResult.ok();
     }
     
    
@@ -240,8 +247,12 @@ public class DeptDaoImpl implements DeptDao {
     	
     	//将修改后的属性值赋给context的属性
     	//context.setAttributeValue("ou", OU.getDeptName());会报错
-    	//这里只修改了l属性
-    	context.setAttributeValue("l", OU.getDeptName());
+    	
+    	context.setAttributeValue("l", OU.getO());
+    	context.setAttributeValue("st", OU.getIsParent());
+    	context.setAttributeValue("description", OU.getId());
+    	context.setAttributeValue("businessCategory", OU.getParentId());
+    	
     	
      }
     
@@ -290,6 +301,8 @@ public class DeptDaoImpl implements DeptDao {
 			return OAResult.ok(maxId2 + 1 + "");
 		}
 	}
+
+	
 
 
 }

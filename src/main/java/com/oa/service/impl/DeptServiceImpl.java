@@ -45,9 +45,11 @@ public class DeptServiceImpl implements DeptService {
 
 
 	@Override
-    public void updateOrganization(String DN,Department OU){
+	
+	public OAResult updateOrganization(String DN,Department OU){
     	 
-    	 deptDao.update(DN, OU);
+		OAResult result = deptDao.update(DN, OU);
+		return result;
 	}
 
 	

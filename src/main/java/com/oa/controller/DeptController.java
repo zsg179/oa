@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oa.dao.impl.DeptDaoImpl;
 import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
@@ -55,30 +56,18 @@ public class DeptController {
 		OAResult result = deptService.getMaxId();
 		return result;
 	}
+	
+	@RequestMapping("/rest/department/edit")
+	@ResponseBody
+	public OAResult updateContent(String DN,Department ou){//获取要修改的条目DN和修改的内容ou
+		OAResult result = deptService.updateOrganization(DN,ou);
+
+		return result;
+	}
+	
+	
+	
 
 	
-	//------------------修改部门test-start-----------
-	  String DN="ou=市场部,o=分部";
-	//将市场部的属性l的值变成“托尔斯泰”	
-		
-		private Department getDept() {
-			Department ou=new Department();
-			
-			
-			ou.setDeptName("托尔斯泰");
-			
-		    return ou;
-		}
-		
-		@RequestMapping("/tes")//网站访问后会报404，但是在ldap已经修改了
-		public void updateTest(){
-			
-			Department ou=getDept();
-			
-			deptService.updateOrganization(DN,ou);
-		}
-		
-		//------------------修改部门test-end-----------
-
 
 }
