@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!--EasyUI的嵌套布局方式-->
+
+
+<!--  @author 卢春宇
+      @date 2019年8月6日 上午09:36:25
+      @version 3.0  -->
+
+
 <div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:500,noheader:true,border:false" style="padding:10px;">
     <div class="easyui-layout" data-options="fit:true">
         <!--面板左部-->
@@ -11,11 +18,12 @@
         <div data-options="region:'center'" style="padding:5px">
             <!--EasyUI的数据表格-->
             <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
-            <table class="easyui-datagrid" id="departmentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/department/query/list',queryParams:{categoryId:0}">
+            <table class="easyui-datagrid" id="departmentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/department/query/info',queryParams:{id:0}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:120">部门编号</th>
-		            <th data-options="field:'Name',width:300">部门名称</th>
+		            <th data-options="field:'deptName',width:300">部门名称</th>
+		            <th data-options="field:'o',width:300">上级部门</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -27,12 +35,12 @@
 <script type="text/javascript">
 $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
 	var tree = $("#departmentTree");/* 获取部门树 */
-	var datagrid = $("#departmentTree");/* 是获取部门列表 */
+	var datagrid = $("#departmentList");/* 是获取部门列表 */
 	tree.tree({
 		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
-			if(tree.tree("isLeaf",node.target)){
+			if(!tree.tree("isLeaf",node.target)){
 				datagrid.datagrid('reload', {
-					categoryId :node.id
+					id :node.id
 		        });
 			}
 		}
@@ -43,19 +51,40 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
     	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
-/* 如果选中的不是节点或者不是叶子节点，那么这时就弹出一个提示框。如果点击的是叶子节点，会调用common.js文件当中定义的TT的
-createWindow方法初始化一个弹出框，弹出框中显示的页面是由参数url: “/department-add”指定的 */
-    	if(!node || !$("#departmentTree").tree("isLeaf",node.target)){
+        /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
+       /*  $('departmentTree').tree('select', node.target);/* 设置选中该节点 */ 
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /* 通过子节点获取父节点 */
+        var t1=node.text;/* 获取部门节点的值 */
+        var parentName= nodePar.text; /* 获取当前选中的上一级节点的值 */
+        /* $.messager.alert('提示',parentName);测试能否正常显示父节点的值 */
+        if(!node){
     		$.messager.alert('提示','新增部门必须选择一个部门分类!');
     		return ;
     	}
-    	TT.createWindow({
-			url : "/department-add"
-		}); 
+    	else if($("#departmentTree").tree("isLeaf",node.target)){
+    		$.messager.alert('提示','不可对员工进行操作!');
+    		return ;
+    	}
+    	//发送请求，生成id
+    	$.post("/department/gen/id",function(data){
+    		if(data.status==200){
+    			var id=data.data;
+    			var parentName= nodePar.text;
+    			TT.createWindow({
+    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
+    			});
+    		}else{
+    			$.messager.alert('提示', '生成id出错！');
+    		}
+    		
+    	})
+    	//获取父节点名字
+    	//alert(id)
+    	 
     }
 },{
     text:'编辑部门',
-    iconCls:'icon-edit',
+    iconCls:'icon-pencil',
     handler:function(){
     	var ids = TT.getSelectionsIds("#departmentList");
     	if(ids.length == 0){
@@ -75,6 +104,7 @@ createWindow方法初始化一个弹出框，弹出框中显示的页面是由�
     iconCls:'icon-cancel',
     handler:function(){
     	var ids = TT.getSelectionsIds("#departmentList");
+    	
     	if(ids.length == 0){
     		$.messager.alert('提示','未选中部门!');
     		return ;
@@ -88,9 +118,17 @@ createWindow方法初始化一个弹出框，弹出框中显示的页面是由�
         					$("#departmentList").datagrid("reload");
         				});
         			}
+        			else{
+        				$.messager.alert('提示','删除部门失败!',undefined,function(){
+        					$("#departmentList").datagrid("reload");
+        				});
+        				
+        			}
+        			
         		});
     	    }
     	});
     }
 }];
 </script>
+

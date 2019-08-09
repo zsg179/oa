@@ -23,6 +23,7 @@
 
 	<ldap:ldap-template id="ldapTemplate"
 		context-source-ref="contextSource" />
+		
 
 
 

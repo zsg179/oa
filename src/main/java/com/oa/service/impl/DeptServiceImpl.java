@@ -40,8 +40,17 @@ public class DeptServiceImpl implements DeptService {
 		return result;
 	}
 
+
 	
 
+
+	@Override
+    public void updateOrganization(String DN,Department OU){
+    	 
+    	 deptDao.update(DN, OU);
+	}
+
+	
 	@Override
 	public EasyUIDataGridResult geteDeptInfoById(String id) {
 		EasyUIDataGridResult result = deptDao.geteDeptInfoById(id);
@@ -58,13 +67,7 @@ public class DeptServiceImpl implements DeptService {
 	@Override
 	public OAResult getMaxId() {
 		return deptDao.getMaxId();
-	}
-	
-	@Override
-    public void updateOrganization(String DN,Department OU){
-    	 
-    	 deptDao.update(DN, OU);
-		
+
 	}
 
 }

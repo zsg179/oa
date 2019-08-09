@@ -54,7 +54,7 @@ var contentListToolbar = [{
     }
 },{
     text:'编辑员工',
-    iconCls:'icon-edit',
+    iconCls:'icon-pencil',
     handler:function(){
     	var ids = TT.getSelectionsIds("#contentList");
     	if(ids.length == 0){

@@ -12,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
+
 import org.springframework.ldap.core.DirContextOperations;
+
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
@@ -194,6 +196,56 @@ public class DeptDaoImpl implements DeptDao {
 	    //"ou=市场部,o=总部"
 	 }
 
+
+	
+
+	
+
+	
+	
+    private Name buildDn(String DN) {//按照DN构建路径
+    	
+    	//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
+    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance( );
+    	String regex = ",";
+    	String[] array = DN.split(regex); 
+    	
+    	for(int i =array.length-1;i>=0 ; i--){
+    		//String[] AandV = array[i].split("=");
+    		//ldapNameBuilder.add(AandV[0].trim(),AandV[1].trim());//添加属性和它的值
+    		ldapNameBuilder.add(array[i]);
+        }
+    	
+    	//ldapNameBuilder.add(DN.trim());
+    	
+        return ldapNameBuilder.build();
+	}
+    
+    @Override
+    public void update(String DN,Department OU) {//根据提供的条目和OU更新组织
+    	
+    	
+    	Name dn = buildDn(DN);
+    	
+    	DirContextOperations context = ldapTemplate.lookupContext(dn);
+    	
+    	mapToContext(OU, context);
+        
+        ldapTemplate.modifyAttributes(context);
+    }
+    
+   
+	//ou
+    protected void mapToContext (Department OU, DirContextOperations context) {
+    	
+    	//将修改后的属性值赋给context的属性
+    	//context.setAttributeValue("ou", OU.getDeptName());会报错
+    	//这里只修改了l属性
+    	context.setAttributeValue("l", OU.getDeptName());
+    	
+     }
+    
+
 	
 
 	@Override
@@ -238,48 +290,6 @@ public class DeptDaoImpl implements DeptDao {
 			return OAResult.ok(maxId2 + 1 + "");
 		}
 	}
-	
-    private Name buildDn(String DN) {//按照DN构建路径
-    	
-    	//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
-    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance( );
-    	String regex = ",";
-    	String[] array = DN.split(regex); 
-    	
-    	for(int i =array.length-1;i>=0 ; i--){
-    		//String[] AandV = array[i].split("=");
-    		//ldapNameBuilder.add(AandV[0].trim(),AandV[1].trim());//添加属性和它的值
-    		ldapNameBuilder.add(array[i]);
-        }
-    	
-    	//ldapNameBuilder.add(DN.trim());
-    	
-        return ldapNameBuilder.build();
-	}
-    
-    @Override
-    public void update(String DN,Department OU) {//根据提供的条目和OU更新组织
-    	
-    	
-    	Name dn = buildDn(DN);
-    	
-    	DirContextOperations context = ldapTemplate.lookupContext(dn);
-    	
-    	mapToContext(OU, context);
-        
-        ldapTemplate.modifyAttributes(context);
-    }
-    
-   
-	//ou
-    protected void mapToContext (Department OU, DirContextOperations context) {
-    	
-    	//将修改后的属性值赋给context的属性
-    	//context.setAttributeValue("ou", OU.getDeptName());会报错
-    	//这里只修改了l属性
-    	context.setAttributeValue("l", OU.getDeptName());
-    	
-     }
-    
+
 
 }

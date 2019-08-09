@@ -55,6 +55,7 @@ public class DeptController {
 		OAResult result = deptService.getMaxId();
 		return result;
 	}
+
 	
 	//------------------修改部门test-start-----------
 	  String DN="ou=市场部,o=分部";
@@ -78,5 +79,6 @@ public class DeptController {
 		}
 		
 		//------------------修改部门test-end-----------
+
 
 }

@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<!--  @author 卢春宇
+      @date 2019年8月6日 上午09:36:25
+      @version 3.0  -->
+
+
 <link href="/js/kindeditor-4.1.10/themes/default/default.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/kindeditor-all-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
@@ -9,11 +15,11 @@
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
-	            <td><input class="easyui-textbox" type="text" name="deptID" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptID" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
-	            <td><input class="easyui-textbox" type="text" name="deptName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptName" style="width: 280px;"></input></td>
 	        </tr>
 	    </table>
 	</form>
@@ -34,11 +40,10 @@ var departmentEditPage = {
 				$.messager.alert('提示','表单还未填写完成!');
 				return ;
 			}
-			departmentEditEditor.sync();
 			
 			$.post("/rest/department/edit",$("#departmentEditForm").serialize(), function(data){
 				if(data.status == 200){
-					$.messager.alert('提示','新增内容成功!');
+					$.messager.alert('提示','编辑内容成功!');
 					$("#departmentList").datagrid("reload");
 					TT.closeCurrentWindow();
 				}

@@ -117,7 +117,7 @@
 .panel-body {
   background-color: #fff;
   color: #444;
-  font-size: 12px;
+  font-size: 13px;
 }
 .panel-title {
   font-size: 14px;
@@ -249,7 +249,7 @@
   border-color: #ddd;
 }
 .window {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .window-proxy {
   border: 1px dashed #ddd;
@@ -299,7 +299,7 @@
   text-decoration: none;
   display: inline-block;
   overflow: hidden;
-  margin: 0;
+  margin: 0 10px;
   padding: 0;
   cursor: pointer;
   outline: none;
@@ -323,8 +323,8 @@
   vertical-align: top;
   width: auto;
   line-height: 24px;
-  font-size: 12px;
-  padding: 0;
+  font-size: 13px;
+  padding: 1px 7px;
   margin: 0 4px;
 }
 .l-btn-icon {
@@ -354,7 +354,7 @@
   background-position: right center;
 }
 .l-btn-icon-left .l-btn-text {
-  margin: 0 4px 0 24px;
+  margin: 0 4px 0 20px;
 }
 .l-btn-icon-left .l-btn-icon {
   left: 4px;
@@ -1126,7 +1126,7 @@
 }
 .datagrid-toolbar {
   height: auto;
-  padding: 1px 2px;
+  padding: 5px;
   border-width: 0 0 1px 0;
   border-style: solid;
 }
@@ -1185,7 +1185,7 @@
   height: auto;
 }
 .datagrid-header .datagrid-cell span {
-  font-size: 12px;
+  font-size: 13px;
 }
 .datagrid-cell-group {
   text-align: center;
@@ -2245,7 +2245,7 @@
   padding: 0;
 }
 .tree-node {
-  height: 18px;
+  height: 25px;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -2302,13 +2302,14 @@
   background: url('images/tree_icons.png') no-repeat -160px 0;
 }
 .tree-folder {
-  background: url('images/tree_icons.png') no-repeat -208px 0;
+  background: url('images/tree_icons.png') no-repeat -208px 0 ;
+  margin-top:2px;
 }
 .tree-folder-open {
-  background: url('images/tree_icons.png') no-repeat -224px 0;
+  background: url('images/tree_icons.png') no-repeat -224px 0 ;
 }
 .tree-file {
-  background: url('images/tree_icons.png') no-repeat -240px 0;
+  background: url('images/tree_icons.png') no-repeat -240px 0 ;
 }
 .tree-loading {
   background: url('images/loading.gif') no-repeat center center;
