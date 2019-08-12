@@ -14,7 +14,6 @@ public class PersonAttributeMapper implements AttributesMapper<Employee> {
 		Employee person = new Employee();
 		person.setFullName((String) attrs.get("cn").get());
 		person.setLastName((String) attrs.get("sn").get());
-		person.setEmployeeNumber((String) attrs.get("employeeNumber").get());
 		person.setTitle((String) attrs.get("title").get());
 		person.setEmail((String) attrs.get("mail").get());
 		person.setPhone((String) attrs.get("telephoneNumber").get());
@@ -23,6 +22,7 @@ public class PersonAttributeMapper implements AttributesMapper<Employee> {
 		person.setParentId((String) attrs.get("businessCategory").get());
 		person.setO((String) attrs.get("o").get());
 		person.setOu((String) attrs.get("ou").get());
+		person.setLabel((String) attrs.get("employeeType").get());
 		return person;
 	}
 
