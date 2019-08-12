@@ -95,12 +95,12 @@ var contentListToolbar = [{
     	//发送请求，生成id
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
-    			var id=data.data;
+    			var Id=data.data;
     			var row = $('#departmentList').datagrid('getSelected');
-    			id=row.id
+    			Id=row.id
     			parentName=row.o
     			TT.createWindow({
-    				url : "/department-edit?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
+    				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
