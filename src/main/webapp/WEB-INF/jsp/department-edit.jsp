@@ -10,19 +10,25 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
+	<input type="hidden" name="Id" value="${param.Id }"/>
+	<input type="hidden" name="DeptName" value="${param.DeptName }"/>
 	<input type="hidden" name="parentName" value="${param.parentName }"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
 
+
 	            <td><input class="easyui-textbox" readonly="true"  value="${param.id }" type="text" name="deptID" style="width: 280px;"></input></td>
 
 	            <td><input class="easyui-textbox" readonly="true"  value="${param.id }" type="text" name="id" style="width: 280px;"></input></td>
 
+
+	            <td><input class="easyui-textbox" readonly="true"  value="${param.Id }" type="text" name="Id" style="width: 280px;"></input></td>
+
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
-	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="deptName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="DeptName" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>上级部门:</td>
