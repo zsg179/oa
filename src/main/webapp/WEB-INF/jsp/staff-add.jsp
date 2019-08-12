@@ -15,7 +15,15 @@
 <body>
 <div class=staff-add style="padding:10px 10px 10px 10px">
 	<form id="staffAddForm" class="itemForm" method="post">
-		<input type="hidden" name="staffId"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="employeeNumber"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工号:</td>
@@ -62,7 +70,7 @@
 </div>
 <script type="text/javascript">
 
-	var departmentAddPage  = {
+	var staffAddPage  = {
 			submitForm : function (){
             /* 如果表单输入不合法，那么会提示”表单还未填写完！” */
 				if(!$('#staffAddForm').form('validate')){

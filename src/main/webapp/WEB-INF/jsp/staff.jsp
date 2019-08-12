@@ -19,7 +19,7 @@
             <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,url:'/staff/query/info',queryParams:{id:0}">
 		    <thead>
 		        <tr>
-		            <th data-options="field:'employeeNumber',width:80">员工号</th>
+		            <th data-options="field:'id',width:80">员工号</th>
 		            <th data-options="field:'fullName',width:90">姓名</th>
 		            <th data-options="field:'lastName',width:50">姓氏</th>
 		            <th data-options="field:'title',width:90">职位</th>
@@ -27,7 +27,7 @@
 		            <th data-options="field:'o',width:140">公司</th>
 		            <th data-options="field:'phone',width:140">手机号码</th>
 		            <th data-options="field:'email',width:140">邮箱地址</th>
-		            <th data-options="field:'description',width:230">员工标签</th>
+		            <th data-options="field:'label',width:230">员工标签</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -88,7 +88,7 @@ var contentListToolbar = [{
     	  var row = $('#staffList').datagrid('getSelected');
           var id=row.id
   		  TT.createWindow({
-  			url : "/department-edit?id="+id
+  			url : "/staff-edit?id="+id
   		});    	 
     }
 },{
