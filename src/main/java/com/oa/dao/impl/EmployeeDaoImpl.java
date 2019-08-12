@@ -1,6 +1,7 @@
 package com.oa.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,8 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Name;
 
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
@@ -35,11 +38,32 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		return null;
 	}
 
+	protected Name buildDn(Employee emp) {
+		return LdapNameBuilder.newInstance().add("o",emp.getO() ).add("ou",emp.getOu()).build();
+	}
 	@Override
 	public OAResult edit(Employee emp) {
-		// TODO Auto-generated method stub
-		return null;
+		Name dn = buildDn(emp);
+		DirContextOperations context = ldapTemplate.lookupContext(dn);
+        mapToContext(emp, context);
+        
+        ldapTemplate.modifyAttributes(context);
+		return OAResult.ok();
 	}
+	
+    protected void mapToContext (Employee emp, DirContextOperations context) {
+    	
+    	context.setAttributeValue("cn", emp.getFullName());
+    	context.setAttributeValue("sn",emp.getLastName());
+    	context.setAttributeValue("businessCategory",emp.getParentId());
+    	context.setAttributeValue("description",emp.getId());
+    	context.setAttributeValue("telephoneNumber",emp.getPhone());
+    	context.setAttributeValue("mail",emp.getEmail());
+    	context.setAttributeValue("employeeType",emp.getLabel());
+    	context.setAttributeValue("title",emp.getTitle());
+    	
+     }
+	
 
 	@Override
 	public EasyUIDataGridResult getEmpInfoById(String id) {

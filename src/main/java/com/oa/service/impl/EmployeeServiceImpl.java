@@ -30,8 +30,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public OAResult edit(Employee emp) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return employeeDao.edit(emp);
 	}
 
 	@Override

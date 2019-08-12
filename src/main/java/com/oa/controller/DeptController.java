@@ -1,5 +1,7 @@
 package com.oa.controller;
 
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,23 +56,6 @@ public class DeptController {
 		return result;
 	}
 
-	
-	@RequestMapping("/rest/department/edit")
-	@ResponseBody
-	OAResult updateContent(String DN,Department ou){//获取要修改的条目DN和修改的内容ou
-	
-		OAResult result = deptService.updateOrganization(DN,ou);
-
-		return result;
-	}
-	
-	
-	
-
-	
-
-
-
 	@RequestMapping("/department/save")
 	@ResponseBody
 	public OAResult deptCreate(Department dept) {
@@ -82,5 +67,4 @@ public class DeptController {
 	public OAResult deptEdit(Department dept){
 		return deptService.edit(dept);
 	}
-
 }

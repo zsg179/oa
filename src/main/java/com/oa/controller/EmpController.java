@@ -35,7 +35,7 @@ public class EmpController {
 	@ResponseBody
 	public OAResult empEdit(Employee emp){
 		
-		return null;
+		return employeeService.edit(emp);
 	}
 	
 	@RequestMapping("/staff/delete")
