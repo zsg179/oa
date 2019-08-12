@@ -15,19 +15,19 @@
 <body>
 <div class=staff-add style="padding:10px 10px 10px 10px">
 	<form id="staffAddForm" class="itemForm" method="post">
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
-		<input type="hidden" name="employeeNumber"/>
+		<input type="hidden" name="id" value="${param.id }"/>
+		<input type="hidden" name="fullName"/>
+		<input type="hidden" name="lastName"/>
+		<input type="hidden" name="title"/>
+		<input type="hidden" name="ou"/>
+		<input type="hidden" name="o"/>
+		<input type="hidden" name="phone"/>
+		<input type="hidden" name="email"/>
+		<input type="hidden" name="label"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工号:</td>
-	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="${param.id }"  type="text" name="staffID" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" readonly="true" value="${param.id }"  type="text" name="employeeNumber" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>姓名:</td>
@@ -39,19 +39,19 @@
 	        </tr>       
 	        <tr>
 	            <td>职位:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="position" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
 	        </tr>  
 	        <tr>
 	            <td>部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="department" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="ou" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>公司:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="lcompany" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>手机号码:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="cellphoneNumber" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="phone" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>邮箱地址:</td>
@@ -59,13 +59,13 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="description" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="label" style="width: 280px;"></input></td>
 	        </tr>  
 	    </table>
 	</form>
 	<div style="padding:10px">
-	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="departmentAddPage.submitForm()">提交</a>
-	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="departmentAddPage.clearForm()">重置</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="staffAddPage.submitForm()">提交</a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="staffAddPage.clearForm()">重置</a>
 	</div>
 </div>
 <script type="text/javascript">
@@ -89,7 +89,7 @@
 			},
 			clearForm : function(){
 				$('#staffAddForm').form('reset');/* 将刚才表单中输入的内容清空 */
-				departmentAddEditor.html('');
+				staffAddEditor.html('');
 			}
 	};
 </script>

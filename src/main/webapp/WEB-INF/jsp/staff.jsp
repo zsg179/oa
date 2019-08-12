@@ -16,7 +16,7 @@
         <div data-options="region:'center'" style="padding:5px">
         <!--EasyUI的数据表格-->
         <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
-            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,url:'/staff/query/info',queryParams:{id:0}">
+            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/staff/query/info',queryParams:{id:0}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:80">员工号</th>

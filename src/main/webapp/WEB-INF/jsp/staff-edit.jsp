@@ -16,19 +16,19 @@
 <body>
 <div style="padding:10px 10px 10px 10px">
 	<form id="staffEditForm" class="staffForm" method="post">
-		<input type="hidden" name="id"/>
+	    <input type="hidden" name="id" value="${param.id }"/>
 		<input type="hidden" name="fullName"/>
 		<input type="hidden" name="lastName"/>
-		<input type="hidden" name="position"/>
-		<input type="hidden" name="department"/>
-		<input type="hidden" name="company"/>
-		<input type="hidden" name="cellphoneNumber"/>
+		<input type="hidden" name="title"/>
+		<input type="hidden" name="ou"/>
+		<input type="hidden" name="o"/>
+		<input type="hidden" name="phone"/>
 		<input type="hidden" name="email"/>
-		<input type="hidden" name="description"/>
+		<input type="hidden" name="label"/>
 	    <table cellpadding="5">
 	       <tr>
 	            <td>员工号:</td>
-	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="${param.id }"  type="text" name="staffID" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" readonly="true" value="${param.id}"  type="text" name="id" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>姓名:</td>
@@ -40,19 +40,19 @@
 	        </tr>       
 	        <tr>
 	            <td>职位:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="position" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
 	        </tr>  
 	        <tr>
 	            <td>部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="department" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="ou" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>公司:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="lcompany" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>手机号码:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="cellphoneNumber" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="phone" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>邮箱地址:</td>
@@ -60,7 +60,7 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="description" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="label" style="width: 280px;"></input></td>
 	        </tr>  
 	    </table>
 	</form>
@@ -70,10 +70,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-var staffEditEditor ;
-$(function(){
-	staffEditEditor = TT.createEditor("#staffEditForm [name=staff]");
-});
 
 var staffEditPage = {
 		submitForm : function(){
@@ -92,7 +88,7 @@ var staffEditPage = {
 		},
 		clearForm : function(){
 			$('#staffEditForm').form('reset');/* 将刚才表单中输入的内容清空 */
-			staffAddEditor.html('');
+			staffEditEditor.html('');
 		}
 };
 
