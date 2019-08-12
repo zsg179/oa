@@ -24,8 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public OAResult delete(String ids) {
-		// TODO Auto-generated method stub
-		return null;
+		OAResult result = employeeDao.delete(ids);
+		return result;
 	}
 
 	@Override
