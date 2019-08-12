@@ -16,18 +16,18 @@
         <div data-options="region:'center'" style="padding:5px">
         <!--EasyUI的数据表格-->
         <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
-            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/staff/query/info',queryParams:{categoryId:0}">
+            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,url:'/staff/query/info',queryParams:{id:0}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:80">员工号</th>
 		            <th data-options="field:'fullName',width:90">姓名</th>
 		            <th data-options="field:'lastName',width:50">姓氏</th>
-		            <th data-options="field:'position',width:90">职位</th>
-		            <th data-options="field:'department',width:100">部门</th>
-		            <th data-options="field:'company',width:140">公司</th>
-		            <th data-options="field:'cellphoneNumber',width:140">手机号码</th>
+		            <th data-options="field:'title',width:90">职位</th>
+		            <th data-options="field:'ou',width:100">部门</th>
+		            <th data-options="field:'o',width:140">公司</th>
+		            <th data-options="field:'phone',width:140">手机号码</th>
 		            <th data-options="field:'email',width:140">邮箱地址</th>
-		            <th data-options="field:'description',width:230">员工标签</th>
+		            <th data-options="field:'label',width:230">员工标签</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -60,7 +60,7 @@ var contentListToolbar = [{
     		$.messager.alert('提示','新增员工必须选择一条员工记录!');
     		return ;
     	}
-    	//发送请求，生成id
+    	 //发送请求，生成id
     	$.post("/staff/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
@@ -70,7 +70,7 @@ var contentListToolbar = [{
     		}else{
     			$.messager.alert('提示', '生成id出错！');
     		}
-    	})
+    	}) 
     }
 },{
     text:'编辑员工',
@@ -88,7 +88,7 @@ var contentListToolbar = [{
     	  var row = $('#staffList').datagrid('getSelected');
           var id=row.id
   		  TT.createWindow({
-  			url : "/department-edit?id="+id
+  			url : "/staff-edit?id="+id
   		});    	 
     }
 },{
