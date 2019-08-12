@@ -57,7 +57,8 @@ public class DeptController {
 	
 	@RequestMapping("/rest/department/edit")
 	@ResponseBody
-	public OAResult updateContent(String DN,Department ou){//获取要修改的条目DN和修改的内容ou
+	OAResult updateContent(String DN,Department ou){//获取要修改的条目DN和修改的内容ou
+	
 		OAResult result = deptService.updateOrganization(DN,ou);
 
 		return result;

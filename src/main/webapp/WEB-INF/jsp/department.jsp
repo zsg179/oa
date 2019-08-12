@@ -101,12 +101,30 @@ var contentListToolbar = [{
     		$.messager.alert('提示','只能选择一条部门信息!');
     		return ;
     	}
+
         var row = $('#departmentList').datagrid('getSelected');
         var id=row.id
         var parentName=row.o
 		TT.createWindow({
 			url : "/department-edit?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
 		});    	
+
+    	//发送请求，生成id
+    	$.post("/department/gen/id",function(data){
+    		if(data.status==200){
+    			var id=data.data;
+    			var row = $('#departmentList').datagrid('getSelected');
+    			id=row.id
+    			parentName=row.o
+    			TT.createWindow({
+    				url : "/department-edit?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
+    			});
+    		}else{
+    			$.messager.alert('提示', '生成id出错！');
+    		}
+    		
+    	})
+
     }
 },{
     text:'删除部门',
