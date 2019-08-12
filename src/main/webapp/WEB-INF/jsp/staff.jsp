@@ -9,7 +9,7 @@
     <div class="easyui-layout" data-options="fit:true">
         <!--面板左部-->
         <div data-options="region:'west',split:false" style="width:250px;padding:5px">
-            <ul id="departmentTree" class="easyui-tree" data-options="url:'/department/list',animate: true,method : 'GET'">
+            <ul id="staffTree" class="easyui-tree" data-options="url:'/staff/list',animate: true,method : 'GET'">
             </ul>
         </div>
         <!--面板右部-->
@@ -19,15 +19,15 @@
             <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/staff/query/info',queryParams:{id:0}">
 		    <thead>
 		        <tr>
-		            <th data-options="field:'id',width:80">员工号</th>
+		            <th data-options="field:'id',width:50">员工号</th>
 		            <th data-options="field:'fullName',width:90">姓名</th>
 		            <th data-options="field:'lastName',width:50">姓氏</th>
 		            <th data-options="field:'title',width:90">职位</th>
 		            <th data-options="field:'ou',width:100">部门</th>
-		            <th data-options="field:'o',width:140">公司</th>
-		            <th data-options="field:'phone',width:140">手机号码</th>
-		            <th data-options="field:'email',width:140">邮箱地址</th>
-		            <th data-options="field:'label',width:230">员工标签</th>
+		            <th data-options="field:'o',width:130">公司</th>
+		            <th data-options="field:'phone',width:160">手机号码</th>
+		            <th data-options="field:'email',width:160">邮箱地址</th>
+		            <th data-options="field:'label',width:223">员工标签</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -38,7 +38,7 @@
 <!--增加员工/编辑员工/删除员工js判断是否符合条件，符合条件则进行下一步操作-->
 <script type="text/javascript">
 $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
-	var tree = $("#departmentTree");/* 获取部门树 */
+	var tree = $("#staffTree");/* 获取部门树 */
 	var datagrid = $("#staffList");/* 是获取员工列表 */
 	tree.tree({
 		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
@@ -54,9 +54,9 @@ var contentListToolbar = [{
     text:'新增员工',
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
-    	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的员工节点 */
+    	var node = $("#staffTree").tree("getSelected");/* 得到用户选中的员工节点 */
     	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
-    	if(!node || !$("#departmentTree").tree("isLeaf",node.target)){
+    	if(!node || !$("#staffTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','新增员工必须选择一条员工记录!');
     		return ;
     	}
