@@ -1,7 +1,6 @@
 package com.oa.pojo;
 
 public class Employee {
-	private String employeeNumber;
 	private String fullName;// cn
 	private String lastName;// sn
 	private String title;
@@ -12,7 +11,14 @@ public class Employee {
 	private String parentId;//businessCategory
 	private String o;//o
 	private String ou;//ou
+	private String label;//employeeType
 	
+	public String getLabel() {
+		return label;
+	}
+	public void setLabel(String label) {
+		this.label = label;
+	}
 	public String getO() {
 		return o;
 	}
@@ -24,12 +30,6 @@ public class Employee {
 	}
 	public void setOu(String ou) {
 		this.ou = ou;
-	}
-	public String getEmployeeNumber() {
-		return employeeNumber;
-	}
-	public void setEmployeeNumber(String employeeNumber) {
-		this.employeeNumber = employeeNumber;
 	}
 	public String getFullName() {
 		return fullName;
@@ -81,10 +81,11 @@ public class Employee {
 	}
 	@Override
 	public String toString() {
-		return "Employee [employeeNumber=" + employeeNumber + ", fullName=" + fullName + ", lastName=" + lastName
-				+ ", title=" + title + ", email=" + email + ", phone=" + phone + ", id=" + id + ", isParent=" + isParent
-				+ ", parentId=" + parentId + ", o=" + o + ", ou=" + ou + "]";
+		return "Employee [fullName=" + fullName + ", lastName=" + lastName + ", title=" + title + ", email=" + email
+				+ ", phone=" + phone + ", id=" + id + ", isParent=" + isParent + ", parentId=" + parentId + ", o=" + o
+				+ ", ou=" + ou + ", label=" + label + "]";
 	}
+	
 	
 
 
