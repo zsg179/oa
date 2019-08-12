@@ -1,13 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!--EasyUI的嵌套布局方式-->
+
+
+<!--  @author 卢春宇
+      @date 2019年8月9日 上午11:20:13
+      @version 1.0  -->
 <div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:500,noheader:true,border:false" style="padding:10px;">
     <div class="easyui-layout" data-options="fit:true">
+        <!--面板左部-->
         <div data-options="region:'west',split:false" style="width:250px;padding:5px">
-            <ul id="contentCategoryTree" class="easyui-tree" data-options="url:'/staff/list',animate: true,method : 'GET'">
+            <ul id="departmentTree" class="easyui-tree" data-options="url:'/department/list',animate: true,method : 'GET'">
             </ul>
-            此处放一棵员工树
         </div>
+        <!--面板右部-->
         <div data-options="region:'center'" style="padding:5px">
-            <table class="easyui-datagrid" id="contentList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/content/query/list',queryParams:{categoryId:0}">
+        <!--EasyUI的数据表格-->
+        <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
+            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,pagination:true,method:'get',pageSize:20,url:'/staff/query/info',queryParams:{categoryId:0}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:80">员工号</th>
@@ -25,15 +34,17 @@
         </div>
     </div>
 </div>
+
+<!--增加员工/编辑员工/删除员工js判断是否符合条件，符合条件则进行下一步操作-->
 <script type="text/javascript">
-$(function(){
-	var tree = $("#contentCategoryTree");
-	var datagrid = $("#contentList");
+$(function(){/* 函数是在页面加载完之后触发执行的js代码  */
+	var tree = $("#departmentTree");/* 获取部门树 */
+	var datagrid = $("#staffList");/* 是获取员工列表 */
 	tree.tree({
-		onClick : function(node){
+		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
 			if(tree.tree("isLeaf",node.target)){
 				datagrid.datagrid('reload', {
-					categoryId :node.id
+					id :node.id
 		        });
 			}
 		}
@@ -42,21 +53,30 @@ $(function(){
 var contentListToolbar = [{
     text:'新增员工',
     iconCls:'icon-add',
-    handler:function(){
-    	var node = $("#contentCategoryTree").tree("getSelected");
-    	if(!node || !$("#contentCategoryTree").tree("isLeaf",node.target)){
+    handler:function(){/* 点击‘新增’触发的函数 */
+    	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的员工节点 */
+    	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
+    	if(!node || !$("#departmentTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','新增员工必须选择一条员工记录!');
     		return ;
     	}
-    	TT.createWindow({
-			url : "/content-add"
-		}); 
+    	//发送请求，生成id
+    	$.post("/staff/gen/id",function(data){
+    		if(data.status==200){
+    			var id=data.data;
+    			TT.createWindow({
+    				url : "/staff-add?id="+id
+    			});
+    		}else{
+    			$.messager.alert('提示', '生成id出错！');
+    		}
+    	})
     }
 },{
     text:'编辑员工',
     iconCls:'icon-pencil',
     handler:function(){
-    	var ids = TT.getSelectionsIds("#contentList");
+    	var ids = TT.getSelectionsIds("#staffList");
     	if(ids.length == 0){
     		$.messager.alert('提示','必须选择一条员工记录才能编辑!');
     		return ;
@@ -65,29 +85,17 @@ var contentListToolbar = [{
     		$.messager.alert('提示','只能选择一条员工记录!');
     		return ;
     	}
-		TT.createWindow({
-			url : "/content-edit",
-			onLoad : function(){
-				var data = $("#contentList").datagrid("getSelections")[0];
-				$("#contentEditForm").form("load",data);
-				
-				// 实现图片
-				if(data.pic){
-					$("#contentEditForm [name=pic]").after("<a href='"+data.pic+"' target='_blank'><img src='"+data.pic+"' width='80' height='50'/></a>");	
-				}
-				if(data.pic2){
-					$("#contentEditForm [name=pic2]").after("<a href='"+data.pic2+"' target='_blank'><img src='"+data.pic2+"' width='80' height='50'/></a>");					
-				}
-				
-				contentEditEditor.html(data.content);
-			}
-		});    	
+    	  var row = $('#staffList').datagrid('getSelected');
+          var id=row.id
+  		  TT.createWindow({
+  			url : "/department-edit?id="+id
+  		});    	 
     }
 },{
     text:'删除员工',
     iconCls:'icon-cancel',
     handler:function(){
-    	var ids = TT.getSelectionsIds("#contentList");
+    	var ids = TT.getSelectionsIds("#staffList");
     	if(ids.length == 0){
     		$.messager.alert('提示','未选中员工!');
     		return ;
@@ -95,10 +103,10 @@ var contentListToolbar = [{
     	$.messager.confirm('确认','确定删除编号为 '+ids+' 的员工吗？',function(r){
     	    if (r){
     	    	var params = {"ids":ids};
-            	$.post("/content/delete",params, function(data){
+            	$.post("/staff/delete",params, function(data){
         			if(data.status == 200){
         				$.messager.alert('提示','删除员工成功!',undefined,function(){
-        					$("#contentList").datagrid("reload");
+        					$("#staffList").datagrid("reload");
         				});
         			}
         		});
