@@ -17,14 +17,14 @@
 <div style="padding:10px 10px 10px 10px">
 	<form id="staffEditForm" class="staffForm" method="post">
 	    <input type="hidden" name="id" value="${param.id }"/>
-		<input type="hidden" name="fullName"/>
+		<!-- <input type="hidden" name="fullName"/>
 		<input type="hidden" name="lastName"/>
 		<input type="hidden" name="title"/>
 		<input type="hidden" name="ou"/>
 		<input type="hidden" name="o"/>
 		<input type="hidden" name="phone"/>
 		<input type="hidden" name="email"/>
-		<input type="hidden" name="label"/>
+		<input type="hidden" name="label"/> -->
 	    <table cellpadding="5">
 	       <tr>
 	            <td>员工号:</td>
