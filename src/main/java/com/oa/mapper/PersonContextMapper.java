@@ -16,7 +16,6 @@ public class PersonContextMapper implements ContextMapper{
         p.setFullName(context.getStringAttribute("cn"));
         p.setLastName(context.getStringAttribute("sn"));
         p.setEmail(context.getStringAttribute("email"));
-        p.setEmployeeNumber(context.getStringAttribute("employNumber"));
         p.setPhone(context.getStringAttribute("telephoneNumber"));
         p.setTitle(context.getStringAttribute("title"));
         return p;

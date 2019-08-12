@@ -5,8 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.Employee;
-import com.oa.service.DeptService;
+import com.oa.service.EmployeeService;
 import com.oa.util.OAResult;
 
 /** 
@@ -17,7 +18,7 @@ import com.oa.util.OAResult;
 @Controller(value = "empController")
 public class EmpController {
 	@Autowired
-	private DeptService deptService;
+	private EmployeeService employeeService;
 	
 	@RequestMapping("/staff/save")
 	@ResponseBody
@@ -42,9 +43,8 @@ public class EmpController {
 	
 	@RequestMapping("/staff/query/info")
 	@ResponseBody
-	public OAResult getStaffInfoById(String id){
-		
-		return null;
+	public EasyUIDataGridResult getStaffInfoById(String id){
+		return employeeService.getEmpInfoById(id);
 	}
 	
 

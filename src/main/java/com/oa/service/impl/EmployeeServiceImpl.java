@@ -1,13 +1,17 @@
 package com.oa.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.oa.dao.EmployeeDao;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.Employee;
 import com.oa.service.EmployeeService;
 import com.oa.util.OAResult;
 @Service(value="employeeService")
 public class EmployeeServiceImpl implements EmployeeService {
+	@Autowired
+	private EmployeeDao employeeDao;
 
 	@Override
 	public OAResult create(Employee emp) {
@@ -29,8 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public EasyUIDataGridResult getEmpInfoById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return employeeDao.getEmpInfoById(id);
 	}
 
 }

@@ -1,13 +1,23 @@
 package com.oa.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
+
+import java.util.List;
 
 import com.oa.dao.EmployeeDao;
+import com.oa.mapper.PersonAttributeMapper;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.Employee;
 import com.oa.util.OAResult;
+
 @Repository(value = "employeeDao")
 public class EmployeeDaoImpl implements EmployeeDao {
+	@Autowired
+	private LdapTemplate ldapTemplate;
 
 	@Override
 	public OAResult create(Employee emp) {
@@ -29,8 +39,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public EasyUIDataGridResult getEmpInfoById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Employee> list = ldapTemplate.search(query().where("description").is(id), new PersonAttributeMapper());
+		EasyUIDataGridResult result = new EasyUIDataGridResult();
+		result.setTotal(list.size());
+		result.setRows(list);
+		return result;
 	}
 
 }
