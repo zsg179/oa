@@ -11,7 +11,6 @@
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
 	<input type="hidden" name="Id" value="${param.Id }"/>
-	<input type="hidden" name="DeptName" value="${param.DeptName }"/>
 	<input type="hidden" name="parentName" value="${param.parentName }"/>
 	    <table cellpadding="5">
 	        <tr>
