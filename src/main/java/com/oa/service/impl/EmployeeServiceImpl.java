@@ -26,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public OAResult delete(String ids) {
 		OAResult result = employeeDao.delete(ids);
-		return result;
+		return OAResult.ok();
 	}
 
 	@Override
