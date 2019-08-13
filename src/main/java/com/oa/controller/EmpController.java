@@ -40,9 +40,11 @@ public class EmpController {
 	
 	@RequestMapping("/staff/delete")
 	@ResponseBody
-	public OAResult empDelete(Employee emp){
+	public OAResult empDelete(String ids){
+		OAResult result = employeeService.delete(ids);
+
+		return result;
 		
-		return null;
 	}
 	
 	@RequestMapping("/staff/query/info")

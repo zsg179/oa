@@ -20,14 +20,14 @@
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:50">员工号</th>
-		            <th data-options="field:'fullName',width:90">姓名</th>
+		            <th data-options="field:'fullName',width:70">姓名</th>
 		            <th data-options="field:'lastName',width:50">姓氏</th>
 		            <th data-options="field:'title',width:90">职位</th>
-		            <th data-options="field:'ou',width:100">部门</th>
+		            <th data-options="field:'ou',width:90">部门</th>
 		            <th data-options="field:'o',width:130">公司</th>
 		            <th data-options="field:'phone',width:160">手机号码</th>
-		            <th data-options="field:'email',width:160">邮箱地址</th>
-		            <th data-options="field:'label',width:223">员工标签</th>
+		            <th data-options="field:'email',width:180">邮箱地址</th>
+		            <th data-options="field:'label',width:210">员工标签</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -38,7 +38,7 @@
 <!--增加员工/编辑员工/删除员工js判断是否符合条件，符合条件则进行下一步操作-->
 <script type="text/javascript">
 $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
-	var tree = $("#staffTree");/* 获取部门树 */
+	var tree = $("#staffTree");/* 获取员工树 */
 	var datagrid = $("#staffList");/* 是获取员工列表 */
 	tree.tree({
 		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
@@ -55,13 +55,14 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
     	var node = $("#staffTree").tree("getSelected");/* 得到用户选中的员工节点 */
+    	var nodePar=$("#staffTree").tree("getSelected");
     	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
     	if(!node || !$("#staffTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','新增员工必须选择一条员工记录!');
     		return ;
     	}
     	 //发送请求，生成id
-    	$.post("/staff/gen/id",function(data){
+    	 $.post("/department/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
     			TT.createWindow({
@@ -70,7 +71,7 @@ var contentListToolbar = [{
     		}else{
     			$.messager.alert('提示', '生成id出错！');
     		}
-    	}) 
+    	})  
     }
 },{
     text:'编辑员工',
