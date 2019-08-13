@@ -39,19 +39,25 @@
 	        </tr> 
 	        <tr>
                 <td>公司：</td>
-                <td><input id="o" class="easyui-combobox" data-options="
-                valueField: 'id',
-                textField: 'text',
-                url: '/getCompany',
-                onSelect: function(rec){
-                var url:'/getDept?parentId='+rec.id
-                $('#ou').combobox('reload', url);
-                }">
+                <td><!-- <select id="o" class="easyui-combobox"  > </select> -->
+                <input id="o" class="easyui-combobox" data-options="
+				    valueField: 'id',
+				    textField: 'text',
+				    url: '/getCompany',
+				    onSelect: function(rec){
+				    var url = '/getDept?parentId='+rec.id;
+				    $('#ou').combobox('reload', url);
+				    }">
                 </td>
             </tr>
 	        <tr>
 	            <td>部门:</td>
-	            <td><input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"></td>
+	            <td><!-- <input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"> -->
+	            <select id="ou" class="easyui-combobox" valueField='id' textField='text'>
+	            
+	            </select >
+	            
+	            </td>
 	        </tr>     
 	        <tr>
 	            <td>职位:</td>
@@ -67,8 +73,8 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input class="easyui-tagbox" value="Apple, Orange" label="Add a tag" style="width:100%"></input></td>
-	        </tr> 	             
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="label" style="width: 280px;"></input></td>
+	        </tr>  		             
 	    </table>
 	</form>
 	<div style="padding:10px">
@@ -100,7 +106,6 @@
 				staffAddEditor.html('');
 			}
 	};
-
 </script>
 
 </body>
