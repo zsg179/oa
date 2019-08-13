@@ -140,7 +140,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
     protected void mapToContext (Employee emp, DirContextOperations context) {
     	
-    	context.setAttributeValue("cn", emp.getFullName());
+    	//context.setAttributeValue("cn", emp.getFullName());
     	context.setAttributeValue("sn",emp.getLastName());
     	context.setAttributeValue("businessCategory",emp.getParentId());
     	context.setAttributeValue("description",emp.getId());
