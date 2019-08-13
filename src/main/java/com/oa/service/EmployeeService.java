@@ -27,6 +27,8 @@ public interface EmployeeService {
 	 * @return
 	 */
 	OAResult edit(Employee emp);
+	//
+	OAResult update(String DN,Employee emp);
 	/**
 	 * 通过id获取员工信息
 	 * @param id

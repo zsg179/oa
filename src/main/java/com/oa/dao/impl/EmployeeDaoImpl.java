@@ -1,22 +1,22 @@
 package com.oa.dao.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.AttributesMapper;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.query.LdapQuery;
-import org.springframework.ldap.support.LdapNameBuilder;
-import org.springframework.stereotype.Repository;
+
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.Name;
-
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.LdapQuery;
+import org.springframework.ldap.support.LdapNameBuilder;
+import org.springframework.stereotype.Repository;
 
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
@@ -128,14 +128,44 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	protected Name buildDn(Employee emp) {
 		return LdapNameBuilder.newInstance().add("o",emp.getO() ).add("ou",emp.getOu()).add("cn", emp.getFullName()).build();
 	}
+	
+	protected Name buildDn(String DN) {//按照DN构建路径
+		 
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
+	    String regex = ",";
+	    String[] array = DN.split(regex); 
+	    	
+	    for(int i =array.length-1;i>=0 ; i--){
+	    	ldapNameBuilder.add(array[i]);
+	    }
+	    return ldapNameBuilder.build();
+	}
+	
+	
 	@Override
 	public OAResult edit(Employee emp) {
 		Name dn = buildDn(emp);
+		
 		DirContextOperations context = ldapTemplate.lookupContext(dn);
         mapToContext(emp, context);
         
         ldapTemplate.modifyAttributes(context);
 		return OAResult.ok();
+	}
+	
+	
+	@Override
+    public OAResult update(String DN,Employee emp) {
+		
+    	Name dn = buildDn(DN);
+		
+		DirContextOperations context = ldapTemplate.lookupContext(dn);
+        mapToContext(emp, context);
+        
+        ldapTemplate.modifyAttributes(context);
+		return OAResult.ok();
+	
 	}
 	
     protected void mapToContext (Employee emp, DirContextOperations context) {
@@ -150,6 +180,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
     	context.setAttributeValue("title",emp.getTitle());
     	
      }
+    
+    
 	
 
 	@Override

@@ -44,5 +44,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EasyUITreeNote> getEmpList(String parentId) {
 		return employeeDao.getEmpList(parentId);
 	}
+	
+	
+	
+	@Override
+	public OAResult update(String DN,Employee emp) {
+		
+		return employeeDao.update(DN, emp);
+	}
 
 }

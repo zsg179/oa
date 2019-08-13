@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oa.dao.impl.EmployeeDaoImpl;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
@@ -30,11 +31,6 @@ public class EmpController {
 		
 		return null;
 	}
-	
-	
-	
-	
-	
 	
 	
 	@RequestMapping("/rest/staff/edit")
@@ -65,7 +61,7 @@ public class EmpController {
 		List<EasyUITreeNote> result = employeeService.getEmpList(parentId);
 		return result;
 	}
-	
+
 
 }
 
