@@ -67,8 +67,8 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="label" style="width: 280px;"></input></td>
-	        </tr>  		             
+	            <td><input class="easyui-tagbox" value="Apple, Orange" label="Add a tag" style="width:100%"></input></td>
+	        </tr> 	             
 	    </table>
 	</form>
 	<div style="padding:10px">
@@ -100,6 +100,7 @@
 				staffAddEditor.html('');
 			}
 	};
+
 </script>
 
 </body>

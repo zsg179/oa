@@ -10,31 +10,23 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
-	<input type="hidden" name="Id" value="${param.Id }"/>
-	<input type="hidden" name="parentName" value="${param.parentName }"/>
+	<input type="hidden" name="parentId" value="${param.parentId}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
-
-
-	            <td><input class="easyui-textbox" readonly="true"  value="${param.id }" type="text" name="deptID" style="width: 280px;"></input></td>
-
-	            <td><input class="easyui-textbox" readonly="true"  value="${param.id }" type="text" name="id" style="width: 280px;"></input></td>
-
-
-	            <td><input class="easyui-textbox" readonly="true"  value="${param.Id }" type="text" name="Id" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox" readonly="true"  value="${param.Id }" type="text" name="Id" style="width: 280px;"></input></td>
 
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
-	            <td><input class="easyui-textbox" class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="DeptName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="DeptName" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>上级部门:</td>
 	            <%String parentName = request.getParameter("parentName"); 
 	              parentName = java.net.URLDecoder.decode(parentName,"UTF-8");
 	            %>
-	            <td><input class="easyui-textbox " readonly="true" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
 	        </tr>
 	    </table>
 	</form>
@@ -62,7 +54,7 @@ var departmentEditPage = {
 		},
 		clearForm : function(){
 			$('#departmentEditForm').form('reset');/* 将刚才表单中输入的内容清空 */
-			departmentAddEditor.html('');
+			departmentEditEditor.html('');
 		}
 };
 
