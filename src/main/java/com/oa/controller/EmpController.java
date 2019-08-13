@@ -43,7 +43,7 @@ public class EmpController {
 	public OAResult empDelete(String ids){
 		OAResult result = employeeService.delete(ids);
 
-		return result;
+		return OAResult.ok();
 		
 	}
 	
