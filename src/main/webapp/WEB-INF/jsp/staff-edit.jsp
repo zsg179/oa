@@ -60,8 +60,8 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="label" style="width: 280px;"></input></td>
-	        </tr>  
+	            <td><input id="lable" name="lable" class="easyui-combobox easyui-validatebox"  data-options="required:true" style="width: 280px;"></td>
+	        </tr>
 	    </table>
 	</form>
 	<div style="padding:5px">
@@ -91,6 +91,53 @@ var staffEditPage = {
 			staffEditEditor.html('');
 		}
 };
+
+
+function combobox_checkbox(_id, optionsJson, hight) {
+    $('#'+_id).combobox({
+        data: optionsJson,
+        valueField: 'id',
+        textField: 'text',
+        panelHeight: hight,
+        multiple: true,
+        editable: false,
+     
+        onLoadSuccess: function () { // 下拉框数据加载成功调用
+            $("#"+_id).combobox('clear'); //清空
+        },
+        onSelect: function (row) { // 选中一个选项时调用
+            var opts = $(this).combobox('options');
+                //设置选中选项所对应的复选框为选中状态
+                $('#'+row.domId + ' input[type="checkbox"]').prop("checked", true);
+        },
+        onUnselect: function (row) { // 取消选中一个选项时调用
+            var opts = $(this).combobox('options');
+                //设置选中选项所对应的复选框为非选中状态
+                $('#'+row.domId + ' input[type="checkbox"]').prop("checked", false);
+                var selectedList = $("#"+_id).combobox('getValues');
+                // 如果“所有”是选中状态,则将其取消选中
+                if (selectedList[0] === "") {
+                    // 将“所有”选项移出数组，并且将该项的复选框设为非选中
+                    selectedList.splice(0, 1);
+                    $('#'+opts.data[0].domId + ' input[type="checkbox"]').prop("checked", false);
+                }
+                $("#"+_id).combobox('clear');//清空
+                $("#"+_id).combobox('setValues', selectedList); // 重新复制选中项
+
+
+        }
+    });
+}
+
+var tttData = [
+               {id: '1', text: '选项1'},
+               {id: '2', text: '选项2'},
+               {id: '3', text: '选项3'},
+               {id: '4', text: '选项4'},
+               {id: '5', text: '选项5'},
+               {id: '6', text: '选项6'},
+           ];
+           combobox_checkbox('lable', tttData, 'auto');
 
 </script>
 
