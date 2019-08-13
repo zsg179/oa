@@ -35,20 +35,28 @@
 	        </tr>
 	        <tr>
 	            <td>姓氏:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="lastName" style="width: 280px;"></input></td>
-	        </tr>       
+	            <td><input class="easyui-textbox"  data-options="required:true" type="text" name="lastName" style="width: 280px;"></input></td>
+	        </tr> 
+	        <tr>
+                <td>公司：</td>
+                <td><input id="o" class="easyui-combobox" data-options="
+                valueField: 'id',
+                textField: 'text',
+                url: '/getCompany',
+                onSelect: function(rec){
+                var url:'/getDept?parentId='+rec.id
+                $('#ou').combobox('reload', url);
+                }">
+                </td>
+            </tr>
+	        <tr>
+	            <td>部门:</td>
+	            <td><input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"></td>
+	        </tr>     
 	        <tr>
 	            <td>职位:</td>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
 	        </tr>  
-	        <tr>
-	            <td>部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="ou" style="width: 280px;"></input></td>
-	        </tr> 
-	        <tr>
-	            <td>公司:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
-	        </tr> 
 	        <tr>
 	            <td>手机号码:</td>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="phone" style="width: 280px;"></input></td>
@@ -60,7 +68,7 @@
 	        <tr>
 	            <td>员工标签:</td>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="label" style="width: 280px;"></input></td>
-	        </tr>  
+	        </tr>  		             
 	    </table>
 	</form>
 	<div style="padding:10px">

@@ -22,9 +22,9 @@
 		            <th data-options="field:'id',width:50">员工号</th>
 		            <th data-options="field:'fullName',width:70">姓名</th>
 		            <th data-options="field:'lastName',width:50">姓氏</th>
-		            <th data-options="field:'title',width:90">职位</th>
-		            <th data-options="field:'ou',width:90">部门</th>
 		            <th data-options="field:'o',width:130">公司</th>
+		            <th data-options="field:'ou',width:90">部门</th>
+		            <th data-options="field:'title',width:90">职位</th>
 		            <th data-options="field:'phone',width:160">手机号码</th>
 		            <th data-options="field:'email',width:180">邮箱地址</th>
 		            <th data-options="field:'label',width:210">员工标签</th>
@@ -54,13 +54,12 @@ var contentListToolbar = [{
     text:'新增员工',
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
-    	var node = $("#staffTree").tree("getSelected");/* 得到用户选中的员工节点 */
-    	var nodePar=$("#staffTree").tree("getSelected");
+    	/* var node = $("#staffTree").tree("getSelected"); *//* 得到用户选中的员工节点 */
     	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
-    	if(!node || !$("#staffTree").tree("isLeaf",node.target)){
-    		$.messager.alert('提示','新增员工必须选择一条员工记录!');
+    	/* if(!node || $("#staffTree").tree("isLeaf",node.target)){
+    		$.messager.alert('提示','新增员工必须选择一个部门!');
     		return ;
-    	}
+    	} */
     	 //发送请求，生成id
     	 $.post("/department/gen/id",function(data){
     		if(data.status==200){
