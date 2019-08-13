@@ -61,6 +61,29 @@ public class EmpController {
 		List<EasyUITreeNote> result = employeeService.getEmpList(parentId);
 		return result;
 	}
+	
+	
+	String DN="cn=李四,ou=test,o=分部";
+	Employee person=new Employee();
+	public void W(){
+		
+		person.setFullName("test");
+		person.setLastName("test");
+		person.setTitle("test");
+		person.setEmail("test@qq.com");
+		person.setPhone("1234567890");
+		person.setLabel("test");
+		person.setParentId("1");
+		person.setId("1");
+	}
+	
+	@RequestMapping("/W")
+	public OAResult updateContent(){
+		W();
+		
+		return employeeService.update(DN, person);
+
+	}
 
 
 }
