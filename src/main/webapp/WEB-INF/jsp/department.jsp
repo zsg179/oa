@@ -51,12 +51,7 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
     	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
-
-       
        /*  var nodePar = $("#departmentTree").tree("getParent",node.target);  *//* 通过子节点获取父节点 */
-     
-      
-
         /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
       
         if(!node){
@@ -101,14 +96,6 @@ var contentListToolbar = [{
     		$.messager.alert('提示','只能选择一条部门信息!');
     		return ;
     	}
-
-        var row = $('#departmentList').datagrid('getSelected');
-        var id=row.id
-        var parentName=row.o
-		TT.createWindow({
-			url : "/department-edit?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
-		});    	
-
     	//发送请求，生成id
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
@@ -143,13 +130,14 @@ var contentListToolbar = [{
         			if(data.status == 200){
         				$.messager.alert('提示','删除部门成功!',undefined,function(){
         					$("#departmentList").datagrid("reload");
+        					$("#departmentTree").tree("reload");
         				});
         			}
         			else{
         				$.messager.alert('提示','删除部门失败,请确认该部门是否还有员工！',undefined,function(){
         					$("#departmentList").datagrid("reload");
-        				});
-        				
+        					
+        				});	
         			}
         			
         		});
