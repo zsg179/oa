@@ -60,7 +60,7 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input id="lable" name="lable" class="easyui-combobox easyui-validatebox"  data-options="required:true" style="width: 280px;"></td>
+	            <td><input id="lable" name="lable" class="easyui-combobox" style="width: 280px;"></td>
 	        </tr>
 	    </table>
 	</form>
