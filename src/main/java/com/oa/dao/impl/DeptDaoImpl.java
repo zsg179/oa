@@ -244,14 +244,15 @@ public class DeptDaoImpl implements DeptDao {
     public OAResult update(String DN,Department OU) {//根据提供的条目和OU更新组织
     	
     	
-    	Name dn = buildDn(DN);
+    	Name oldDn = buildDn(DN);
+    	Name newDn=buildDn(OU);
     	
-    	DirContextOperations context = ldapTemplate.lookupContext(dn);
+    	DirContextOperations context = ldapTemplate.lookupContext(oldDn);
     	
     	mapToContext(OU, context);
         
-        ldapTemplate.modifyAttributes(context);
-        
+        ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
+        ldapTemplate.rename(oldDn, newDn);
         return OAResult.ok();
     }
     

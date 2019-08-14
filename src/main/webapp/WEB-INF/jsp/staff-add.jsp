@@ -53,12 +53,18 @@
 	        <tr>
 	            <td>部门:</td>
 	            <td><!-- <input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"> -->
-	            <select id="ou" class="easyui-combobox" valueField='id' textField='text'></select >
+	            <input id="ou" class="easyui-combobox" data-options="
+	            valueField:'id',
+	            textField:'text',
+			    onSelect: function(rec){
+			    var url = '/getPosition?id='+rec.id;
+			    $('#title').combobox('reload', url);
+			    }">
 	            </td>
 	        </tr>     
 	        <tr>
 	            <td>职位:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
+	            <td><input id="title" class="easyui-combobox" data-options="valueField:'id',textField:'text'"></td>
 	        </tr>  
 	        <tr>
 	            <td>手机号码:</td>

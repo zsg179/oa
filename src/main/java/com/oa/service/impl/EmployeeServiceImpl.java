@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.oa.dao.EmployeeDao;
+import com.oa.pojo.EasyUIComboboxResult;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
@@ -51,6 +52,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public OAResult update(String DN,Employee emp) {
 		
 		return employeeDao.update(DN, emp);
+	}
+
+	@Override
+	public List<EasyUIComboboxResult> getCompany() {
+		return employeeDao.getCompany();
+	}
+
+	@Override
+	public List<EasyUIComboboxResult> getDept(String parentId) {
+		return employeeDao.getDept(parentId);
+	}
+
+	@Override
+	public List<EasyUIComboboxResult> getPosition(String id) {
+		return employeeDao.getPosition(id);
 	}
 
 }

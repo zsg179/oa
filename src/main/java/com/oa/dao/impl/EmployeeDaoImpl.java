@@ -1,28 +1,39 @@
 package com.oa.dao.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.LdapQuery;
+import org.springframework.ldap.support.LdapNameBuilder;
+import org.springframework.stereotype.Repository;
+
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.AttributesMapper;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.query.LdapQuery;
-import org.springframework.ldap.support.LdapNameBuilder;
-import org.springframework.stereotype.Repository;
 
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
 import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
+import com.oa.pojo.EasyUIComboboxResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
 import com.oa.util.OAResult;
@@ -47,8 +58,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String id : idList){
 			description=id;//获取到前台的部门编号
 		}
-		System.out.println(description+"找到了ids");
-				
 		//找出了部门
 		LdapQuery query = query()
 		.base("")
@@ -66,7 +75,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String str:list){
 			deptName=str;	 
 		}
-		System.out.println(deptName+"是部门ou");
 		//找出o
 		LdapQuery query2 = query()
 		.base("")
@@ -83,7 +91,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String str:list2){
 			o=str;
 		}
-		System.out.println(o+"是公司");
 		//找员工cn
 		LdapQuery query3 = query()
 		.base("")
@@ -100,7 +107,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String str:list3){
 			cn=str;
 		}
-		System.out.println(cn+"是名字");
 					  
 		Employee p=new Employee();
 		p.setO(o);
@@ -222,6 +228,66 @@ public class EmployeeDaoImpl implements EmployeeDao {
 				note.setState(department.getIsParent().equals("1") ? "closed" : "open");
 				result.add(note);
 			}
+		}
+		return result;
+	}
+	@Override
+	public List<EasyUIComboboxResult> getCompany() {
+		List<Department> list = ldapTemplate.search(query().where("businessCategory").is("0"), new DepartmentAttributeMapper());
+		List<EasyUIComboboxResult> result = new ArrayList<EasyUIComboboxResult>();
+		for (Department dept : list) {
+			EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
+			comboboxResult.setId(dept.getId());
+			comboboxResult.setText(dept.getDeptName());
+			result.add(comboboxResult);
+		}
+		return result;
+	}
+
+	@Override
+	public List<EasyUIComboboxResult> getDept(String parentId) {
+		List<Department> list = ldapTemplate.search(query().where("businessCategory").is(parentId), new DepartmentAttributeMapper());
+		List<EasyUIComboboxResult> result = new ArrayList<EasyUIComboboxResult>();
+		for (Department dept : list) {
+			EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
+			comboboxResult.setId(dept.getId());
+			comboboxResult.setText(dept.getDeptName());
+			result.add(comboboxResult);
+		}
+		return result;
+	}
+
+	@Override
+	public List<EasyUIComboboxResult> getPosition(String id) {
+		//根据id查询部门
+		List<Department> list = ldapTemplate.search(query().where("description").is(id), new DepartmentAttributeMapper());
+		Department dept = list.get(0);
+		String parentName = dept.getO();
+		String deptName = dept.getDeptName();
+		//拼装成properties文件中key的格式
+		String key = parentName+"_"+deptName;
+		List<EasyUIComboboxResult> result = new ArrayList<>();
+		try {
+			//加载配置文件
+			Properties properties = new Properties();
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream("position.properties");
+			//properties文件含有中文，字节流无法读取，需转成字符流。
+			BufferedReader bf = new BufferedReader(new  InputStreamReader(in));
+			properties.load(bf);
+			//根据key取值
+			String value = properties.getProperty(key);
+			//#为分隔符分解出每一个职位
+			String[] positions = value.split("#");
+			for (String position : positions) {
+				EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
+				//给每一个职位设置一个随机id，此id仅用于职位下拉列表选择时能选中职位，不加id或相同id无法选中，原因未知。
+				comboboxResult.setId(System.currentTimeMillis()+String.format("%02d", new Random().nextInt(99)));
+				//设置职位内容
+				comboboxResult.setText(position);
+				result.add(comboboxResult);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return result;
 	}
