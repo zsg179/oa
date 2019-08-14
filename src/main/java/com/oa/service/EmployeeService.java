@@ -2,6 +2,7 @@ package com.oa.service;
 
 import java.util.List;
 
+import com.oa.pojo.EasyUIComboboxResult;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
@@ -39,4 +40,19 @@ public interface EmployeeService {
 	 * @return
 	 */
 	List<EasyUITreeNote> getEmpList(String parentId);
+	/**
+	 * 新增员工时获取公司
+	 * @return
+	 */
+	List<EasyUIComboboxResult> getCompany();
+	/**
+	 * 新增员工时获取部门
+	 * @return
+	 */
+	List<EasyUIComboboxResult> getDept(String parentId);
+	/**
+	 * 新增员工时获取职位
+	 * @return
+	 */
+	List<EasyUIComboboxResult> getPosition(String id);
 }
