@@ -64,6 +64,9 @@ var contentListToolbar = [{
     	 $.post("/department/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
+    			var row = $('#staffList').datagrid('getSelected');
+    			Id=row.id
+    			parentName=row.o
     			TT.createWindow({
     				url : "/staff-add?id="+id
     			});
