@@ -26,7 +26,6 @@ import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
-import com.oa.controller.TestLDAP;
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
