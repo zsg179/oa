@@ -62,6 +62,9 @@
 			    }">
 	            
 	            </td>
+	            <td><!-- <input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"> -->
+	            <select id="ou" class="easyui-combobox" valueField='id' textField='text'></select >
+	            </td>
 	        </tr>     
 	        <tr>
 	            <td>职位:</td>
