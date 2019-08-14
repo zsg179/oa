@@ -26,7 +26,7 @@
 	            <%String parentName = request.getParameter("parentName"); 
 	              parentName = java.net.URLDecoder.decode(parentName,"UTF-8");
 	            %>
-	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
 	        </tr>
 	    </table>
 	</form>

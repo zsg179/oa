@@ -17,14 +17,14 @@
 <div style="padding:10px 10px 10px 10px">
 	<form id="staffEditForm" class="staffForm" method="post">
 	    <input type="hidden" name="id" value="${param.id }"/>
-		<!-- <input type="hidden" name="fullName"/>
-		<input type="hidden" name="lastName"/>
-		<input type="hidden" name="title"/>
+		<input type="hidden" name="fullName" value="${param.fullName }"/>
+		<input type="hidden" name="lastName" value="${param.lastName }"/>
+		<input type="hidden" name="title" value="${param.title }"/>
 		<input type="hidden" name="ou"/>
 		<input type="hidden" name="o"/>
-		<input type="hidden" name="phone"/>
-		<input type="hidden" name="email"/>
-		<input type="hidden" name="label"/> -->
+		<input type="hidden" name="phone" value="${param.phone }"/>
+		<input type="hidden" name="email" value="${param.email}"/>
+		<input type="hidden" name="label" value="${param.lable}"/> 
 	    <table cellpadding="5">
 	       <tr>
 	            <td>员工号:</td>
@@ -32,35 +32,51 @@
 	        </tr>
 	        <tr>
 	            <td>姓名:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="fullName" style="width: 280px;"></input></td>
+	             <%String fullName = request.getParameter("fullName"); 
+	              fullName = java.net.URLDecoder.decode(fullName,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=fullName%>" type="text" name="fullName" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>姓氏:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="lastName" style="width: 280px;"></input></td>
-	        </tr>       
-	        <tr>
-	            <td>职位:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
+	             <%String lastName = request.getParameter("lastName"); 
+	              lastName = java.net.URLDecoder.decode(lastName,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=lastName%>" type="text" name="lastName" style="width: 280px;"></input></td>
 	        </tr>  
-	        <tr>
-	            <td>部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="ou" style="width: 280px;"></input></td>
-	        </tr> 
 	        <tr>
 	            <td>公司:</td>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
+	            <td>部门:</td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="ou" style="width: 280px;"></input></td>
+	        </tr> 
+	             
+	        <tr>
+	            <td>职位:</td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
+	        </tr> 
+	        <tr>
 	            <td>手机号码:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="phone" style="width: 280px;"></input></td>
+	             <%String phone = request.getParameter("phone"); 
+	             phone = java.net.URLDecoder.decode(phone,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox" validType="telephone" value="<%=phone%>" type="text" name="phone" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>邮箱地址:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="email" style="width: 280px;"></input></td>
+	             <%String email = request.getParameter("email"); 
+	             email = java.net.URLDecoder.decode(email,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox" validType="email" value="<%=email%>" type="text" name="email" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input id="lable" name="lable" class="easyui-combobox" style="width: 280px;"></td>
+	             <%String lable = request.getParameter("lable"); 
+	             lable = java.net.URLDecoder.decode(lable,"UTF-8");
+	            %>
+	            <td><input id="lable" name="lable" value="<%=lable%>" class="easyui-combobox" style="width: 280px;"></td>
 	        </tr>
 	    </table>
 	</form>
@@ -139,6 +155,18 @@ var tttData = [
            ];
            combobox_checkbox('lable', tttData, 'auto');
 
+	         $(function(){
+	             //自定义电话校验规则
+	             var phoneReg = /^[1][3,4,5,8]\d{9}$/
+	             $.extend($.fn.validatebox.defaults.rules, { 
+	                 telephone : {
+	                     validator: function(value,param){ 
+	                         return phoneReg.test(value);
+	                     },
+	                     message: '请输入有效的手机号码'
+	                 }
+	             }); 
+	         });
 </script>
 
 </body>

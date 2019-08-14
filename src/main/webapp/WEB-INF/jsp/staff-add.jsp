@@ -27,7 +27,7 @@
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工号:</td>
-	            <td><input class="easyui-textbox" readonly="true" value="${param.id }"  type="text" name="employeeNumber" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" readonly="true" value="${param.id }"  type="text" name="id" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>姓名:</td>
@@ -40,7 +40,7 @@
 	        <tr>
                 <td>公司：</td>
                 <td><!-- <select id="o" class="easyui-combobox"  > </select> -->
-                <input id="o" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
+                <input id="o" name="o" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
 				    valueField: 'id',
 				    textField: 'text',
 				    url: '/getCompany',
@@ -58,7 +58,7 @@
 	        <tr>
 	            <td>部门:</td>
 	            <td><!-- <input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"> -->
-	            <input id="ou" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
+	            <input id="ou" name="ou" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
 	            valueField:'id',
 	            textField:'text',
 	            prompt: '请选择部门',
@@ -73,7 +73,7 @@
 	        </tr>     
 	        <tr>
 	            <td>职位:</td>
-	            <td><input id="title" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
+	            <td><input id="title" name="title" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
 	            valueField:'id',
 	            textField:'text',
 	            prompt: '请选择职位',
@@ -83,11 +83,11 @@
 	        </tr>  
 	        <tr>
 	            <td>手机号码:</td>
-	            <td><input class="easyui-textbox" type="text" name="phone" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" validType="telephone" type="text" name="phone" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>邮箱地址:</td>
-	            <td><input class="easyui-textbox" type="text" name="email" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" validType="email" type="text" name="email" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
@@ -170,6 +170,22 @@ var tttData = [
 	            {id: '6', text: '选项6'},
 	           ];
 	         combobox_checkbox('lable', tttData, 'auto');
+	         
+
+	         $(function(){
+	             //自定义电话校验规则
+	             var phoneReg = /^[1][3,4,5,8]\d{9}$/
+	             $.extend($.fn.validatebox.defaults.rules, { 
+	                 telephone : {
+	                     validator: function(value,param){ 
+	                         return phoneReg.test(value);
+	                     },
+	                     message: '请输入有效的手机号码'
+	                 }
+	             }); 
+	         });
+	          
+	        
 </script>
 
 </body>

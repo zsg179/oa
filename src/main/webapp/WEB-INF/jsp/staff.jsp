@@ -87,8 +87,16 @@ var contentListToolbar = [{
     	}
     	  var row = $('#staffList').datagrid('getSelected');
           var id=row.id
+          var fullName=row.fullName
+          var lastName=row.lastName
+          var title=row.title
+          var phone=row.phone
+          var email=row.email
+          var lable=row.email
   		  TT.createWindow({
-  			url : "/staff-edit?id="+id
+  			url : "/staff-edit?id="+id+"&fullName="+encodeURI(encodeURI(fullName))+"&lastName="+encodeURI(encodeURI(lastName))
+  			      +"&title="+encodeURI(encodeURI(title))+"&phone="+encodeURI(encodeURI(phone))+"&email="+encodeURI(encodeURI(email))
+  			      +"&lable="+encodeURI(encodeURI(lable)) 
   		});    	 
     }
 },{
