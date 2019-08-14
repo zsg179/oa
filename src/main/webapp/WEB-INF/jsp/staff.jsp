@@ -51,30 +51,27 @@ $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
 	});
 });
 var contentListToolbar = [{
-    text:'新增员工',
-    iconCls:'icon-add',
-    handler:function(){/* 点击‘新增’触发的函数 */
-    	/* var node = $("#staffTree").tree("getSelected"); *//* 得到用户选中的员工节点 */
-    	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
-    	/* if(!node || $("#staffTree").tree("isLeaf",node.target)){
-    		$.messager.alert('提示','新增员工必须选择一个部门!');
-    		return ;
-    	} */
-    	 //发送请求，生成id
-    	 $.post("/department/gen/id",function(data){
-    		if(data.status==200){
-    			var id=data.data;
-    			var row = $('#staffList').datagrid('getSelected');
-    			Id=row.id
-    			parentName=row.o
-    			TT.createWindow({
-    				url : "/staff-add?id="+id
-    			});
-    		}else{
-    			$.messager.alert('提示', '生成id出错！');
-    		}
-    	})  
-    }
+	 text:'新增员工',
+	    iconCls:'icon-add',
+	    handler:function(){/* 点击‘新增’触发的函数 */
+	    	/* var node = $("#staffTree").tree("getSelected"); */ //* 得到用户选中的员工节点 */
+	    	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
+	    	/* if(!node || $("#staffTree").tree("isLeaf",node.target)){
+	    		$.messager.alert('提示','新增员工必须选择一个部门!');
+	    		return ;
+	    	}  */
+	    	 //发送请求，生成id
+	    	 $.post("/department/gen/id",function(data){
+	    		if(data.status==200){
+	    			var id=data.data;
+	    			TT.createWindow({
+	    				url : "/staff-add?id="+id
+	    			});
+	    		}else{
+	    			$.messager.alert('提示', '生成id出错！');
+	    		}
+	    	})  
+	    }
 },{
     text:'编辑员工',
     iconCls:'icon-pencil',
