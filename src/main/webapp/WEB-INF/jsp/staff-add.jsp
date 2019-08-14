@@ -60,10 +60,6 @@
 			    var url = '/getPosition?id='+rec.id;
 			    $('#title').combobox('reload', url);
 			    }">
-	            
-	            </td>
-	            <td><!-- <input id="ou" class="easyui-combobox" data-options="valueField:'id',textField:'text'"> -->
-	            <select id="ou" class="easyui-combobox" valueField='id' textField='text'></select >
 	            </td>
 	        </tr>     
 	        <tr>
