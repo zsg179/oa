@@ -154,6 +154,7 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list){
 			  deptName=str;	 
 		  }
+		  System.out.println(deptName);
 		//找出o
 		LdapQuery query2 = query()
 		         .base("")
@@ -170,31 +171,36 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list2){
 			  o=str;
 		  }
+		  System.out.println(o);
+		  char a[]=o.toCharArray();
+		  for(int i=0;i<o.length();i++){
+			  System.out.println(a[i]);
+		  }
 		
-		
-
-		Department dept =new Department();
-		dept.setDeptName(deptName);
-		dept.setId(description);
-		dept.setO(o);
-		Name dn =buildDnDept(dept);
-		/**
-		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
-		 */
-		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(o).and("ou").is(deptName);
-		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
-			public String mapFromAttributes(Attributes attrs) throws NamingException {
-
-				return (String) attrs.get("cn").get();
-			}
-		});
-		int employNumbur=list3.size();	
-		if(employNumbur==0){
-			ldapTemplate.unbind(dn);
-			return OAResult.ok();
-		} else {
+//		
+//
+//		Department dept =new Department();
+//		dept.setDeptName(deptName);
+//		dept.setId(description);
+//		dept.setO(o);
+//		Name dn =buildDnDept(dept);
+//		/**
+//		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
+//		 */
+//		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(o).and("ou").is(deptName);
+//		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
+//			public String mapFromAttributes(Attributes attrs) throws NamingException {
+//
+//				return (String) attrs.get("cn").get();
+//			}
+//		});
+//		int employNumbur=list3.size();	
+//		if(employNumbur==0){
+//			ldapTemplate.unbind(dn);
+//			return OAResult.ok();
+//		} else {
 			return OAResult.unOk();
-		}	
+//		}	
 	}
 	protected Name buildDnDept(Department dept) {//为删除方法服务
 	    return buildDnDept(dept.getO(), dept.getDeptName());
