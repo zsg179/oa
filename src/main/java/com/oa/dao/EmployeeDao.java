@@ -29,7 +29,7 @@ public interface EmployeeDao {
 	 */
 	OAResult edit(Employee emp);
 	//
-	OAResult update(String DN,Employee emp);
+	OAResult update(Employee oldemp,Employee newemp);
 	/**
 	 * 通过id获取员工信息
 	 * @param id

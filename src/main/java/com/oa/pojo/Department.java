@@ -43,7 +43,9 @@ public class Department {
 		return "Department [deptName=" + deptName + ", id=" + id + ", parentId=" + parentId + ", isParent=" + isParent
 				+ ", o=" + o + "]";
 	}
-	
+	public String getDn() {
+		return "ou="+deptName+","+o;
+	}
 	
 }
 /*@Entry(objectClasses = { "organizationalUnit","organization", "top" }, base="dc=poke_domain,dc=com")

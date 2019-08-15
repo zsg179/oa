@@ -32,7 +32,7 @@ public interface DeptDao {
 	 * @return
 	 */
 
-	OAResult update(String DN,Department OU);
+	OAResult update(Department oOU,Department nOU);
 
 	/**
 	 * 通过id获取部门信息

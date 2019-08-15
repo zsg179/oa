@@ -49,7 +49,7 @@ public class DeptServiceImpl implements DeptService {
 
 	@Override
 	
-	public OAResult update(String DN,Department OU){
+	public OAResult update(Department DN,Department OU){
     	 
 		OAResult result = deptDao.update(DN, OU);
 		return result;

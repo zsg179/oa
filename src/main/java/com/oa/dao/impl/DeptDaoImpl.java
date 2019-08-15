@@ -53,8 +53,22 @@ public class DeptDaoImpl implements DeptDao {
 	
 	private DepartmentAttributeMapper contentMapper;
 
-	protected Name buildDn(Department dept) {
-		return LdapNameBuilder.newInstance().add("o", dept.getO()).add("ou", dept.getDeptName()).build();
+    protected Name buildDn(Department dept) {
+    	
+    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
+    	
+    	String sDN=dept.getO();
+
+    	String regex = ",";
+    	String[] array = sDN.split(regex); 
+    	
+    	for(int i =array.length-1;i>=0 ; i--){
+    		ldapNameBuilder.add(array[i]);
+        }
+    	
+    	ldapNameBuilder.add("ou",dept.getDeptName());
+    	
+    	return ldapNameBuilder.build();
 	}
 
 	protected Department buildDept(Name dn, Attributes attrs) {
@@ -207,31 +221,26 @@ public class DeptDaoImpl implements DeptDao {
 	      .build();
 	    //"ou=市场部,o=总部"
 	 }
-
-
 	
-
-	
-
-	
-	
+	 
+	 
+	 
     private Name buildDn(String DN) {//按照DN构建路径
     	
-    	//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
     	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance( );
     	String regex = ",";
     	String[] array = DN.split(regex); 
     	
     	for(int i =array.length-1;i>=0 ; i--){
-    		//String[] AandV = array[i].split("=");
-    		//ldapNameBuilder.add(AandV[0].trim(),AandV[1].trim());//添加属性和它的值
     		ldapNameBuilder.add(array[i]);
         }
     	
-    	//ldapNameBuilder.add(DN.trim());
-    	
         return ldapNameBuilder.build();
     }
+    
+  
+    
+    
 	@Override
 	public OAResult edit(Department dept) {
 		Name dn = buildDn(dept);
@@ -241,15 +250,15 @@ public class DeptDaoImpl implements DeptDao {
 	}
     
     @Override
-    public OAResult update(String DN,Department OU) {//根据提供的条目和OU更新组织
+    public OAResult update(Department oOU,Department nOU) {//根据提供的条目和OU更新组织
     	
     	
-    	Name oldDn = buildDn(DN);
-    	Name newDn=buildDn(OU);
+    	Name oldDn = buildDn(oOU);
+    	Name newDn=buildDn(nOU);
     	
     	DirContextOperations context = ldapTemplate.lookupContext(oldDn);
     	
-    	mapToContext(OU, context);
+    	mapToContext(nOU, context);
         
         ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
         ldapTemplate.rename(oldDn, newDn);

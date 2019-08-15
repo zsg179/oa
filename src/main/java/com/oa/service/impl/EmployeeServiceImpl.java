@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	
 	@Override
-	public OAResult update(String DN,Employee emp) {
+	public OAResult update(Employee DN,Employee emp) {
 		
 		return employeeDao.update(DN, emp);
 	}

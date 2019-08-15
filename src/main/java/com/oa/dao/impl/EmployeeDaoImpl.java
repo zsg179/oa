@@ -130,9 +130,23 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		  .build();
 	   }
 
-	protected Name buildDn(Employee emp) {
-		return LdapNameBuilder.newInstance().add("o",emp.getO() ).add("ou",emp.getOu()).add("cn", emp.getFullName()).build();
-	}
+	    protected Name buildDn(Employee emp) {
+	    	
+	    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
+	    	
+	    	String sDN=emp.getO();
+
+	    	String regex = ",";
+	    	String[] array = sDN.split(regex); 
+	    	
+	    	for(int i =array.length-1;i>=0 ; i--){
+	    		ldapNameBuilder.add(array[i]);
+	        }
+	    	
+	    	ldapNameBuilder.add("cn",emp.getFullName());
+	    	
+	    	return ldapNameBuilder.build();
+		}
 	
 	protected Name buildDn(String DN) {//按照DN构建路径
 		 
@@ -161,14 +175,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	
 	@Override
-    public OAResult update(String DN,Employee emp) {
+    public OAResult update(Employee oldemp,Employee newemp) {
 		
-    	Name dn = buildDn(DN);
+    	Name olddn = buildDn(oldemp);
+    	Name newdn = buildDn(newemp);
 		
-		DirContextOperations context = ldapTemplate.lookupContext(dn);
-        mapToContext(emp, context);
+		DirContextOperations context = ldapTemplate.lookupContext(olddn);
+        mapToContext(newemp, context);
         
         ldapTemplate.modifyAttributes(context);
+        ldapTemplate.rename(olddn, newdn);
+        
 		return OAResult.ok();
 	
 	}

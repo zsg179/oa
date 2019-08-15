@@ -4,13 +4,18 @@ package com.oa.controller;
 
 import java.util.List;
 
+import javax.naming.Name;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oa.dao.impl.EmployeeDaoImpl;
+import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
@@ -66,8 +71,8 @@ public class DeptController {
 	
 	@RequestMapping("/rest/department/edit")
 	@ResponseBody
-	public OAResult deptEdit(String DN,Department dept){
-		return deptService.update(DN,dept);
+	public OAResult deptEdit(Department olddept,Department dept){
+		return deptService.update(olddept,dept);
 	}
 	
 	
