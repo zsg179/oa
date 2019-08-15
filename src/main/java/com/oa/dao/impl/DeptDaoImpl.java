@@ -162,6 +162,7 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list){
 			  deptName=str;	 
 		  }
+		  System.out.println(deptName);
 		//找出o
 		LdapQuery query2 = query()
 		         .base("")
@@ -178,50 +179,34 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list2){
 			  o=str;
 		  }
-		
-		
+		  System.out.println(o);
 
 		Department dept =new Department();
 		dept.setDeptName(deptName);
 		dept.setId(description);
 		dept.setO(o);
-		Name dn =buildDnDept(dept);
+		Name dn =buildDn(dept);
+		String emplyo=dn.toString();
 		/**
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
-		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(o).and("ou").is(deptName);
+		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(emplyo).and("ou").is(deptName);
 		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
 			public String mapFromAttributes(Attributes attrs) throws NamingException {
 
+				System.out.println((String) attrs.get("cn").get());
 				return (String) attrs.get("cn").get();
 			}
 		});
 		int employNumbur=list3.size();	
-		if(employNumbur==0){
+		System.out.println(employNumbur+"个员在"+deptName+"部门里");
+  	    if(employNumbur==0){
 			ldapTemplate.unbind(dn);
 			return OAResult.ok();
 		} else {
 			return OAResult.unOk();
 		}	
 	}
-	protected Name buildDnDept(Department dept) {//为删除方法服务
-	    return buildDnDept(dept.getO(), dept.getDeptName());
-	 }
-
-	 protected Name buildDnDept(String company, String department) {//为删除方法服务
-	    return LdapNameBuilder.newInstance()
-	      .add("o", company)
-	      .add("ou", department)
-	      .build();
-	    //"ou=市场部,o=总部"
-	 }
-
-
-	
-
-	
-
-	
 	
     private Name buildDn(String DN) {//按照DN构建路径
     	

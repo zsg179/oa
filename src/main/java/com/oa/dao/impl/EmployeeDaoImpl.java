@@ -90,11 +90,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String str:list2){
 			o=str;
 		}
-		//找员工cn
+		System.out.println(deptName+"是部门，"+o+" 是上级");
+		
+//		//找员工cn
 		LdapQuery query3 = query()
 		.base("")
 		.attributes("cn", "description")
-		.where("objectclass").is("person")
+	    .where("objectclass").is("person")
 		.and("description").is(description);
 		List<String> list3 = ldapTemplate.search(
 		query3, new AttributesMapper<String>() {
@@ -106,17 +108,45 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String str:list3){
 			cn=str;
 		}
+		System.out.println("cn是"+cn);
 					  
 		Employee p=new Employee();
 		p.setO(o);
 		p.setFullName(cn);
-		p.setOu(deptName);;
-		Name dn = buildDnE(p);//
-		System.out.println(dn);
+		p.setOu(deptName);
+		
+		System.out.println(p.toString());
+		
+		Name dn = buildDnEm(p);//
+		System.out.println(dn.toString());
 		ldapTemplate.unbind(dn);
 					
 		return OAResult.ok();
 		}
+	protected Name buildDn(Department dept) {
+		LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
+    	String sDN=dept.getO();
+    	String regex = ",";
+    	String[] array = sDN.split(regex); 
+    	for(int i =array.length-1;i>=0 ; i--){
+    		ldapNameBuilder.add(array[i]);
+        }
+    	ldapNameBuilder.add("ou",dept.getDeptName());
+    	return ldapNameBuilder.build();
+	}
+	
+	protected Name buildDnEm(Employee person) {
+		LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
+    	String sDN=person.getO();
+    	String regex = ",";
+    	String[] array = sDN.split(regex); 
+    	for(int i =array.length-1;i>=0 ; i--){
+    		ldapNameBuilder.add(array[i]);
+        }
+    	//ldapNameBuilder.add("ou",person.getOu());
+    	ldapNameBuilder.add("cn",person.getFullName());
+    	return ldapNameBuilder.build();
+	}
 	    
         protected Name buildDnE(Employee person) {//员工的buildDn
 		  return buildDnE(person.getFullName(), person.getOu(), person.getO());
