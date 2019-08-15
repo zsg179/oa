@@ -279,9 +279,16 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		List<Department> list = ldapTemplate.search(query().where("description").is(id), new DepartmentAttributeMapper());
 		Department dept = list.get(0);
 		String parentName = dept.getO();
-		String deptName = dept.getDeptName();
+		//分解出中文
+		String[] split = parentName.split("[^\u4e00-\u9fa5]+");
+		String key="";
 		//拼装成properties文件中key的格式
-		String key = parentName+"_"+deptName;
+		for(int i =split.length-1;i>=1 ; i--){
+			key=key+split[i]+"_";
+		}
+		String deptName = dept.getDeptName();
+		//加上部门名字
+		key = key+deptName;
 		List<EasyUIComboboxResult> result = new ArrayList<>();
 		try {
 			//加载配置文件
