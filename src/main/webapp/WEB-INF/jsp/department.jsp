@@ -50,11 +50,11 @@ var contentListToolbar = [{
     text:'新增部门',
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
-    	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
-       /*  var nodePar = $("#departmentTree").tree("getParent",node.target);  *//* 通过子节点获取父节点 */
+        var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
+        var parentId= node.id;
         /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
-      
-        if(!node){
+       /*  if(!node){
 
     		$.messager.alert('提示','新增部门必须选择一个部门分类!');
     		return ;
@@ -62,9 +62,18 @@ var contentListToolbar = [{
     	else if($("#departmentTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','不可对员工进行操作!');
     		return ;
+    	} */
+    	var ids = TT.getSelectionsIds("#departmentList");
+    	if(ids.length == 0){
+    		$.messager.alert('提示','必须选择一条部门信息才能新增!');
+    		return ;
+    	}
+    	if(ids.indexOf(',') > 0){
+    		$.messager.alert('提示','只能选择一条部门信息!');
+    		return ;
     	}
     	//发送请求，生成id
-    	$.post("/department/gen/id",function(data){
+    	/* $.post("/department/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
     			var parentName= node.text;
@@ -75,12 +84,29 @@ var contentListToolbar = [{
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
+    		}	
+    	}) */
+    	$.post("/department/gen/id",function(data){
+    		if(data.status==200){
+    			var id=data.data;
+    			var row = $('#departmentList').datagrid('getSelected');
+    		    o=row.o
+    		    deptName=row.deptName
+    		    if(o=="无上级部门"){
+    		       parentName="o="+deptName
+    		    }
+    		    else{
+    		    parentName="ou="+deptName+","+o
+    		    }
+    			TT.createWindow({
+    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
+    			});
+    		}else{
+    			$.messager.alert('提示', '生成id出错！');
     		}
     		
     	})
-    	//获取父节点名字
-    	//alert(id)
-    	 
+
     }
 },{
     text:'编辑部门',
@@ -96,21 +122,15 @@ var contentListToolbar = [{
     		return ;
     	}
     	//发送请求，生成id
-    	$.post("/department/gen/id",function(data){
-    		if(data.status==200){
-    			var Id=data.data;
-    			var row = $('#departmentList').datagrid('getSelected');
-    			Id=row.id
-    		    parentName=row.o
-    			var DeptName=row.deptName
+    	
+    	var row = $('#departmentList').datagrid('getSelected');
+    	Id=row.id
+        parentName=row.o
+    	var DeptName=row.deptName
     			TT.createWindow({
     				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))+"&DeptName="+encodeURI(encodeURI(DeptName))
     			});
-    		}else{
-    			$.messager.alert('提示', '生成id出错！');
-    		}
-    		
-    	})
+    
 
     }
 },{

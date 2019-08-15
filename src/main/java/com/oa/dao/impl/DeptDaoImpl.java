@@ -53,21 +53,16 @@ public class DeptDaoImpl implements DeptDao {
 	
 	private DepartmentAttributeMapper contentMapper;
 
-    protected Name buildDn(Department dept) {
-    	
-    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
-    	
-    	String sDN=dept.getO();
 
+	protected Name buildDn(Department dept) {
+		LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
+    	String sDN=dept.getO();
     	String regex = ",";
     	String[] array = sDN.split(regex); 
-    	
     	for(int i =array.length-1;i>=0 ; i--){
     		ldapNameBuilder.add(array[i]);
         }
-    	
     	ldapNameBuilder.add("ou",dept.getDeptName());
-    	
     	return ldapNameBuilder.build();
 	}
 
