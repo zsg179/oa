@@ -11,6 +11,7 @@
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
 	<input type="hidden" name="parentId" value="${param.parentId}"/>
+	<input type="hidden" name="DeptName" value="${param.DeptName}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
@@ -19,14 +20,17 @@
 	        </tr>
 	        <tr>
 	            <td>部门名称:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="DeptName" style="width: 280px;"></input></td>
+	            <%String DeptName = request.getParameter("DeptName"); 
+	            DeptName = java.net.URLDecoder.decode(DeptName,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=DeptName%>" type="text" name="DeptName" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>上级部门:</td>
 	            <%String parentName = request.getParameter("parentName"); 
 	              parentName = java.net.URLDecoder.decode(parentName,"UTF-8");
 	            %>
-	            <td><input class="easyui-textbox easyui-validatebox" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
 	        </tr>
 	    </table>
 	</form>

@@ -68,7 +68,6 @@ var contentListToolbar = [{
     		if(data.status==200){
     			var id=data.data;
     			var parentName= node.text;
-
     			var parentId= node.id;
 
     			TT.createWindow({
@@ -102,9 +101,10 @@ var contentListToolbar = [{
     			var Id=data.data;
     			var row = $('#departmentList').datagrid('getSelected');
     			Id=row.id
-    			parentName=row.o
+    		    parentName=row.o
+    			var DeptName=row.deptName
     			TT.createWindow({
-    				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))
+    				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))+"&DeptName="+encodeURI(encodeURI(DeptName))
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
@@ -145,5 +145,6 @@ var contentListToolbar = [{
     	});
     }
 }];
+
 </script>
 

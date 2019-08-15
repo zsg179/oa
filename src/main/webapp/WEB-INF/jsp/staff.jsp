@@ -16,7 +16,7 @@
         <div data-options="region:'center'" style="padding:5px">
         <!--EasyUI的数据表格-->
         <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
-            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/staff/query/info',queryParams:{id:0}">
+            <table class="easyui-datagrid" id="staffList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/staff/query/info',queryParams:{id:100}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'id',width:50">员工号</th>
@@ -41,7 +41,7 @@ $(function(){/* 函数是在页面加载完之后触发执行的js代码  */
 	var tree = $("#staffTree");/* 获取员工树 */
 	var datagrid = $("#staffList");/* 是获取员工列表 */
 	tree.tree({
-		onClick : function(node){/* 点击左边部门分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
+		onClick : function(node){/* 点击左边员工分类树的某个节点时，会做一下判断，判断是不是叶子节点*/
 			if(tree.tree("isLeaf",node.target)){
 				datagrid.datagrid('reload', {
 					id :node.id
@@ -92,11 +92,15 @@ var contentListToolbar = [{
           var title=row.title
           var phone=row.phone
           var email=row.email
-          var lable=row.email
+          var lable=row.lable
+          var o=row.o
+          var ou=row.ou
+          var titile=row.title
   		  TT.createWindow({
   			url : "/staff-edit?id="+id+"&fullName="+encodeURI(encodeURI(fullName))+"&lastName="+encodeURI(encodeURI(lastName))
   			      +"&title="+encodeURI(encodeURI(title))+"&phone="+encodeURI(encodeURI(phone))+"&email="+encodeURI(encodeURI(email))
-  			      +"&lable="+encodeURI(encodeURI(lable)) 
+  			      +"&lable="+encodeURI(encodeURI(lable))+"&o="+encodeURI(encodeURI(o))+"&ou="+encodeURI(encodeURI(ou))  
+  			      +"&title="+encodeURI(encodeURI(title)) 
   		});    	 
     }
 },{

@@ -20,8 +20,8 @@
 		<input type="hidden" name="fullName" value="${param.fullName }"/>
 		<input type="hidden" name="lastName" value="${param.lastName }"/>
 		<input type="hidden" name="title" value="${param.title }"/>
-		<input type="hidden" name="ou"/>
-		<input type="hidden" name="o"/>
+		<input type="hidden" name="ou" value="${param.ou}"/>
+		<input type="hidden" name="o" value="${param.o}"/>
 		<input type="hidden" name="phone" value="${param.phone }"/>
 		<input type="hidden" name="email" value="${param.email}"/>
 		<input type="hidden" name="label" value="${param.lable}"/> 
@@ -46,37 +46,79 @@
 	        </tr>  
 	        <tr>
 	            <td>公司:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="o" style="width: 280px;"></input></td>
+	             <%String o = request.getParameter("o"); 
+	              o = java.net.URLDecoder.decode(o,"UTF-8");
+	            %>
+	            <td>
+	            <input id="o" name="o" class="easyui-combobox" style="width: 280px;" value="<%=o%>" panelHeight="auto" data-options="
+				    valueField: 'id',
+				    textField: 'text',
+				    url: '/getCompany',
+				    prompt: '请选择公司', 
+				    required:true,
+				    editable:false,
+				    onSelect: function(rec){
+				    var url = '/getDept?parentId='+rec.id;
+				    $('#ou').combobox('reload', url);
+				    $('#ou').combobox('clear');//清除三级联动部门默认选中项
+				    $('#title').combobox('clear');//清除三级联动职位默认选中项
+				    }">
+				</td>
 	        </tr> 
 	        <tr>
 	            <td>部门:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="ou" style="width: 280px;"></input></td>
+	            <%String ou = request.getParameter("ou"); 
+	              ou = java.net.URLDecoder.decode(ou,"UTF-8");
+	            %>
+	            <td>
+	            <input id="ou" name="ou" class="easyui-combobox" value="<%=ou%>" style="width: 280px;" panelHeight="auto" data-options="
+	            valueField:'id',
+	            textField:'text',
+	            prompt: '请选择部门',
+	            required:true,
+	            editable:false,
+			    onSelect: function(rec){
+			    var url = '/getPosition?id='+rec.id;
+			    $('#title').combobox('reload', url);
+			    $('#title').combobox('clear');//清除三级联动职位默认选中项
+			    }">
+	            </td>
 	        </tr> 
 	             
 	        <tr>
 	            <td>职位:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="title" style="width: 280px;"></input></td>
+	            <%String title = request.getParameter("title"); 
+	              title = java.net.URLDecoder.decode(title,"UTF-8");
+	            %>
+	            <td>
+	            <input id="title" name="title" class="easyui-combobox" value="<%=title%>" style="width: 280px;" panelHeight="auto" data-options="
+	            valueField:'id',
+	            textField:'text',
+	            prompt: '请选择职位',
+	            editable:false,
+	            required:true">
+	            </td>
 	        </tr> 
 	        <tr>
 	            <td>手机号码:</td>
 	             <%String phone = request.getParameter("phone"); 
 	             phone = java.net.URLDecoder.decode(phone,"UTF-8");
 	            %>
-	            <td><input class="easyui-textbox" validType="telephone" value="<%=phone%>" type="text" name="phone" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" data-options="required:true" validType="telephone" value="<%=phone%>" type="text" name="phone" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>邮箱地址:</td>
 	             <%String email = request.getParameter("email"); 
 	             email = java.net.URLDecoder.decode(email,"UTF-8");
 	            %>
-	            <td><input class="easyui-textbox" validType="email" value="<%=email%>" type="text" name="email" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" data-options="required:true" validType="email" value="<%=email%>" type="text" name="email" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
 	             <%String lable = request.getParameter("lable"); 
 	             lable = java.net.URLDecoder.decode(lable,"UTF-8");
 	            %>
-	            <td><input id="lable" name="lable" value="<%=lable%>" class="easyui-combobox" style="width: 280px;"></td>
+	            <td><input id="lable" name="lable" value="hhh" class="easyui-combobox" data-options=" prompt: '请选择标签'" style="width: 280px;"></td>
 	        </tr>
 	    </table>
 	</form>

@@ -11,6 +11,7 @@
 <link href="/js/kindeditor-4.1.10/themes/default/default.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/kindeditor-all-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 <div class=staff-add style="padding:10px 10px 10px 10px">
@@ -31,11 +32,11 @@
 	        </tr>
 	        <tr>
 	            <td>姓名:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="fullName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="fullName" id="fullName" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>姓氏:</td>
-	            <td><input class="easyui-textbox"  data-options="required:true" type="text" name="lastName" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox"  data-options="required:true" type="text" name="lastName" style="width: 280px;" id="lastName"></input></td>
 	        </tr> 
 	        <tr>
                 <td>公司：</td>
@@ -83,11 +84,11 @@
 	        </tr>  
 	        <tr>
 	            <td>手机号码:</td>
-	            <td><input class="easyui-textbox" validType="telephone" type="text" name="phone" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox"  data-options="required:true" validType="telephone" type="text" name="phone" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>邮箱地址:</td>
-	            <td><input class="easyui-textbox" validType="email" type="text" name="email" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" data-options="required:true" validType="email" type="text" name="email" style="width: 280px;"></input></td>
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
@@ -185,7 +186,17 @@ var tttData = [
 	             }); 
 	         });
 	          
-	        
+	         $(function () {
+
+	             $("#fullName").on("input", function () {
+
+	                 //在输入框中打印输入的值
+
+	                 $("#lastName").text($(this).val());
+
+	             });
+
+	         });	        
 </script>
 
 </body>
