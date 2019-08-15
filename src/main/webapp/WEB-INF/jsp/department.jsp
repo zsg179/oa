@@ -50,8 +50,9 @@ var contentListToolbar = [{
     text:'新增部门',
     iconCls:'icon-add',
     handler:function(){/* 点击‘新增’触发的函数 */
-    	/* var node = $("#departmentTree").tree("getSelected"); *//* 得到用户选中的部门节点 */
-       /*  var nodePar = $("#departmentTree").tree("getParent",node.target);  *//* 通过子节点获取父节点 */
+        var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
+        var parentId= node.id;
         /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
        /*  if(!node){
 
@@ -89,7 +90,6 @@ var contentListToolbar = [{
     		if(data.status==200){
     			var id=data.data;
     			var row = $('#departmentList').datagrid('getSelected');
-    			id=row.id
     		    o=row.o
     		    deptName=row.deptName
     		    if(o=="无上级部门"){
@@ -99,7 +99,7 @@ var contentListToolbar = [{
     		    parentName="ou="+deptName+","+o
     		    }
     			TT.createWindow({
-    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))
+    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
@@ -122,21 +122,15 @@ var contentListToolbar = [{
     		return ;
     	}
     	//发送请求，生成id
-    	$.post("/department/gen/id",function(data){
-    		if(data.status==200){
-    			var Id=data.data;
-    			var row = $('#departmentList').datagrid('getSelected');
-    			Id=row.id
-    		    parentName=row.o
-    			var DeptName=row.deptName
+    	
+    	var row = $('#departmentList').datagrid('getSelected');
+    	Id=row.id
+        parentName=row.o
+    	var DeptName=row.deptName
     			TT.createWindow({
     				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))+"&DeptName="+encodeURI(encodeURI(DeptName))
     			});
-    		}else{
-    			$.messager.alert('提示', '生成id出错！');
-    		}
-    		
-    	})
+    
 
     }
 },{
