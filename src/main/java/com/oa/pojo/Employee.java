@@ -86,6 +86,9 @@ public class Employee {
 				+ ", ou=" + ou + ", label=" + label + "]";
 	}
 	
+	public String getDn() {
+		return "cn="+fullName+","+o; 
+	}
 	
 
 

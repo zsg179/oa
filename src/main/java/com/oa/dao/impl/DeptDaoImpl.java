@@ -53,6 +53,7 @@ public class DeptDaoImpl implements DeptDao {
 	
 	private DepartmentAttributeMapper contentMapper;
 
+
 	protected Name buildDn(Department dept) {
 		LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
     	String sDN=dept.getO();
@@ -202,42 +203,55 @@ public class DeptDaoImpl implements DeptDao {
 			return OAResult.unOk();
 		}	
 	}
-	
+
     private Name buildDn(String DN) {//按照DN构建路径
     	
-    	//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
     	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance( );
     	String regex = ",";
     	String[] array = DN.split(regex); 
     	
     	for(int i =array.length-1;i>=0 ; i--){
-    		//String[] AandV = array[i].split("=");
-    		//ldapNameBuilder.add(AandV[0].trim(),AandV[1].trim());//添加属性和它的值
     		ldapNameBuilder.add(array[i]);
         }
     	
-    	//ldapNameBuilder.add(DN.trim());
-    	
         return ldapNameBuilder.build();
     }
+    
+  
+    
+    
 	@Override
-	public OAResult edit(Department dept) {
-		Name dn = buildDn(dept);
-		ldapTemplate.rebind(dn, null, buildAttributes(dept));
+	public OAResult edit(Department dept) { 
+        String description=dept.getId();
+		List<Department> list = ldapTemplate.search(
+			      query().where("objectclass").is("organizationalUnit")
+			             .and("description").is(description),
+			      new DepartmentAttributeMapper());
+		Department olddept=(Department)list.get(0);
+		
+		Name oldDn = buildDn(olddept);
+    	Name newDn=buildDn(dept);
+        DirContextOperations context = ldapTemplate.lookupContext(oldDn);
+    	
+    	mapToContext(dept, context);
+        
+        ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
+        ldapTemplate.rename(oldDn, newDn);
+        
 		return OAResult.ok();
 
 	}
     
     @Override
-    public OAResult update(String DN,Department OU) {//根据提供的条目和OU更新组织
+    public OAResult update(Department oOU,Department nOU) {//根据提供的条目和OU更新组织
     	
     	
-    	Name oldDn = buildDn(DN);
-    	Name newDn=buildDn(OU);
+    	Name oldDn = buildDn(oOU);
+    	Name newDn=buildDn(nOU);
     	
     	DirContextOperations context = ldapTemplate.lookupContext(oldDn);
     	
-    	mapToContext(OU, context);
+    	mapToContext(nOU, context);
         
         ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
         ldapTemplate.rename(oldDn, newDn);

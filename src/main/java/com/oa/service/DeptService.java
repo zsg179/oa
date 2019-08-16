@@ -37,7 +37,7 @@ public interface DeptService {
 	 * @return
 	 */
 
-	OAResult update(String DN,Department OU);
+	OAResult update(Department DN,Department OU);
 
 	/**
 	 * 通过id获取部门信息
