@@ -178,6 +178,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		
 		Name olddn = buildDn(oldemp);
     	Name newdn = buildDn(emp);
+    	
+    	String Pid=ldapTemplate.lookup(emp.getO(), new DepartmentAttributeMapper()).getId();
+    	emp.setParentId(Pid);
 		
 		DirContextOperations context = ldapTemplate.lookupContext(olddn);
         mapToContext(emp, context);

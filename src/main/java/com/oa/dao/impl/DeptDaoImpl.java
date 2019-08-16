@@ -235,13 +235,38 @@ public class DeptDaoImpl implements DeptDao {
 		Name oldDn = buildDn(olddept);
     	Name newDn=buildDn(dept);
     	
+    	dept.setIsParent("1");
+        String Pid=ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper()).getId();
+    	dept.setParentId(Pid);
     	
         DirContextOperations context = ldapTemplate.lookupContext(oldDn);
     	
     	mapToContext(dept, context);
-        
+        //修改部门属性
         ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
         ldapTemplate.rename(oldDn, newDn);
+        
+        //修改这个部门下部门人员的上级部门
+        List<Department> listdept = ldapTemplate.search(
+			      query().base(dept.getDn()),
+			      new DepartmentAttributeMapper());
+        List<Employee> listemp = ldapTemplate.search(
+			      query().base(dept.getDn()),
+			      new PersonAttributeMapper());
+        for(int i=0;i<listdept.size();i++){
+        	Department nextdept=listdept.get(i);
+        	nextdept.setO(nextdept.getO().replace(olddept.getO(), dept.getO()));
+        	DirContextOperations context2 = ldapTemplate.lookupContext(nextdept.getDn());
+        	context2.setAttributeValue("l", nextdept.getO());
+        	ldapTemplate.modifyAttributes(context2);
+        }
+        for(int i=0;i<listemp.size();i++){
+        	Employee nextemp=listemp.get(i);
+        	nextemp.setO(nextemp.getO().replace(olddept.getO(), dept.getO()));
+        	DirContextOperations context2 = ldapTemplate.lookupContext(nextemp.getDn());
+        	context2.setAttributeValue("o", nextemp.getO());
+        	ldapTemplate.modifyAttributes(context2);
+        }
         
 		return OAResult.ok();
 
