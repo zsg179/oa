@@ -168,6 +168,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public OAResult edit(Employee emp) {
 		
 		String description=emp.getId();
+		emp.setIsParent("0");
+		
 		List<Employee> list = ldapTemplate.search(
 			      query().where("objectclass").is("person")
 			             .and("description").is(description),
