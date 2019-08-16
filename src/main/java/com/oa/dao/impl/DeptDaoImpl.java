@@ -160,9 +160,8 @@ public class DeptDaoImpl implements DeptDao {
 			});
 		 String deptName=null;
 		  for(String str:list){
-			  deptName=str;	 
+			  deptName=str;	 //ou
 		  }
-		  System.out.println(deptName);
 		//找出o
 		LdapQuery query2 = query()
 		         .base("")
@@ -193,13 +192,10 @@ public class DeptDaoImpl implements DeptDao {
 		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(emplyo).and("ou").is(deptName);
 		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
 			public String mapFromAttributes(Attributes attrs) throws NamingException {
-
-				System.out.println((String) attrs.get("cn").get());
 				return (String) attrs.get("cn").get();
 			}
 		});
 		int employNumbur=list3.size();	
-		System.out.println(employNumbur+"个员在"+deptName+"部门里");
   	    if(employNumbur==0){
 			ldapTemplate.unbind(dn);
 			return OAResult.ok();
