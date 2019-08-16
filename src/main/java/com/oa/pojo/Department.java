@@ -7,7 +7,15 @@ public class Department {
 	private String parentId;//businessCategory
 	private String isParent;//st
 	private String o;//l:上级部门
+	private String position;//postalCode:职位
 	
+	
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
 	public String getO() {
 		return o;
 	}
@@ -38,10 +46,11 @@ public class Department {
 	public void setIsParent(String isParent) {
 		this.isParent = isParent;
 	}
+	
 	@Override
 	public String toString() {
 		return "Department [deptName=" + deptName + ", id=" + id + ", parentId=" + parentId + ", isParent=" + isParent
-				+ ", o=" + o + "]";
+				+ ", o=" + o + ", position=" + position + "]";
 	}
 	public String getDn() {
 		return "ou="+deptName+","+o;

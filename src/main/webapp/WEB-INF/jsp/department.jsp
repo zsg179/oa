@@ -24,6 +24,7 @@
 		            <th data-options="field:'id',width:120">部门编号</th>
 		            <th data-options="field:'deptName',width:300">部门名称</th>
 		            <th data-options="field:'o',width:300">上级部门</th>
+		            <th data-options="field:'position',width:300">职位</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -53,16 +54,6 @@ var contentListToolbar = [{
         var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
         var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
         var parentId= node.id;
-        /*如果点击的是叶子节点，则弹出一个提示框，告诉用户 不可对其进行操作*/
-       /*  if(!node){
-
-    		$.messager.alert('提示','新增部门必须选择一个部门分类!');
-    		return ;
-    	}
-    	else if($("#departmentTree").tree("isLeaf",node.target)){
-    		$.messager.alert('提示','不可对员工进行操作!');
-    		return ;
-    	} */
     	var ids = TT.getSelectionsIds("#departmentList");
     	if(ids.length == 0){
     		$.messager.alert('提示','必须选择一条部门信息才能新增!');
@@ -72,20 +63,6 @@ var contentListToolbar = [{
     		$.messager.alert('提示','只能选择一条部门信息!');
     		return ;
     	}
-    	//发送请求，生成id
-    	/* $.post("/department/gen/id",function(data){
-    		if(data.status==200){
-    			var id=data.data;
-    			var parentName= node.text;
-    			var parentId= node.id;
-
-    			TT.createWindow({
-    				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
-    			});
-    		}else{
-    			$.messager.alert('提示', '生成id出错！');
-    		}	
-    	}) */
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
     			var id=data.data;
@@ -100,6 +77,7 @@ var contentListToolbar = [{
     		    }
     			TT.createWindow({
     				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
+    				
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
@@ -112,6 +90,9 @@ var contentListToolbar = [{
     text:'编辑部门',
     iconCls:'icon-pencil',
     handler:function(){
+    	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
+        var parentId= nodePar.id;	
     	var ids = TT.getSelectionsIds("#departmentList");
     	if(ids.length == 0){
     		$.messager.alert('提示','必须选择一条部门信息才能编辑!');
@@ -125,13 +106,13 @@ var contentListToolbar = [{
     	
     	var row = $('#departmentList').datagrid('getSelected');
     	Id=row.id
+        DeptName=row.deptName
         parentName=row.o
-    	var DeptName=row.deptName
+        position=row.position
     			TT.createWindow({
-    				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))+"&DeptName="+encodeURI(encodeURI(DeptName))
+    				url : "/department-edit?Id="+Id+"&DeptName="+encodeURI(encodeURI(DeptName))+"&parentId="+parentId
+    				+"&parentName="+encodeURI(encodeURI(parentName))+"&position="+encodeURI(encodeURI(position)) 	
     			});
-    
-
     }
 },{
     text:'删除部门',

@@ -134,6 +134,7 @@ public class DeptDaoImpl implements DeptDao {
 	      attrs.put("description", dept.getId());
 	      attrs.put("l", dept.getO());
 	      attrs.put("st", dept.getIsParent());
+	      attrs.put("postalCode",dept.getPosition());
 	      return attrs;
 	   }
 
