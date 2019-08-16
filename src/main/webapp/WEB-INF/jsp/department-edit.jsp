@@ -58,6 +58,7 @@ var departmentEditPage = {
 				if(data.status == 200){
 					$.messager.alert('提示','编辑内容成功!');
 					$("#departmentList").datagrid("reload");
+					$("#departmentTree").tree("reload");/*部门修改成功后，部门列表要进行重新加载*/
 					TT.closeCurrentWindow();
 				}
 			});

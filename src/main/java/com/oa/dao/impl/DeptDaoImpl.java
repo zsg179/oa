@@ -224,6 +224,8 @@ public class DeptDaoImpl implements DeptDao {
 	@Override
 	public OAResult edit(Department dept) { 
         String description=dept.getId();
+        dept.setIsParent("1");
+        
 		List<Department> list = ldapTemplate.search(
 			      query().where("objectclass").is("organizationalUnit")
 			             .and("description").is(description),

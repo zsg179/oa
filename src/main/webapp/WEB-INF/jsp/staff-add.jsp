@@ -71,6 +71,7 @@
 			    $('#title').combobox('clear');//清除三级联动职位默认选中项
 			    }">
 	            </td>
+
 	        </tr>     
 	        <tr>
 	            <td>职位:</td>
@@ -131,6 +132,7 @@
 	        data: optionsJson,
 	        valueField: 'id',
 	        textField: 'text',
+	        url: '/getLabel',
 	        panelHeight: hight,
 	        multiple: true,
 	        editable: false,
@@ -184,8 +186,8 @@ var tttData = [
 	                     message: '请输入有效的手机号码'
 	                 }
 	             }); 
-	         });
+	         });  
+	         
 </script>
-
 </body>
 </html>

@@ -16,15 +16,6 @@
 <body>
 <div style="padding:10px 10px 10px 10px">
 	<form id="staffEditForm" class="staffForm" method="post">
-	    <input type="hidden" name="id" value="${param.id }"/>
-		<input type="hidden" name="fullName" value="${param.fullName }"/>
-		<input type="hidden" name="lastName" value="${param.lastName }"/>
-		<input type="hidden" name="title" value="${param.title }"/>
-		<input type="hidden" name="ou" value="${param.ou}"/>
-		<input type="hidden" name="o" value="${param.o}"/>
-		<input type="hidden" name="phone" value="${param.phone }"/>
-		<input type="hidden" name="email" value="${param.email}"/>
-		<input type="hidden" name="label" value="${param.lable}"/> 
 	    <table cellpadding="5">
 	       <tr>
 	            <td>员工号:</td>
