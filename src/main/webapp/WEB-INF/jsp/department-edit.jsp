@@ -12,6 +12,7 @@
 	<form id="departmentEditForm" class="itemForm" method="post">
 	<input type="hidden" name="parentId" value="${param.parentId}"/>
 	<input type="hidden" name="DeptName" value="${param.DeptName}"/>
+	<input type="hidden" name="position" value="${param.position}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
@@ -31,6 +32,13 @@
 	              parentName = java.net.URLDecoder.decode(parentName,"UTF-8");
 	            %>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
+	        </tr>
+	        <tr>
+	            <td>职位:</td>
+	            <%String position = request.getParameter("position"); 
+	              position = java.net.URLDecoder.decode(position,"UTF-8");
+	            %>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=position%>" type="text" name="position" style="width: 280px;"></input></td>
 	        </tr>
 	    </table>
 	</form>
