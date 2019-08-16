@@ -57,4 +57,9 @@ public interface EmployeeService {
 	 * @return
 	 */
 	List<EasyUIComboboxResult> getPosition(String id);
+	/**
+	 * 新增员工时获取标签
+	 * @return
+	 */
+	List<EasyUIComboboxResult> getLabel();
 }

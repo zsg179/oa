@@ -384,4 +384,23 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		return result;*/
 	}
 
+	@Override
+	public List<EasyUIComboboxResult> getLabel() {
+		List<String> list = ldapTemplate.search(query().attributes("cn").where("objectclass").is("groupOfNames"),
+				new AttributesMapper<String>() {
+					@Override
+					public String mapFromAttributes(Attributes attrs) throws NamingException {
+						return (String) attrs.get("cn").get();
+					}
+				});
+		List<EasyUIComboboxResult> result = new ArrayList<>();
+		for (String label : list) {
+			EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
+			comboboxResult.setId(System.currentTimeMillis()+String.format("%02d", new Random().nextInt(99)));
+			comboboxResult.setText(label);
+			result.add(comboboxResult);
+		}
+		return result;
+	}
+
 }

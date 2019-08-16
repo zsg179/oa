@@ -69,4 +69,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getPosition(id);
 	}
 
+	@Override
+	public List<EasyUIComboboxResult> getLabel() {
+		return employeeDao.getLabel();
+	}
+
 }
