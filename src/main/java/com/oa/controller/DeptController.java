@@ -75,5 +75,5 @@ public class DeptController {
 		return deptService.edit(dept);
 	}
 	
-	
+
 }

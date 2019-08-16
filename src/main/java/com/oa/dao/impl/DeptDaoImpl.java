@@ -231,6 +231,8 @@ public class DeptDaoImpl implements DeptDao {
 		
 		Name oldDn = buildDn(olddept);
     	Name newDn=buildDn(dept);
+    	
+    	
         DirContextOperations context = ldapTemplate.lookupContext(oldDn);
     	
     	mapToContext(dept, context);

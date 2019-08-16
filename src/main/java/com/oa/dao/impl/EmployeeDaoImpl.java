@@ -179,11 +179,50 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		
 		DirContextOperations context = ldapTemplate.lookupContext(olddn);
         mapToContext(emp, context);
+       
+        //处理标签
+        String regex = "#";
+        String label=oldemp.getLabel();
+        String[] array1 = label.split(regex);
+        for(int i =0;i<array1.length-1; i++){
+        	removeMemberFromGroup(array1[i],oldemp);
+	    }
+        label=oldemp.getLabel();
+        String[] array2 = label.split(regex);
+        for(int i =0;i<array2.length-1; i++){
+        	addMemberToGroup(array2[i],oldemp);
+	    }
         
         ldapTemplate.modifyAttributes(context);
         ldapTemplate.rename(olddn, newdn);
+        
+        
 		return OAResult.ok();
 	}
+	
+	public void addMemberToGroup(String groupName, Employee emp) {
+        Name groupDn = buildGroupDn(groupName);
+        Name userDn = buildDn(emp);
+
+        DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
+        ctx.addAttributeValue("member", userDn);
+
+        ldapTemplate.update(ctx);
+    }
+
+    public void removeMemberFromGroup(String groupName, Employee emp) {
+        Name groupDn = buildGroupDn(groupName);
+        Name userDn = buildDn(emp);
+        DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
+        ctx.removeAttributeValue("member", userDn);
+
+        ldapTemplate.update(ctx);
+    }
+
+    private Name buildGroupDn(String groupName) {
+        return LdapNameBuilder.newInstance().add("ou=标签")
+            .add("cn", groupName).build();
+    }
 	
 	
 	@Override
