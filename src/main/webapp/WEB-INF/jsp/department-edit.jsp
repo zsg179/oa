@@ -11,8 +11,6 @@
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
 	<input type="hidden" name="parentId" value="${param.parentId}"/>
-	<input type="hidden" name="DeptName" value="${param.DeptName}"/>
-	<input type="hidden" name="position" value="${param.position}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>
