@@ -272,6 +272,7 @@ public class DeptDaoImpl implements DeptDao {
     	context.setAttributeValue("st", OU.getIsParent());
     	context.setAttributeValue("description", OU.getId());
     	context.setAttributeValue("businessCategory", OU.getParentId());
+    	context.setAttributeValue("postalCode", OU.getPosition());
     	
     	
      }
