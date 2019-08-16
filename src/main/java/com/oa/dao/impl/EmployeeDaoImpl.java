@@ -168,11 +168,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public OAResult edit(Employee emp) {
 		
 		String description=emp.getId();
-		List<Department> list = ldapTemplate.search(
+		List<Employee> list = ldapTemplate.search(
 			      query().where("objectclass").is("person")
 			             .and("description").is(description),
-			      new DepartmentAttributeMapper());
-		Department oldemp=(Department)list.get(0);
+			      new PersonAttributeMapper());
+		Employee oldemp=(Employee)list.get(0);
 		
 		Name olddn = buildDn(oldemp);
     	Name newdn = buildDn(emp);
