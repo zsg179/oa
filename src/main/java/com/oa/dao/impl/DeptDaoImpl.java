@@ -226,9 +226,23 @@ public class DeptDaoImpl implements DeptDao {
     
     
 	@Override
-	public OAResult edit(Department dept) {
-		Name dn = buildDn(dept);
-		ldapTemplate.rebind(dn, null, buildAttributes(dept));
+	public OAResult edit(Department dept) { 
+        String description=dept.getId();
+		List<Department> list = ldapTemplate.search(
+			      query().where("objectclass").is("organizationalUnit")
+			             .and("description").is(description),
+			      new DepartmentAttributeMapper());
+		Department olddept=(Department)list.get(0);
+		
+		Name oldDn = buildDn(olddept);
+    	Name newDn=buildDn(dept);
+        DirContextOperations context = ldapTemplate.lookupContext(oldDn);
+    	
+    	mapToContext(dept, context);
+        
+        ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
+        ldapTemplate.rename(oldDn, newDn);
+        
 		return OAResult.ok();
 
 	}

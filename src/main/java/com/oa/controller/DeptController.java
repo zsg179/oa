@@ -71,8 +71,8 @@ public class DeptController {
 	
 	@RequestMapping("/rest/department/edit")
 	@ResponseBody
-	public OAResult deptEdit(Department olddept,Department dept){
-		return deptService.update(olddept,dept);
+	public OAResult deptEdit(Department dept){
+		return deptService.edit(dept);
 	}
 	
 	

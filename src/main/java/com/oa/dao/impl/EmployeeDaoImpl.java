@@ -194,12 +194,22 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	@Override
 	public OAResult edit(Employee emp) {
-		Name dn = buildDn(emp);
 		
-		DirContextOperations context = ldapTemplate.lookupContext(dn);
+		String description=emp.getId();
+		List<Department> list = ldapTemplate.search(
+			      query().where("objectclass").is("person")
+			             .and("description").is(description),
+			      new DepartmentAttributeMapper());
+		Department oldemp=(Department)list.get(0);
+		
+		Name olddn = buildDn(oldemp);
+    	Name newdn = buildDn(emp);
+		
+		DirContextOperations context = ldapTemplate.lookupContext(olddn);
         mapToContext(emp, context);
         
         ldapTemplate.modifyAttributes(context);
+        ldapTemplate.rename(olddn, newdn);
 		return OAResult.ok();
 	}
 	
