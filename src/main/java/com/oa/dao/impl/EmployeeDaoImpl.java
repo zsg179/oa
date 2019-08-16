@@ -168,6 +168,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public OAResult edit(Employee emp) {
 		
 		String description=emp.getId();
+		emp.setIsParent("0");
+		
 		List<Employee> list = ldapTemplate.search(
 			      query().where("objectclass").is("person")
 			             .and("description").is(description),
@@ -327,6 +329,24 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		//根据id查询部门
 		List<Department> list = ldapTemplate.search(query().where("description").is(id), new DepartmentAttributeMapper());
 		Department dept = list.get(0);
+		String positions = dept.getPosition();
+		String[] splitPositions = positions.split(";");
+		List<EasyUIComboboxResult> result = new ArrayList<>();
+		for (String position : splitPositions) {
+			EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
+			//给每一个职位设置一个随机id，此id仅用于职位下拉列表选择时能选中职位，不加id或相同id无法选中，原因未知。
+			comboboxResult.setId(System.currentTimeMillis()+String.format("%02d", new Random().nextInt(99)));
+			//设置职位内容
+			comboboxResult.setText(position);
+			result.add(comboboxResult);
+		}
+		return result;
+		
+		/*
+		 * **********通过读取配置文件获取职位
+		 * //根据id查询部门
+		List<Department> list = ldapTemplate.search(query().where("description").is(id), new DepartmentAttributeMapper());
+		Department dept = list.get(0);
 		String parentName = dept.getO();
 		//分解出中文
 		String[] split = parentName.split("[^\u4e00-\u9fa5]+");
@@ -361,7 +381,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return result;
+		return result;*/
 	}
 
 }
