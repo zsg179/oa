@@ -69,7 +69,6 @@ var contentListToolbar = [{
     			var row = $('#departmentList').datagrid('getSelected');
     		    o=row.o
     		    deptName=row.deptName
-    		    position=row.position
     		    if(o=="无上级部门"){
     		       parentName="o="+deptName
     		    }
@@ -78,7 +77,7 @@ var contentListToolbar = [{
     		    }
     			TT.createWindow({
     				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
-    				+"&position="+encodeURI(encodeURI(position))
+    				
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
@@ -109,9 +108,10 @@ var contentListToolbar = [{
     	Id=row.id
         DeptName=row.deptName
         parentName=row.o
+        position=row.position
     			TT.createWindow({
     				url : "/department-edit?Id="+Id+"&DeptName="+encodeURI(encodeURI(DeptName))+"&parentId="+parentId
-    				+"&parentName="+encodeURI(encodeURI(parentName))		
+    				+"&parentName="+encodeURI(encodeURI(parentName))+"&position="+encodeURI(encodeURI(position)) 	
     			});
     }
 },{
