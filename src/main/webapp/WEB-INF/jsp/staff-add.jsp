@@ -185,18 +185,6 @@ var tttData = [
 	                 }
 	             }); 
 	         });
-	          
-	         $(function () {
-
-	             $("#fullName").on("input", function () {
-
-	                 //在输入框中打印输入的值
-
-	                 $("#lastName").text($(this).val());
-
-	             });
-
-	         });	        
 </script>
 
 </body>

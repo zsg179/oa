@@ -28,7 +28,11 @@
 	              parentName = java.net.URLDecoder.decode(parentName,"UTF-8");
 	            %>
 	            <td><input class="easyui-textbox easyui-validatebox" readonly="true" value="<%=parentName%>"  type="text" name="o" style="width: 280px;"></input></td>
-	        </tr>      
+	        </tr> 
+	        <tr>
+	            <td>职位:</td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="position" style="width: 280px;"></input></td>
+	        </tr>     
 	    </table>
 	</form>
 	<div style="padding:10px">
