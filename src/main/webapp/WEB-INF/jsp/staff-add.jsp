@@ -131,6 +131,7 @@
 	        data: optionsJson,
 	        valueField: 'id',
 	        textField: 'text',
+	        url: '/getLable',
 	        panelHeight: hight,
 	        multiple: true,
 	        editable: false,
@@ -184,8 +185,8 @@ var tttData = [
 	                     message: '请输入有效的手机号码'
 	                 }
 	             }); 
-	         });
+	         }); 
+	  $('#test').hide();         
 </script>
-
 </body>
 </html>
