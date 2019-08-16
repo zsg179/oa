@@ -90,7 +90,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		for(String str:list2){
 			o=str;
 		}
-//		//找员工cn
+		//找员工cn
 		LdapQuery query3 = query()
 		.base("")
 		.attributes("cn", "description")

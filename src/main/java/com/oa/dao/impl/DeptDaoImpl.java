@@ -178,8 +178,7 @@ public class DeptDaoImpl implements DeptDao {
 		  for(String str:list2){
 			  o=str;
 		  }
-		  System.out.println(o);
-
+		 
 		Department dept =new Department();
 		dept.setDeptName(deptName);
 		dept.setId(description);
