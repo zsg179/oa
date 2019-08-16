@@ -109,7 +109,16 @@
 	             <%String lable = request.getParameter("lable"); 
 	             lable = java.net.URLDecoder.decode(lable,"UTF-8");
 	            %>
-	            <td><input id="lable" name="lable" value="hhh" class="easyui-combobox" data-options=" prompt: '请选择标签'" style="width: 280px;"></td>
+	            <td><input id="lable" name="lable" class="easyui-combobox"  style="width: 280px;" data-options=" 
+	            prompt: '请选择标签',
+	            url: '/getLabel',
+				method:'get',
+				valueField:'id',
+				textField:'text',
+				multiple:true,
+				panelHeight:'auto',
+				editable:false">
+	            </td>
 	        </tr>
 	    </table>
 	</form>
