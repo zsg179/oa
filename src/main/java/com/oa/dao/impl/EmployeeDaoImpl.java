@@ -181,25 +181,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
         mapToContext(emp, context);
        
         //处理标签
+        /*
         String regex = "#";
         String label=oldemp.getLabel();
         String[] array1 = label.split(regex);
         for(int i =0;i<array1.length-1; i++){
         	removeMemberFromGroup(array1[i],oldemp);
 	    }
-        label=oldemp.getLabel();
+        label=emp.getLabel();
         String[] array2 = label.split(regex);
         for(int i =0;i<array2.length-1; i++){
-        	addMemberToGroup(array2[i],oldemp);
+        	addMemberToGroup(array2[i],emp);
 	    }
-        
+        */
         ldapTemplate.modifyAttributes(context);
         ldapTemplate.rename(olddn, newdn);
         
         
 		return OAResult.ok();
 	}
-	
+	//添加人员到标签
 	public void addMemberToGroup(String groupName, Employee emp) {
         Name groupDn = buildGroupDn(groupName);
         Name userDn = buildDn(emp);
@@ -209,10 +210,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
         ldapTemplate.update(ctx);
     }
-
+    //从标签移除人员
     public void removeMemberFromGroup(String groupName, Employee emp) {
         Name groupDn = buildGroupDn(groupName);
         Name userDn = buildDn(emp);
+        
         DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
         ctx.removeAttributeValue("member", userDn);
 
