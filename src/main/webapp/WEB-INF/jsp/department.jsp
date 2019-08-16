@@ -112,6 +112,9 @@ var contentListToolbar = [{
     text:'编辑部门',
     iconCls:'icon-pencil',
     handler:function(){
+    	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
+        var parentId= nodePar.id;	
     	var ids = TT.getSelectionsIds("#departmentList");
     	if(ids.length == 0){
     		$.messager.alert('提示','必须选择一条部门信息才能编辑!');
@@ -125,13 +128,12 @@ var contentListToolbar = [{
     	
     	var row = $('#departmentList').datagrid('getSelected');
     	Id=row.id
+        DeptName=row.deptName
         parentName=row.o
-    	var DeptName=row.deptName
     			TT.createWindow({
-    				url : "/department-edit?Id="+Id+"&parentName="+encodeURI(encodeURI(parentName))+"&DeptName="+encodeURI(encodeURI(DeptName))
+    				url : "/department-edit?Id="+Id+"&DeptName="+encodeURI(encodeURI(DeptName))+"&parentId="+parentId
+    				+"&parentName="+encodeURI(encodeURI(parentName))		
     			});
-    
-
     }
 },{
     text:'删除部门',
