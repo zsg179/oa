@@ -12,6 +12,9 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div class=department-add style="padding:10px 10px 10px 10px">
 	<form id="departmentAddForm" class="itemForm" method="post">
+	<div id="hideTree">
+	<ul id="departmentTree" class="easyui-tree" data-options="url:'/department/list',animate: true,method : 'GET'"></ul>
+    </div>
 		<input type="hidden" name="parentId" value="${param.parentId }"/>
 	    <table cellpadding="5">
 	        <tr>
@@ -41,7 +44,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-
+var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
 	var departmentAddPage  = {
 			submitForm : function (){
             /* 如果表单输入不合法，那么会提示”表单还未填写完！” */
@@ -53,9 +56,9 @@
 				/* 发起url为/department/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/department/save",$("#departmentAddForm").serialize(), function(data){
 					if(data.status == 200){
-						$.messager.alert('提示','新增部门成功!');/*如果返回的状态为200说明部门添加成功*/
-    					$("#departmentTree").tree("reload");/*部门添加成功后，部门列表要进行重新加载*/
-    					TT.closeCurrentWindow();/* 关闭弹出窗口 */
+					    $.messager.alert('提示','新增部门成功!');/*如果返回的状态为200说明部门添加成功*/
+					    $("#departmentTree").tree("reload",node.target)/*部门添加成功后，部门列表要进行重新加载*/
+					    TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					}
 				});
 			},
@@ -64,6 +67,7 @@
 				departmentAddEditor.html('');
 			}
 	};
+	$("#hideTree").hide();
 </script>
 
 <style>

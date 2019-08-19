@@ -16,6 +16,9 @@
 <body>
 <div style="padding:10px 10px 10px 10px">
 	<form id="staffEditForm" class="staffForm" method="post">
+	<div id="hideTree">
+	<ul id="staffTree" class="easyui-tree" data-options="url:'/staff/list',animate: true,method : 'GET'"></ul>
+    </div>
 	    <table cellpadding="5">
 	       <tr>
 	            <td>员工号:</td>
@@ -119,7 +122,8 @@
 	</div>
 </div>
 <script type="text/javascript">
-
+var node = $("#staffTree").tree("getSelected");/* 得到用户选中的部门节点 */
+var nodePar = $("#staffTree").tree("getParent",node.target); /*通过子节点获取父节点 */
 var staffEditPage = {
 		submitForm : function(){
 			if(!$('#staffEditForm').form('validate')){
@@ -130,7 +134,7 @@ var staffEditPage = {
 			$.post("/rest/staff/edit",$("#staffEditForm").serialize(), function(data){
 				if(data.status == 200){
 					$.messager.alert('提示','编辑内容成功!');
-					$("#staffList").datagrid("reload");
+					$("#staffTree").tree("reload",nodePar.target)/*员工编辑成功后，员工列表要进行重新加载*/
 					TT.closeCurrentWindow();
 				}
 			});
@@ -153,6 +157,7 @@ var staffEditPage = {
 	                 }
 	             }); 
 	         });
+	         $("#hideTree").hide();	         
 </script>
 
 </body>

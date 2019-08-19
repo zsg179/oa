@@ -16,6 +16,9 @@
 <body>
 <div class=staff-add style="padding:10px 10px 10px 10px">
 	<form id="staffAddForm" class="itemForm" method="post">
+	<div id="hideTree">
+	<ul id="staffTree" class="easyui-tree" data-options="url:'/staff/list',animate: true,method : 'GET'"></ul>
+    </div>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工号:</td>
@@ -104,7 +107,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-
 	var staffAddPage  = {
 			submitForm : function (){
             /* 如果表单输入不合法，那么会提示”表单还未填写完！” */
@@ -139,7 +141,7 @@
 	                 }
 	             }); 
 	         });  
-	         
+	 $("#hideTree").hide();         
 </script>
 </body>
 </html>
