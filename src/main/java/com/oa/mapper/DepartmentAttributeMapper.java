@@ -33,6 +33,9 @@ public class DepartmentAttributeMapper implements AttributesMapper<Department> {
 		if(attrs.get("postalCode")!=null){
 			department.setPosition((String) attrs.get("postalCode").get());
 		}
+		if(attrs.get("facsimileTelephoneNumber")!=null){
+			department.setIsLastDept((String) attrs.get("facsimileTelephoneNumber").get());
+		}
 		return department;
 	}
 

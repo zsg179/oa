@@ -149,7 +149,20 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	    	
 	    	return ldapNameBuilder.build();
 		}
-
+	
+	protected Name buildDn(String DN) {//按照DN构建路径
+		 
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
+	    String regex = ",";
+	    String[] array = DN.split(regex); 
+	    	
+	    for(int i =array.length-1;i>=0 ; i--){
+	    	ldapNameBuilder.add(array[i]);
+	    }
+	    return ldapNameBuilder.build();
+	}
+	
 	
 	@Override
 	public OAResult edit(Employee emp) {
@@ -172,7 +185,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		DirContextOperations context = ldapTemplate.lookupContext(olddn);
         mapToContext(emp, context);
        
-        
+        //处理标签
+        /*
         String regex = "#";
         String label=oldemp.getLabel();
         String[] array1 = label.split(regex);
@@ -184,7 +198,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         for(int i =0;i<array2.length-1; i++){
         	addMemberToGroup(array2[i],emp);
 	    }
-        
+        */
         ldapTemplate.modifyAttributes(context);
         ldapTemplate.rename(olddn, newdn);
         
@@ -214,7 +228,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 	
 	
+	@Override
+    public OAResult update(Employee oldemp,Employee newemp) {
+		
+    	Name olddn = buildDn(oldemp);
+    	Name newdn = buildDn(newemp);
+		
+		DirContextOperations context = ldapTemplate.lookupContext(olddn);
+        mapToContext(newemp, context);
+        
+        ldapTemplate.modifyAttributes(context);
+        ldapTemplate.rename(olddn, newdn);
+        
+		return OAResult.ok();
 	
+	}
 	
     protected void mapToContext (Employee emp, DirContextOperations context) {
     	
@@ -222,15 +250,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
     	context.setAttributeValue("sn",emp.getLastName());
     	context.setAttributeValue("businessCategory",emp.getParentId());
     	context.setAttributeValue("description",emp.getId());
-    	context.setAttributeValue("employeeType",emp.getLabel());
-    	context.setAttributeValue("mail",emp.getEmail());
-    	
-    	context.setAttributeValue("o",emp.getO());
-    	context.setAttributeValue("ou",emp.getOu());
-    	
-    	context.setAttributeValue("title",emp.getTitle());
-    	context.setAttributeValue("st",emp.getIsParent());
     	context.setAttributeValue("telephoneNumber",emp.getPhone());
+    	context.setAttributeValue("mail",emp.getEmail());
+    	context.setAttributeValue("employeeType",emp.getLabel());
+    	context.setAttributeValue("title",emp.getTitle());
+    	
      }
     
     
@@ -292,15 +316,32 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public List<EasyUIComboboxResult> getDept(String parentId) {
-		List<Department> list = ldapTemplate.search(query().where("businessCategory").is(parentId), new DepartmentAttributeMapper());
-		List<EasyUIComboboxResult> result = new ArrayList<EasyUIComboboxResult>();
-		for (Department dept : list) {
-			EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
-			comboboxResult.setId(dept.getId());
-			comboboxResult.setText(dept.getDeptName());
-			result.add(comboboxResult);
+		List<EasyUIComboboxResult> result = new ArrayList<>();
+		List<EasyUIComboboxResult> lastDept = getLastDept(result, parentId);
+		return lastDept;
+		
+	}
+
+	public List<EasyUIComboboxResult> getLastDept(List<EasyUIComboboxResult> result, String id) {
+		List<Department> list = ldapTemplate.search(query().where("businessCategory").is(id),
+				new DepartmentAttributeMapper());
+		if (list.size() > 0) {
+			for (Department dept : list) {
+				EasyUIComboboxResult comboboxResult = new EasyUIComboboxResult();
+				comboboxResult.setId(dept.getId());
+				comboboxResult.setText(dept.getDeptName());
+				List<Department> list2 = ldapTemplate.search(query().where("description").is(dept.getParentId()),
+						new DepartmentAttributeMapper());
+				Department parentDept = list2.get(0);
+				comboboxResult.setGroup(parentDept.getDeptName());
+				result.add(comboboxResult);
+				if (dept.getIsLastDept().equals("0")) {
+					getLastDept(result, dept.getId());
+				}
+			}
 		}
 		return result;
+
 	}
 
 	@Override
