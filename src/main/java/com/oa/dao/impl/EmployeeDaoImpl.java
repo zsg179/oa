@@ -149,20 +149,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	    	
 	    	return ldapNameBuilder.build();
 		}
-	
-	protected Name buildDn(String DN) {//按照DN构建路径
-		 
-		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
-		//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
-	    String regex = ",";
-	    String[] array = DN.split(regex); 
-	    	
-	    for(int i =array.length-1;i>=0 ; i--){
-	    	ldapNameBuilder.add(array[i]);
-	    }
-	    return ldapNameBuilder.build();
-	}
-	
+
 	
 	@Override
 	public OAResult edit(Employee emp) {
@@ -235,11 +222,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
     	context.setAttributeValue("sn",emp.getLastName());
     	context.setAttributeValue("businessCategory",emp.getParentId());
     	context.setAttributeValue("description",emp.getId());
-    	context.setAttributeValue("telephoneNumber",emp.getPhone());
-    	context.setAttributeValue("mail",emp.getEmail());
     	context.setAttributeValue("employeeType",emp.getLabel());
-    	context.setAttributeValue("title",emp.getTitle());
+    	context.setAttributeValue("mail",emp.getEmail());
     	
+    	context.setAttributeValue("o",emp.getO());
+    	context.setAttributeValue("ou",emp.getOu());
+    	
+    	context.setAttributeValue("title",emp.getTitle());
+    	context.setAttributeValue("st",emp.getIsParent());
+    	context.setAttributeValue("telephoneNumber",emp.getPhone());
      }
     
     

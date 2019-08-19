@@ -205,18 +205,7 @@ public class DeptDaoImpl implements DeptDao {
 		}	
 	}
 
-    private Name buildDn(String DN) {//按照DN构建路径
-    	
-    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance( );
-    	String regex = ",";
-    	String[] array = DN.split(regex); 
-    	
-    	for(int i =array.length-1;i>=0 ; i--){
-    		ldapNameBuilder.add(array[i]);
-        }
-    	
-        return ldapNameBuilder.build();
-    }
+    
     
   
     
@@ -338,6 +327,8 @@ public class DeptDaoImpl implements DeptDao {
 			return OAResult.ok(maxId2 + 1 + "");
 		}
 	}
+
+	
 
 	
 
