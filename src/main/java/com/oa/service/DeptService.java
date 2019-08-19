@@ -37,7 +37,7 @@ public interface DeptService {
 	 * @return
 	 */
 
-	OAResult update(Department DN,Department OU);
+	OAResult edit(Department dept);
 
 	/**
 	 * 通过id获取部门信息
@@ -50,6 +50,6 @@ public interface DeptService {
 	 * @return
 	 */
 	OAResult getMaxId();
-	OAResult edit(Department dept);
+	
 }
 

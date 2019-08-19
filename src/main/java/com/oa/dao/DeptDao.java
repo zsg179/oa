@@ -31,8 +31,9 @@ public interface DeptDao {
 	 * @param dept
 	 * @return
 	 */
+	OAResult edit(Department dept);
 
-	OAResult update(Department oOU,Department nOU);
+	
 
 	/**
 	 * 通过id获取部门信息
@@ -45,5 +46,5 @@ public interface DeptDao {
 	 * @return
 	 */
 	OAResult getMaxId();
-	OAResult edit(Department dept);
+	
 }

@@ -247,12 +247,10 @@ public class DeptDaoImpl implements DeptDao {
         ldapTemplate.rename(oldDn, newDn);
         
         //修改这个部门下部门人员的上级部门
+        //部门
         List<Department> listdept = ldapTemplate.search(
 			      query().base(dept.getDn()).where("objectclass").is("organizationalUnit"),
 			      new DepartmentAttributeMapper());
-        List<Employee> listemp = ldapTemplate.search(
-			      query().base(dept.getDn()).where("objectclass").is("person"),
-			      new PersonAttributeMapper());
         
         for(int i=0;i<listdept.size();i++){
         	Department nextdept=listdept.get(i);
@@ -261,6 +259,11 @@ public class DeptDaoImpl implements DeptDao {
         	context2.setAttributeValue("l", nextdept.getO());
         	ldapTemplate.modifyAttributes(context2);
         }
+        //人员
+        List<Employee> listemp = ldapTemplate.search(
+			      query().base(dept.getDn()).where("objectclass").is("person"),
+			      new PersonAttributeMapper());
+        
         for(int i=0;i<listemp.size();i++){
         	Employee nextemp=listemp.get(i);
         	nextemp.setO(nextemp.getO().replace(olddept.getO(), dept.getO()));
@@ -273,21 +276,6 @@ public class DeptDaoImpl implements DeptDao {
 
 	}
     
-    @Override
-    public OAResult update(Department oOU,Department nOU) {//根据提供的条目和OU更新组织
-    	
-    	
-    	Name oldDn = buildDn(oOU);
-    	Name newDn=buildDn(nOU);
-    	
-    	DirContextOperations context = ldapTemplate.lookupContext(oldDn);
-    	
-    	mapToContext(nOU, context);
-        
-        ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
-        ldapTemplate.rename(oldDn, newDn);
-        return OAResult.ok();
-    }
     
    
 	//ou

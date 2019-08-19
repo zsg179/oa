@@ -46,13 +46,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getEmpList(parentId);
 	}
 	
-	
-	
-	@Override
-	public OAResult update(Employee DN,Employee emp) {
-		
-		return employeeDao.update(DN, emp);
-	}
 
 	@Override
 	public List<EasyUIComboboxResult> getCompany() {

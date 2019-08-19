@@ -185,8 +185,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		DirContextOperations context = ldapTemplate.lookupContext(olddn);
         mapToContext(emp, context);
        
-        //处理标签
-        /*
+        
         String regex = "#";
         String label=oldemp.getLabel();
         String[] array1 = label.split(regex);
@@ -198,7 +197,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         for(int i =0;i<array2.length-1; i++){
         	addMemberToGroup(array2[i],emp);
 	    }
-        */
+        
         ldapTemplate.modifyAttributes(context);
         ldapTemplate.rename(olddn, newdn);
         
