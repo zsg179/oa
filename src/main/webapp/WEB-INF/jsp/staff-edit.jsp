@@ -37,11 +37,8 @@
 	        </tr>  
 	        <tr>
 	            <td>公司:</td>
-	             <%String o = request.getParameter("o"); 
-	              o = java.net.URLDecoder.decode(o,"UTF-8");
-	            %>
 	            <td>
-	            <input id="o" name="o" class="easyui-combobox" style="width: 280px;" value="<%=o%>" panelHeight="auto" data-options="
+	            <input id="o" name="o" class="easyui-combobox" style="width: 280px;"  panelHeight="auto" data-options="
 				    valueField: 'id',
 				    textField: 'text',
 				    url: '/getCompany',
@@ -58,11 +55,8 @@
 	        </tr> 
 	        <tr>
 	            <td>部门:</td>
-	            <%String ou = request.getParameter("ou"); 
-	              ou = java.net.URLDecoder.decode(ou,"UTF-8");
-	            %>
 	            <td>
-	            <input id="ou" name="ou" class="easyui-combobox" value="<%=ou%>" style="width: 280px;" panelHeight="auto" data-options="
+	            <input id="ou" name="ou" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
 	            valueField:'id',
 	            textField:'text',
 	            prompt: '请选择部门',
@@ -78,11 +72,8 @@
 	             
 	        <tr>
 	            <td>职位:</td>
-	            <%String title = request.getParameter("title"); 
-	              title = java.net.URLDecoder.decode(title,"UTF-8");
-	            %>
 	            <td>
-	            <input id="title" name="title" class="easyui-combobox" value="<%=title%>" style="width: 280px;" panelHeight="auto" data-options="
+	            <input id="title" name="title" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
 	            valueField:'id',
 	            textField:'text',
 	            prompt: '请选择职位',
@@ -106,10 +97,10 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	             <%String lable = request.getParameter("lable"); 
-	             lable = java.net.URLDecoder.decode(lable,"UTF-8");
+	             <%String label = request.getParameter("label"); 
+	             label = java.net.URLDecoder.decode(label,"UTF-8");
 	            %>
-	            <td><input id="lable" name="lable" class="easyui-combobox"  style="width: 280px;" data-options=" 
+	            <td><input id="label" name="label" class="easyui-combobox"  value="<%=label%>" style="width: 280px;" data-options=" 
 	            prompt: '请选择标签',
 	            url: '/getLabel',
 				method:'get',
@@ -149,53 +140,6 @@ var staffEditPage = {
 			staffEditEditor.html('');
 		}
 };
-
-
-function combobox_checkbox(_id, optionsJson, hight) {
-    $('#'+_id).combobox({
-        data: optionsJson,
-        valueField: 'id',
-        textField: 'text',
-        panelHeight: hight,
-        multiple: true,
-        editable: false,
-     
-        onLoadSuccess: function () { // 下拉框数据加载成功调用
-            $("#"+_id).combobox('clear'); //清空
-        },
-        onSelect: function (row) { // 选中一个选项时调用
-            var opts = $(this).combobox('options');
-                //设置选中选项所对应的复选框为选中状态
-                $('#'+row.domId + ' input[type="checkbox"]').prop("checked", true);
-        },
-        onUnselect: function (row) { // 取消选中一个选项时调用
-            var opts = $(this).combobox('options');
-                //设置选中选项所对应的复选框为非选中状态
-                $('#'+row.domId + ' input[type="checkbox"]').prop("checked", false);
-                var selectedList = $("#"+_id).combobox('getValues');
-                // 如果“所有”是选中状态,则将其取消选中
-                if (selectedList[0] === "") {
-                    // 将“所有”选项移出数组，并且将该项的复选框设为非选中
-                    selectedList.splice(0, 1);
-                    $('#'+opts.data[0].domId + ' input[type="checkbox"]').prop("checked", false);
-                }
-                $("#"+_id).combobox('clear');//清空
-                $("#"+_id).combobox('setValues', selectedList); // 重新复制选中项
-
-
-        }
-    });
-}
-
-var tttData = [
-               {id: '1', text: '选项1'},
-               {id: '2', text: '选项2'},
-               {id: '3', text: '选项3'},
-               {id: '4', text: '选项4'},
-               {id: '5', text: '选项5'},
-               {id: '6', text: '选项6'},
-           ];
-           combobox_checkbox('lable', tttData, 'auto');
 
 	         $(function(){
 	             //自定义电话校验规则

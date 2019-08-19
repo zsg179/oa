@@ -54,12 +54,6 @@ var contentListToolbar = [{
 	 text:'新增员工',
 	    iconCls:'icon-add',
 	    handler:function(){/* 点击‘新增’触发的函数 */
-	    	/* var node = $("#staffTree").tree("getSelected"); */ //* 得到用户选中的员工节点 */
-	    	/* 如果点击的不是叶子结点或者没有选择节点，则弹出一个提示框，告诉用户 必须选择员工 */
-	    	/* if(!node || $("#staffTree").tree("isLeaf",node.target)){
-	    		$.messager.alert('提示','新增员工必须选择一个部门!');
-	    		return ;
-	    	}  */
 	    	 //发送请求，生成id
 	    	 $.post("/department/gen/id",function(data){
 	    		if(data.status==200){
@@ -92,15 +86,13 @@ var contentListToolbar = [{
           var title=row.title
           var phone=row.phone
           var email=row.email
-          var lable=row.lable
+          var label=row.label
           var o=row.o
           var ou=row.ou
-          var titile=row.title
   		  TT.createWindow({
   			url : "/staff-edit?id="+id+"&fullName="+encodeURI(encodeURI(fullName))+"&lastName="+encodeURI(encodeURI(lastName))
   			      +"&title="+encodeURI(encodeURI(title))+"&phone="+encodeURI(encodeURI(phone))+"&email="+encodeURI(encodeURI(email))
-  			      +"&lable="+encodeURI(encodeURI(lable))+"&o="+encodeURI(encodeURI(o))+"&ou="+encodeURI(encodeURI(ou))  
-  			      +"&title="+encodeURI(encodeURI(title)) 
+  			      +"&label="+encodeURI(encodeURI(label))+"&o="+encodeURI(encodeURI(o))+"&ou="+encodeURI(encodeURI(ou))  
   		});    	 
     }
 },{

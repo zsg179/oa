@@ -16,15 +16,6 @@
 <body>
 <div class=staff-add style="padding:10px 10px 10px 10px">
 	<form id="staffAddForm" class="itemForm" method="post">
-		<input type="hidden" name="id" value="${param.id }"/>
-		<!-- <input type="hidden" name="fullName"/>
-		<input type="hidden" name="lastName"/>
-		<input type="hidden" name="title"/>
-		<input type="hidden" name="ou"/>
-		<input type="hidden" name="o"/>
-		<input type="hidden" name="phone"/>
-		<input type="hidden" name="email"/>
-		<input type="hidden" name="label"/> -->
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工号:</td>
@@ -94,7 +85,7 @@
 	        </tr> 
 	        <tr>
 	            <td>员工标签:</td>
-	            <td><input id="lable" name="lable" class="easyui-combobox"  style="width: 280px;" data-options=" 
+	            <td><input id="label" name="label" class="easyui-combobox"  style="width: 280px;" data-options=" 
 	            prompt: '请选择标签',
 	            url: '/getLabel',
 				method:'get',
