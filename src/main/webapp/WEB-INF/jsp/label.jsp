@@ -81,6 +81,7 @@ var contentListToolbar = [{
         			if(data.status == 200){
         				$.messager.alert('提示','删除标签成功!',undefined,function(){
         					$("#labelList").datagrid("reload");
+        					$("#labelTree").tree("reload");
         				});
         			}
         		});

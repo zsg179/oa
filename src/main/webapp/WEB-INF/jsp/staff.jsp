@@ -99,6 +99,8 @@ var contentListToolbar = [{
     text:'删除员工',
     iconCls:'icon-cancel',
     handler:function(){
+    	var node = $("#staffTree").tree("getSelected");/* 得到用户选中的部门节点 */
+        var nodePar = $("#staffTree").tree("getParent",node.target); /*通过子节点获取父节点 */
     	var ids = TT.getSelectionsIds("#staffList");
     	if(ids.length == 0){
     		$.messager.alert('提示','未选中员工!');
@@ -111,6 +113,7 @@ var contentListToolbar = [{
         			if(data.status == 200){
         				$.messager.alert('提示','删除员工成功!',undefined,function(){
         					$("#staffList").datagrid("reload");
+        					$("#staffTree").tree("reload",nodePar.target)
         				});
         			}
         		});

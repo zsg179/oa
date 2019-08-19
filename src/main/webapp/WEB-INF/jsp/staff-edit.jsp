@@ -100,7 +100,7 @@
 	             <%String label = request.getParameter("label"); 
 	             label = java.net.URLDecoder.decode(label,"UTF-8");
 	            %>
-	            <td><input id="label" name="label" class="easyui-combobox"  value="<%=label%>" style="width: 280px;" data-options=" 
+	            <td><input id="label" name="label" class="easyui-combobox" <%--  value="<%=label%>" --%> style="width: 280px;" data-options=" 
 	            prompt: '请选择标签',
 	            url: '/getLabel',
 				method:'get',
