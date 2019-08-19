@@ -248,11 +248,12 @@ public class DeptDaoImpl implements DeptDao {
         
         //修改这个部门下部门人员的上级部门
         List<Department> listdept = ldapTemplate.search(
-			      query().base(dept.getDn()),
+			      query().base(dept.getDn()).where("objectclass").is("organizationalUnit"),
 			      new DepartmentAttributeMapper());
         List<Employee> listemp = ldapTemplate.search(
-			      query().base(dept.getDn()),
+			      query().base(dept.getDn()).where("objectclass").is("person"),
 			      new PersonAttributeMapper());
+        
         for(int i=0;i<listdept.size();i++){
         	Department nextdept=listdept.get(i);
         	nextdept.setO(nextdept.getO().replace(olddept.getO(), dept.getO()));
