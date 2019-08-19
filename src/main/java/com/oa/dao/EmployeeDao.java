@@ -28,8 +28,7 @@ public interface EmployeeDao {
 	 * @return
 	 */
 	OAResult edit(Employee emp);
-	//
-	OAResult update(Employee oldemp,Employee newemp);
+	
 	/**
 	 * 通过id获取员工信息
 	 * @param id
