@@ -247,7 +247,7 @@ public class DeptDaoImpl implements DeptDao {
         
         for(int i=0;i<listdept.size();i++){
         	Department nextdept=listdept.get(i);
-        	nextdept.setO(nextdept.getO().replace(olddept.getO(), dept.getO()));
+        	nextdept.setO(nextdept.getO().replace(olddept.getDn(), dept.getDn()));
         	DirContextOperations context2 = ldapTemplate.lookupContext(nextdept.getDn());
         	context2.setAttributeValue("l", nextdept.getO());
         	ldapTemplate.modifyAttributes(context2);
@@ -259,7 +259,7 @@ public class DeptDaoImpl implements DeptDao {
         
         for(int i=0;i<listemp.size();i++){
         	Employee nextemp=listemp.get(i);
-        	nextemp.setO(nextemp.getO().replace(olddept.getO(), dept.getO()));
+        	nextemp.setO(nextemp.getO().replace(olddept.getDn(), dept.getDn()));
         	DirContextOperations context2 = ldapTemplate.lookupContext(nextemp.getDn());
         	context2.setAttributeValue("o", nextemp.getO());
         	ldapTemplate.modifyAttributes(context2);

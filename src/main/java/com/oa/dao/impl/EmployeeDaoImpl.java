@@ -171,11 +171,16 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		emp.setIsParent("0");
 		
 		PersonAttributeMapper PAM=new PersonAttributeMapper();
-		
+		///*
 		List<Employee> list = ldapTemplate.search(
 			      query().where("objectclass").is("person")
 			             .and("description").is(description),
 			      PAM);
+		//	      */
+		/*
+		List<Employee> list = ldapTemplate.search(
+			      query().where("description").is(description),PAM);
+		*/
 		Employee oldemp=(Employee)list.get(0);
 		
 		Name olddn = buildDn(oldemp);
