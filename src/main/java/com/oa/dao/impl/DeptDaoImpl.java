@@ -73,6 +73,7 @@ public class DeptDaoImpl implements DeptDao {
 		try {
 			dept.setO((String) attrs.get("l").get());
 			dept.setId((String) attrs.get("description").get());
+			dept.setIsLastDept((String) attrs.get("facsimileTelephoneNumber").get());
 			dept.setParentId((String) attrs.get("businessCategory").get());
 			dept.setIsParent((String) attrs.get("st").get());
 		} catch (NamingException e) {
@@ -119,6 +120,14 @@ public class DeptDaoImpl implements DeptDao {
 	public OAResult create(Department dept) {
 		//补全pojo
 		dept.setIsParent("1");
+		dept.setIsLastDept("1");
+		//修改上级部门为非最后一级部门
+		List<Department> list = ldapTemplate.search(query().where("description").is(dept.getParentId()), new DepartmentAttributeMapper());
+		Department parentDept = list.get(0);
+		parentDept.setIsLastDept("0");
+		//持久化更新
+		Name parentDn = buildDn(parentDept);
+		ldapTemplate.rebind(parentDn, null, buildAttributes(parentDept));
 		Name dn = buildDn(dept);
 		ldapTemplate.bind(dn, null, buildAttributes(dept));
 		return OAResult.ok();
@@ -131,6 +140,7 @@ public class DeptDaoImpl implements DeptDao {
 	      ocattr.add("organizationalUnit");
 	      attrs.put(ocattr);
 	      attrs.put("businessCategory", dept.getParentId());
+	      attrs.put("facsimileTelephoneNumber", dept.getIsLastDept());
 	      attrs.put("description", dept.getId());
 	      attrs.put("l", dept.getO());
 	      attrs.put("st", dept.getIsParent());

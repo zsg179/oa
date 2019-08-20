@@ -21,7 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public OAResult create(Employee emp) {
 		// TODO Auto-generated method stub
-		return null;
+		return employeeDao.create(emp);
 	}
 
 	@Override

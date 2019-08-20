@@ -34,7 +34,7 @@ public class EmpController {
 	@ResponseBody
 	public OAResult empCreate(Employee emp){
 		
-		return null;
+		return employeeService.create(emp);
 	}
 	
 	

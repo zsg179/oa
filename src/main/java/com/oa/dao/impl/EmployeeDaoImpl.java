@@ -8,6 +8,7 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
+import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
@@ -24,6 +25,8 @@ import java.util.Random;
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
@@ -41,11 +44,35 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 public class EmployeeDaoImpl implements EmployeeDao {
 	@Autowired
 	private LdapTemplate ldapTemplate;
-
+	
 	@Override
 	public OAResult create(Employee emp) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(emp);
+		emp.setIsParent("0");
+		Name dn = buildDn(emp);
+		ldapTemplate.bind(dn, null, buildAttributes(emp));
+		return OAResult.ok();
+	}
+	private Attributes buildAttributes(Employee emp){
+		Attributes attrs = new BasicAttributes();
+		BasicAttribute ocattr = new BasicAttribute("objectclass");
+		ocattr.add("InetOrgPerson");
+		ocattr.add("organizationalPerson");
+		ocattr.add("person");
+		ocattr.add("top");
+		attrs.put(ocattr);
+		attrs.put("cn", emp.getFullName());
+		attrs.put("sn", emp.getLastName());
+		//attrs.put("businessCategory", emp.getParentId());
+		attrs.put("description", emp.getId());
+		attrs.put("employeeType", emp.getLabel());
+		attrs.put("mail", emp.getEmail());
+		attrs.put("o", emp.getO());
+		attrs.put("ou", emp.getOu());
+		attrs.put("st", emp.getIsParent());
+		attrs.put("telephoneNumber", emp.getPhone());
+		attrs.put("title", emp.getTitle());
+		return attrs;
 	}
 
 	@Override
