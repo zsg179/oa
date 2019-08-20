@@ -120,6 +120,11 @@ public class DeptDaoImpl implements DeptDao {
 	public OAResult create(Department dept) {
 		//补全pojo
 		dept.setIsParent("1");
+		dept.setIsLastDept("1");
+		//修改上级部门为非最后一级部门
+		List<Department> list = ldapTemplate.search(query().where("description").is(dept.getParentId()), new DepartmentAttributeMapper());
+		Department parentDept = list.get(0);
+		parentDept.setIsLastDept("0");
 		Name dn = buildDn(dept);
 		ldapTemplate.bind(dn, null, buildAttributes(dept));
 		return OAResult.ok();
