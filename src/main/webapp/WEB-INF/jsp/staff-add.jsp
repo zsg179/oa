@@ -141,7 +141,7 @@
 	                 }
 	             }); 
 	         });  
-	 $("#hideTree").hide();         
+	 $("#hideTree").hide();   
 </script>
 </body>
 </html>
