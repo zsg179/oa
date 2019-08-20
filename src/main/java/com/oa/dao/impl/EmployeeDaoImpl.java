@@ -228,21 +228,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 	
 	
-	@Override
-    public OAResult update(Employee oldemp,Employee newemp) {
-		
-    	Name olddn = buildDn(oldemp);
-    	Name newdn = buildDn(newemp);
-		
-		DirContextOperations context = ldapTemplate.lookupContext(olddn);
-        mapToContext(newemp, context);
-        
-        ldapTemplate.modifyAttributes(context);
-        ldapTemplate.rename(olddn, newdn);
-        
-		return OAResult.ok();
 	
-	}
 	
     protected void mapToContext (Employee emp, DirContextOperations context) {
     	
