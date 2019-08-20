@@ -98,7 +98,7 @@
 				panelHeight:'auto',
 				editable:false">
 	            </td>
-	        </tr>  		             
+	        </tr>	             
 	    </table>
 	</form>
 	<div style="padding:10px">
@@ -107,6 +107,7 @@
 	</div>
 </div>
 <script type="text/javascript">
+/* var oName=$('#o').combobox('getValue'); */
 	var staffAddPage  = {
 			submitForm : function (){
             /* 如果表单输入不合法，那么会提示”表单还未填写完！” */
@@ -114,7 +115,6 @@
 					$.messager.alert('提示','表单还未填写完成!');
 					return ;
 				}
-				
 				/* 发起url为/staff/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/staff/save",$("#staffAddForm").serialize(), function(data){
 					if(data.status == 200){

@@ -15,7 +15,7 @@
 	<div id="hideTree">
 	<ul id="departmentTree" class="easyui-tree" data-options="url:'/department/list',animate: true,method : 'GET'"></ul>
     </div>
-		<input type="hidden" name="parentId" value="${param.parentId }"/>
+		<input type="hidden" name="parentId" value="${param.parentId}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>部门编号:</td>

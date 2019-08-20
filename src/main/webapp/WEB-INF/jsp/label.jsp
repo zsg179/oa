@@ -12,9 +12,7 @@
             <table class="easyui-datagrid" id="labelList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/label/query/info',queryParams:{id:200}">
 		    <thead>
 		        <tr>
-		            <th data-options="field:'id',width:100">标签id</th>
-		            <th data-options="field:'ou',width:100">标签名</th>
-		            <th data-options="field:'member',width:400">员工信息</th>
+		            <th data-options="field:'member',width:700">员工信息</th>
 		        </tr>
 		    </thead>
 		</table>
