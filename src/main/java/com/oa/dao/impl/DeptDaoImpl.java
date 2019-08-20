@@ -73,6 +73,7 @@ public class DeptDaoImpl implements DeptDao {
 		try {
 			dept.setO((String) attrs.get("l").get());
 			dept.setId((String) attrs.get("description").get());
+			dept.setIsLastDept((String) attrs.get("facsimileTelephoneNumber").get());
 			dept.setParentId((String) attrs.get("businessCategory").get());
 			dept.setIsParent((String) attrs.get("st").get());
 		} catch (NamingException e) {
@@ -131,6 +132,7 @@ public class DeptDaoImpl implements DeptDao {
 	      ocattr.add("organizationalUnit");
 	      attrs.put(ocattr);
 	      attrs.put("businessCategory", dept.getParentId());
+	      attrs.put("facsimileTelephoneNumber", dept.getIsLastDept());
 	      attrs.put("description", dept.getId());
 	      attrs.put("l", dept.getO());
 	      attrs.put("st", dept.getIsParent());

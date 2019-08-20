@@ -8,6 +8,7 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
+import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Repository;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
@@ -26,6 +27,8 @@ import java.util.Random;
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
@@ -42,10 +45,61 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	@Autowired
 	private LdapTemplate ldapTemplate;
 
+	protected Name buildDnPer(Employee emp) {
+		return LdapNameBuilder.newInstance()
+				.add("o",emp.getO() )
+				.add("ou",emp.getOu())
+				.add("cn", emp.getFullName())
+				.build();
+	}
+	protected Employee buildEmp(Name dn, Attributes attrs) {
+		Employee emp = new Employee();
+		// dept.setO(LdapUtils.getStringValue(dn, "o"));
+		emp.setFullName(LdapUtils.getStringValue(dn, "cn"));
+		try {
+			emp.setLastName((String) attrs.get("sn").get());
+			emp.setId((String) attrs.get("description").get());
+			emp.setIsParent((String) attrs.get("st").get());
+			emp.setLabel((String) attrs.get("employeeType").get());
+			emp.setEmail((String) attrs.get("mail").get());
+			emp.setO((String) attrs.get("o").get());
+			emp.setOu((String) attrs.get("ou").get());
+			emp.setPhone((String) attrs.get("telephoneNumber").get());
+			emp.setTitle((String) attrs.get("title").get());
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return emp;
+	}
+	 
 	@Override
 	public OAResult create(Employee emp) {
-		// TODO Auto-generated method stub
-		return null;
+		emp.setIsParent("0");
+		Name dn = buildDnPer(emp);
+		ldapTemplate.bind(dn, null, buildAttributes(emp));
+		return OAResult.ok();
+	}
+	private Attributes buildAttributes(Employee emp){
+		Attributes attrs = new BasicAttributes();
+		BasicAttribute ocattr = new BasicAttribute("objectclass");
+		ocattr.add("InetOrgPerson");
+		ocattr.add("organizationalPerson");
+		ocattr.add("person");
+		ocattr.add("top");
+		attrs.put(ocattr);
+		attrs.put("cn", emp.getFullName());
+		attrs.put("sn", emp.getLastName());
+		//attrs.put("businessCategory", emp.getParentId());
+		attrs.put("description", emp.getId());
+		attrs.put("employeeType", emp.getLabel());
+		attrs.put("mail", emp.getEmail());
+		attrs.put("o", emp.getO());
+		attrs.put("ou", emp.getOu());
+		attrs.put("st", emp.getIsParent());
+		attrs.put("telephoneNumber", emp.getPhone());
+		attrs.put("title", emp.getTitle());
+		return attrs;
 	}
 
 	@Override
