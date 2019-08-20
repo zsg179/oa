@@ -65,6 +65,7 @@
 	            prompt: '请选择部门',
 	            required:true,
 	            editable:false,
+	            groupField:'group',
 			    onSelect: function(rec){
 			    var url = '/getPosition?id='+rec.id;
 			    $('#title').combobox('reload', url);
