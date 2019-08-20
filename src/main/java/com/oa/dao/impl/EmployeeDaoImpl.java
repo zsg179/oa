@@ -193,30 +193,35 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	@Override
 	public OAResult edit(Employee emp) {
+		//根据前端传的ID号设置要修改的emp
+		String number=emp.getOu();
+		List<Department> list = ldapTemplate.search(
+			      query().where("objectclass").is("organizationalUnit")
+			             .and("description").is(number),
+			      new DepartmentAttributeMapper());
+		Department dept=(Department)list.get(0);
+		emp.setO(dept.getDn());//设置o
+		emp.setOu(dept.getDeptName());//设置ou
+		emp.setIsParent("0");//设置st
+		emp.setParentId(number);//设置父节点ID
 		
+		
+		//获取修改前的节点
 		String description=emp.getId();
-		emp.setIsParent("0");
-		
-		System.out.println(description);
-		//PersonAttributeMapper PAM=new PersonAttributeMapper();
-		/*
 		List<Employee> listemp = ldapTemplate.search(
 			      query().where("objectclass").is("person")
 			             .and("description").is(description),
 			             new PersonAttributeMapper());
-			      */
-		///*
-		List<Employee> listemp = ldapTemplate.search(
-			      query().where("description").is(description),new PersonAttributeMapper());
-		//*/
 		Employee oldemp=(Employee)listemp.get(0);
+		
+		
 		
 		Name olddn = buildDn(oldemp);
     	Name newdn = buildDn(emp);
-    	
+    	/*
     	String Pid=ldapTemplate.lookup(emp.getO(), new DepartmentAttributeMapper()).getId();
     	emp.setParentId(Pid);
-		
+		*/
 		DirContextOperations context = ldapTemplate.lookupContext(olddn);
         mapToContext(emp, context);
        

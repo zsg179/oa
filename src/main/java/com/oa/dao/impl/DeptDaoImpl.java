@@ -50,20 +50,19 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 public class DeptDaoImpl implements DeptDao {
 	@Autowired
 	private LdapTemplate ldapTemplate;
-	
+
 	private DepartmentAttributeMapper contentMapper;
 
-
 	protected Name buildDn(Department dept) {
-		LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance();
-    	String sDN=dept.getO();
-    	String regex = ",";
-    	String[] array = sDN.split(regex); 
-    	for(int i =array.length-1;i>=0 ; i--){
-    		ldapNameBuilder.add(array[i]);
-        }
-    	ldapNameBuilder.add("ou",dept.getDeptName());
-    	return ldapNameBuilder.build();
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		String sDN = dept.getO();
+		String regex = ",";
+		String[] array = sDN.split(regex);
+		for (int i = array.length - 1; i >= 0; i--) {
+			ldapNameBuilder.add(array[i]);
+		}
+		ldapNameBuilder.add("ou", dept.getDeptName());
+		return ldapNameBuilder.build();
 	}
 
 	protected Department buildDept(Name dn, Attributes attrs) {
@@ -118,125 +117,114 @@ public class DeptDaoImpl implements DeptDao {
 
 	@Override
 	public OAResult create(Department dept) {
-		//补全pojo
+		// 补全pojo
 		dept.setIsParent("1");
 		dept.setIsLastDept("1");
-		//修改上级部门为非最后一级部门
-		List<Department> list = ldapTemplate.search(query().where("description").is(dept.getParentId()), new DepartmentAttributeMapper());
+		// 修改上级部门为非最后一级部门
+		List<Department> list = ldapTemplate.search(query().where("description").is(dept.getParentId()),
+				new DepartmentAttributeMapper());
 		Department parentDept = list.get(0);
-		parentDept.setIsLastDept("0");
-		//持久化更新
-		Name parentDn = buildDn(parentDept);
-		ldapTemplate.rebind(parentDn, null, buildAttributes(parentDept));
+		if (parentDept.getIsLastDept().equals("1")) {
+			parentDept.setIsLastDept("0");
+			// 持久化更新
+			Name parentDn = buildDn(parentDept);
+			ldapTemplate.rebind(parentDn, null, buildAttributes(parentDept));
+		}
 		Name dn = buildDn(dept);
 		ldapTemplate.bind(dn, null, buildAttributes(dept));
 		return OAResult.ok();
 	}
-	
+
 	private Attributes buildAttributes(Department dept) {
-	      Attributes attrs = new BasicAttributes();
-	      BasicAttribute ocattr = new BasicAttribute("objectclass");
-	      ocattr.add("top");
-	      ocattr.add("organizationalUnit");
-	      attrs.put(ocattr);
-	      attrs.put("businessCategory", dept.getParentId());
-	      attrs.put("facsimileTelephoneNumber", dept.getIsLastDept());
-	      attrs.put("description", dept.getId());
-	      attrs.put("l", dept.getO());
-	      attrs.put("st", dept.getIsParent());
-	      attrs.put("postalCode",dept.getPosition());
-	      return attrs;
-	   }
+		Attributes attrs = new BasicAttributes();
+		BasicAttribute ocattr = new BasicAttribute("objectclass");
+		ocattr.add("top");
+		ocattr.add("organizationalUnit");
+		attrs.put(ocattr);
+		attrs.put("businessCategory", dept.getParentId());
+		attrs.put("facsimileTelephoneNumber", dept.getIsLastDept());
+		attrs.put("description", dept.getId());
+		attrs.put("l", dept.getO());
+		attrs.put("st", dept.getIsParent());
+		attrs.put("postalCode", dept.getPosition());
+		return attrs;
+	}
 
 	@Override
 	public OAResult delete(String ids) {
-		
-		//获取前台ids
+
+		// 获取前台ids
 		String[] idList = ids.split(",");
-		String description=null;
-		for(String id : idList){
-			description=id;//获取到前台的部门编号
+		String description = null;
+		for (String id : idList) {
+			description = id;// 获取到前台的部门编号
 		}
-		//找出了部门
-		 LdapQuery query = query()
-		         .base("")
-		         .attributes("ou", "description")
-		         .where("objectclass").is("organizationalUnit")
-		         .and("description").is(description);
-		 
-		 List<String> list = ldapTemplate.search(
-				 query, new AttributesMapper<String>() {
-				public String mapFromAttributes(Attributes attrs) throws NamingException {
-					return (String) attrs.get("ou").get();
-				}
-			});
-		 String deptName=null;
-		  for(String str:list){
-			  deptName=str;	 //ou
-		  }
-		//找出o
-		LdapQuery query2 = query()
-		         .base("")
-		         .attributes("l", "description")
-		         .where("objectclass").is("organizationalUnit")
-		         .and("description").is(description);
-		 List<String> list2 = ldapTemplate.search(
-				 query2, new AttributesMapper<String>() {
-				public String mapFromAttributes(Attributes attrs) throws NamingException {
-					return (String) attrs.get("l").get();
-				}
-			});
-		 String o=null;
-		  for(String str:list2){
-			  o=str;
-		  }
-		 
-		Department dept =new Department();
+		// 找出了部门
+		LdapQuery query = query().base("").attributes("ou", "description").where("objectclass").is("organizationalUnit")
+				.and("description").is(description);
+
+		List<String> list = ldapTemplate.search(query, new AttributesMapper<String>() {
+			public String mapFromAttributes(Attributes attrs) throws NamingException {
+				return (String) attrs.get("ou").get();
+			}
+		});
+		String deptName = null;
+		for (String str : list) {
+			deptName = str; // ou
+		}
+		// 找出o
+		LdapQuery query2 = query().base("").attributes("l", "description").where("objectclass").is("organizationalUnit")
+				.and("description").is(description);
+		List<String> list2 = ldapTemplate.search(query2, new AttributesMapper<String>() {
+			public String mapFromAttributes(Attributes attrs) throws NamingException {
+				return (String) attrs.get("l").get();
+			}
+		});
+		String o = null;
+		for (String str : list2) {
+			o = str;
+		}
+
+		Department dept = new Department();
 		dept.setDeptName(deptName);
 		dept.setId(description);
 		dept.setO(o);
-		Name dn =buildDn(dept);
-		String emplyo=dn.toString();
+		Name dn = buildDn(dept);
+		String emplyo = dn.toString();
 		/**
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
-		LdapQuery query3 = query().attributes("cn", "o","ou").where("objectclass").is("person").and("o").is(emplyo).and("ou").is(deptName);
+		LdapQuery query3 = query().attributes("cn", "o", "ou").where("objectclass").is("person").and("o").is(emplyo)
+				.and("ou").is(deptName);
 		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
 			public String mapFromAttributes(Attributes attrs) throws NamingException {
 				return (String) attrs.get("cn").get();
 			}
 		});
-		int employNumbur=list3.size();	
-  	    if(employNumbur==0){
+		int employNumbur = list3.size();
+		if (employNumbur == 0) {
 			ldapTemplate.unbind(dn);
 			return OAResult.ok();
 		} else {
 			return OAResult.unOk();
-		}	
+		}
 	}
 
-    
-    
-  
-    
-    
 	@Override
-	public OAResult edit(Department dept) { 
-        String description=dept.getId();
-        dept.setIsParent("1");
-        
+	public OAResult edit(Department dept) {
+		String description = dept.getId();
+		dept.setIsParent("1");
+
 		List<Department> list = ldapTemplate.search(
-			      query().where("objectclass").is("organizationalUnit")
-			             .and("description").is(description),
-			      new DepartmentAttributeMapper());
-		Department olddept=(Department)list.get(0);
-		
+				query().where("objectclass").is("organizationalUnit")
+				.and("description").is(description),
+				new DepartmentAttributeMapper());
+		Department olddept = (Department) list.get(0);
+
 		Name oldDn = buildDn(olddept);
     	Name newDn=buildDn(dept);
     	
-    	dept.setIsParent("1");
         String Pid=ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper()).getId();
-         
     	dept.setParentId(Pid);
     	
         DirContextOperations context = ldapTemplate.lookupContext(oldDn);
@@ -272,31 +260,24 @@ public class DeptDaoImpl implements DeptDao {
         	context2.setAttributeValue("o", nextemp.getO());
         	ldapTemplate.modifyAttributes(context2);
         }
-        
-		return OAResult.ok();
+ 		return OAResult.ok();
 
 	}
-    
-    
-   
-	//ou
-    protected void mapToContext (Department OU, DirContextOperations context) {
-    	
-    	//将修改后的属性值赋给context的属性
-    	//context.setAttributeValue("ou", OU.getDeptName());会报错
-    	
-    	context.setAttributeValue("l", OU.getO());
-    	context.setAttributeValue("st", OU.getIsParent());
-    	context.setAttributeValue("description", OU.getId());
-    	context.setAttributeValue("businessCategory", OU.getParentId());
-    	context.setAttributeValue("postalCode", OU.getPosition());
-    	context.setAttributeValue("facsimileTelephoneNumber", OU.getIsLastDept());
-    	
-    	
-     }
-    
 
-	
+	// ou
+	protected void mapToContext(Department OU, DirContextOperations context) {
+
+		// 将修改后的属性值赋给context的属性
+		// context.setAttributeValue("ou", OU.getDeptName());会报错
+
+		context.setAttributeValue("l", OU.getO());
+		context.setAttributeValue("st", OU.getIsParent());
+		context.setAttributeValue("description", OU.getId());
+		context.setAttributeValue("businessCategory", OU.getParentId());
+		context.setAttributeValue("postalCode", OU.getPosition());
+		context.setAttributeValue("facsimileTelephoneNumber", OU.getIsLastDept());
+
+	}
 
 	@Override
 	public EasyUIDataGridResult geteDeptInfoById(String id) {
@@ -340,10 +321,5 @@ public class DeptDaoImpl implements DeptDao {
 			return OAResult.ok(maxId2 + 1 + "");
 		}
 	}
-
-	
-
-	
-
 
 }
