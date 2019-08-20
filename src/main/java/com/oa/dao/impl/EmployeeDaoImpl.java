@@ -10,8 +10,6 @@ import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
 
-import static org.springframework.ldap.query.LdapQueryBuilder.query;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +34,8 @@ import com.oa.pojo.EasyUIComboboxResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
 import com.oa.util.OAResult;
+
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 @Repository(value = "employeeDao")
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -170,18 +170,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		String description=emp.getId();
 		emp.setIsParent("0");
 		
-		PersonAttributeMapper PAM=new PersonAttributeMapper();
-		///*
-		List<Employee> list = ldapTemplate.search(
+		System.out.println(description);
+		//PersonAttributeMapper PAM=new PersonAttributeMapper();
+		/*
+		List<Employee> listemp = ldapTemplate.search(
 			      query().where("objectclass").is("person")
 			             .and("description").is(description),
-			      PAM);
-		//	      */
-		/*
-		List<Employee> list = ldapTemplate.search(
-			      query().where("description").is(description),PAM);
-		*/
-		Employee oldemp=(Employee)list.get(0);
+			             new PersonAttributeMapper());
+			      */
+		///*
+		List<Employee> listemp = ldapTemplate.search(
+			      query().where("description").is(description),new PersonAttributeMapper());
+		//*/
+		Employee oldemp=(Employee)listemp.get(0);
 		
 		Name olddn = buildDn(oldemp);
     	Name newdn = buildDn(emp);

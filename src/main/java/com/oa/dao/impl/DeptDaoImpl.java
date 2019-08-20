@@ -226,9 +226,7 @@ public class DeptDaoImpl implements DeptDao {
     	
     	dept.setIsParent("1");
         String Pid=ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper()).getId();
-        
-        System.out.println(Pid);
-        
+         
     	dept.setParentId(Pid);
     	
         DirContextOperations context = ldapTemplate.lookupContext(oldDn);

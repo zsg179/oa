@@ -95,7 +95,5 @@ public class EmpController {
 		return employeeService.getLabel();
 	}
 
-
-
 }
 

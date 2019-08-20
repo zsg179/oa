@@ -1,5 +1,10 @@
 package com.oa.pojo;
 
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
+
+import java.util.List;
+
+import com.oa.mapper.DepartmentAttributeMapper;
 
 public class Department {
 	private String deptName;//ou
@@ -63,6 +68,8 @@ public class Department {
 	public String getDn() {
 		return "ou="+deptName+","+o;
 	}
+	
+	
 	
 }
 /*@Entry(objectClasses = { "organizationalUnit","organization", "top" }, base="dc=poke_domain,dc=com")
