@@ -3,12 +3,15 @@ package com.oa.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oa.dao.impl.EmployeeDaoImpl;
+import com.oa.mapper.PersonAttributeMapper;
 import com.oa.pojo.EasyUIComboboxResult;
 
 import com.oa.pojo.EasyUIDataGridResult;

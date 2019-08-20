@@ -226,12 +226,16 @@ public class DeptDaoImpl implements DeptDao {
     	
     	dept.setIsParent("1");
         String Pid=ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper()).getId();
+        
+        System.out.println(Pid);
+        
     	dept.setParentId(Pid);
     	
         DirContextOperations context = ldapTemplate.lookupContext(oldDn);
     	
     	mapToContext(dept, context);
         //修改部门属性
+    	newDn=buildDn(dept);
         ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
         ldapTemplate.rename(oldDn, newDn);
         
