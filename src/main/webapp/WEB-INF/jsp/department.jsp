@@ -7,7 +7,7 @@
       @version 3.0  -->
 
 
-<div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:500,noheader:true,border:false" style="padding:10px;">
+<div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:700,noheader:true,border:false" style="padding:10px;">
     <div class="easyui-layout" data-options="fit:true">
         <!--面板左部-->
         <div data-options="region:'west',split:false" style="width:250px;padding:5px">
@@ -77,14 +77,11 @@ var contentListToolbar = [{
     		    }
     			TT.createWindow({
     				url : "/department-add?id="+id+"&parentName="+encodeURI(encodeURI(parentName))+"&parentId="+parentId
-    				
     			});
     		}else{
     			$.messager.alert('提示', '生成id出错！');
     		}
-    		
     	})
-
     }
 },{
     text:'编辑部门',
@@ -118,6 +115,8 @@ var contentListToolbar = [{
     text:'删除部门',
     iconCls:'icon-cancel',
     handler:function(){
+    	var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
+        var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
     	var ids = TT.getSelectionsIds("#departmentList");
     	
     	if(ids.length == 0){
@@ -131,13 +130,11 @@ var contentListToolbar = [{
         			if(data.status == 200){
         				$.messager.alert('提示','删除部门成功!',undefined,function(){
         					$("#departmentList").datagrid("reload");
-        					$("#departmentTree").tree("reload");
+        					$("#departmentTree").tree("reload",nodePar.target)
         				});
         			}
         			else{
         				$.messager.alert('提示','删除部门失败,请确认该部门是否还有员工！',undefined,function(){
-        					$("#departmentList").datagrid("reload");
-        					
         				});	
         			}
         			

@@ -10,6 +10,9 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div style="padding:10px 10px 10px 10px">
 	<form id="departmentEditForm" class="itemForm" method="post">
+	<div id="hideTree">
+	<ul id="departmentTree" class="easyui-tree" data-options="url:'/department/list',animate: true,method : 'GET'"></ul>
+    </div>
 	<input type="hidden" name="parentId" value="${param.parentId}"/>
 	    <table cellpadding="5">
 	        <tr>
@@ -46,7 +49,8 @@
 	</div>
 </div>
 <script type="text/javascript">
-
+var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
+var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
 var departmentEditPage = {
 		submitForm : function(){
 			if(!$('#departmentEditForm').form('validate')){
@@ -58,8 +62,8 @@ var departmentEditPage = {
 				if(data.status == 200){
 					$.messager.alert('提示','编辑内容成功!');
 					$("#departmentList").datagrid("reload");
-					$("#departmentTree").tree("reload");/*部门修改成功后，部门列表要进行重新加载*/
-					TT.closeCurrentWindow();
+					$("#departmentTree").tree("reload",nodePar.target)/*部门编辑成功后，部门列表要进行重新加载*/
+					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 				}
 			});
 		},
@@ -69,4 +73,5 @@ var departmentEditPage = {
 		}
 };
 
+$("#hideTree").hide();
 </script>
