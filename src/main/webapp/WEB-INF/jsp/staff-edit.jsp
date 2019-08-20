@@ -125,6 +125,7 @@
 <script type="text/javascript">
 var node = $("#staffTree").tree("getSelected");/* 得到用户选中的部门节点 */
 var nodePar = $("#staffTree").tree("getParent",node.target); /*通过子节点获取父节点 */
+var root = $("#staffTree").tree('getRoot'); 
 var staffEditPage = {
 		submitForm : function(){
 			if(!$('#staffEditForm').form('validate')){
@@ -135,7 +136,7 @@ var staffEditPage = {
 			$.post("/rest/staff/edit",$("#staffEditForm").serialize(), function(data){
 				if(data.status == 200){
 					$.messager.alert('提示','编辑内容成功!');
-					$("#staffTree").tree("reload",nodePar.target)/*员工编辑成功后，员工列表要进行重新加载*/
+					$("#staffTree").tree("reload",root.target)/*员工编辑成功后，员工列表要进行重新加载*/
 					TT.closeCurrentWindow();
 				}
 			});

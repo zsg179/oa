@@ -25,7 +25,7 @@
 	            <%String DeptName = request.getParameter("DeptName"); 
 	            DeptName = java.net.URLDecoder.decode(DeptName,"UTF-8");
 	            %>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=DeptName%>" type="text" name="DeptName" style="width: 280px;"></input></td>
+	            <td><input id=parent class="easyui-textbox easyui-validatebox"  data-options="required:true" value="<%=DeptName%>" type="text" name="DeptName" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>上级部门:</td>
@@ -51,6 +51,7 @@
 <script type="text/javascript">
 var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
 var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
+var root = $("#departmentTree").tree('getRoot'); 
 var departmentEditPage = {
 		submitForm : function(){
 			if(!$('#departmentEditForm').form('validate')){
@@ -62,7 +63,7 @@ var departmentEditPage = {
 				if(data.status == 200){
 					$.messager.alert('提示','编辑内容成功!');
 					$("#departmentList").datagrid("reload");
-					$("#departmentTree").tree("reload",nodePar.target)/*部门编辑成功后，部门列表要进行重新加载*/
+					$("#departmentTree").tree("reload",root.target)/*部门编辑成功后，部门列表要进行重新加载*/
 					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 				}
 			});
