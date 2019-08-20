@@ -125,6 +125,9 @@ public class DeptDaoImpl implements DeptDao {
 		List<Department> list = ldapTemplate.search(query().where("description").is(dept.getParentId()), new DepartmentAttributeMapper());
 		Department parentDept = list.get(0);
 		parentDept.setIsLastDept("0");
+		//持久化更新
+		Name parentDn = buildDn(parentDept);
+		ldapTemplate.rebind(parentDn, null, buildAttributes(parentDept));
 		Name dn = buildDn(dept);
 		ldapTemplate.bind(dn, null, buildAttributes(dept));
 		return OAResult.ok();
