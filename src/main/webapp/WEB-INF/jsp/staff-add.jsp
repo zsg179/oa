@@ -115,6 +115,8 @@ var root = $("#staffTree").tree('getRoot');
 					$.messager.alert('提示','表单还未填写完成!');
 					return ;
 				}
+            $('#title').combobox('setValue',$('#title').combobox('getText'))
+            $('#label').combobox('setValues',$('#label').combobox('getText'))
 				/* 发起url为/staff/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/staff/save",$("#staffAddForm").serialize(), function(data){
 					if(data.status == 200){
