@@ -191,7 +191,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		emp.setIsParent("0");//设置st
 		emp.setParentId(number);//设置父节点ID
 		
-		
 		//获取修改前的节点
 		String description=emp.getId();
 		List<Employee> listemp = ldapTemplate.search(
@@ -211,17 +210,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		mapToContext(emp, context);
 
 		// 处理标签
-		/*
-		 * String regex = "#"; String label=oldemp.getLabel(); String[] array1 =
-		 * label.split(regex); for(int i =0;i<array1.length-1; i++){
-		 * removeMemberFromGroup(array1[i],oldemp); } label=emp.getLabel();
-		 * String[] array2 = label.split(regex); for(int i =0;i<array2.length-1;
-		 * i++){ addMemberToGroup(array2[i],emp); }
-		 */
+		String regex = ","; 
+		String label=oldemp.getLabel(); 
+		String[] array1 =label.split(regex); 
+		for(int i =0;i<array1.length-1; i++){
+			 removeMemberFromGroup(array1[i],oldemp); 
+		} 
+		label=emp.getLabel();
+		String[] array2 = label.split(regex); 
+		for(int i =0;i<array2.length-1;i++){ 
+			addMemberToGroup(array2[i],emp); 
+		}
+		 
 		ldapTemplate.modifyAttributes(context);
 		ldapTemplate.rename(olddn, newdn);
 
 		return OAResult.ok();
+	}
+	
+	private Name buildGroupDn(String groupName) {
+		return LdapNameBuilder.newInstance().add("ou=标签").add("cn", groupName).build();
 	}
 
 	// 添加人员到标签
@@ -242,10 +250,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		ldapTemplate.update(ctx);
 	}
 
-	private Name buildGroupDn(String groupName) {
-		return LdapNameBuilder.newInstance().add("ou=标签").add("cn", groupName).build();
-	}
-
+	
 	protected void mapToContext(Employee emp, DirContextOperations context) {
 
 		// context.setAttributeValue("cn", emp.getFullName());

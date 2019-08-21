@@ -191,7 +191,7 @@ public class DeptDaoImpl implements DeptDao {
 		dept.setO(o);
 		Name dn = buildDn(dept);
 		String emplyo = dn.toString();
-		/**
+		/** 
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
 		LdapQuery query3 = query().attributes("cn", "o", "ou").where("objectclass").is("person").and("o").is(emplyo)
