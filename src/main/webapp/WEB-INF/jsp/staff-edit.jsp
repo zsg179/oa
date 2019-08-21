@@ -133,11 +133,13 @@ var staffEditPage = {
 				return ;
 			}
 			
+			$('#title').combobox('setValue',$('#title').combobox('getText'))
+			$('#label').combobox('setValues',$('#label').combobox('getText'))
 			$.post("/rest/staff/edit",$("#staffEditForm").serialize(), function(data){
 				if(data.status == 200){
-					$.messager.alert('提示','编辑内容成功!');
+					$("#staffList").datagrid("reload");
 					$("#staffTree").tree("reload",root.target)/*员工编辑成功后，员工列表要进行重新加载*/
-					TT.closeCurrentWindow();
+					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 				}
 			});
 		},
