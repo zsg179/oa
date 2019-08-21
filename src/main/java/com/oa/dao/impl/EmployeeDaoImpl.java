@@ -57,12 +57,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		emp.setOu(dept.getDeptName());//设置ou
 		emp.setIsParent("0");//将st置为0
 		emp.setParentId(number);//设置parentId
-		System.out.println(emp);
 		Name dn = buildDn(emp);
 		ldapTemplate.bind(dn, null, buildAttributes(emp));
 		return OAResult.ok();
 	}
-
+	
 	private Attributes buildAttributes(Employee emp) {
 		Attributes attrs = new BasicAttributes();
 		BasicAttribute ocattr = new BasicAttribute("objectclass");
