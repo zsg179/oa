@@ -270,6 +270,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		context.setAttributeValue("mail", emp.getEmail());
 		context.setAttributeValue("employeeType", emp.getLabel());
 		context.setAttributeValue("title", emp.getTitle());
+		context.setAttributeValue("ou", emp.getOu());
+		context.setAttributeValue("o", emp.getO());
 
 	}
 
