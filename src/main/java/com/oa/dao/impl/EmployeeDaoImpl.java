@@ -46,8 +46,18 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public OAResult create(Employee emp) {
+		//根据前端传的ID号设置要修改的emp
+		String number=emp.getOu();
+		List<Department> list = ldapTemplate.search(
+				query().where("objectclass").is("organizationalUnit")
+				.and("description").is(number),
+				new DepartmentAttributeMapper());
+		Department dept=(Department)list.get(0);
+		emp.setO(dept.getDn());//设置O
+		emp.setOu(dept.getDeptName());//设置ou
+		emp.setIsParent("0");//将st置为0
+		emp.setParentId(number);//设置parentId
 		System.out.println(emp);
-		emp.setIsParent("0");
 		Name dn = buildDn(emp);
 		ldapTemplate.bind(dn, null, buildAttributes(emp));
 		return OAResult.ok();
@@ -63,7 +73,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		attrs.put(ocattr);
 		attrs.put("cn", emp.getFullName());
 		attrs.put("sn", emp.getLastName());
-		// attrs.put("businessCategory", emp.getParentId());
+		attrs.put("businessCategory", emp.getParentId());
 		attrs.put("description", emp.getId());
 		attrs.put("employeeType", emp.getLabel());
 		attrs.put("mail", emp.getEmail());
