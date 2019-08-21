@@ -107,7 +107,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-var root = $("#staffTree").tree('getRoot'); 
+    var root = $("#staffTree").tree('getRoot'); 
 	var staffAddPage  = {
 			submitForm : function (){
             /* 如果表单输入不合法，那么会提示”表单还未填写完！” */
@@ -121,7 +121,7 @@ var root = $("#staffTree").tree('getRoot');
 				$.post("/staff/save",$("#staffAddForm").serialize(), function(data){
 					if(data.status == 200){
 						$.messager.alert('提示','新增员工成功!');/*如果返回的状态为200说明员工添加成功*/
-    					$("#staffList").datagrid("reload",root.target);/*部门添加成功后，部门列表要进行重新加载*/
+    					$("#staffList").datagrid("reload",root.targrt);/*部门添加成功后，部门列表要进行重新加载*/
     					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 					}
 				});

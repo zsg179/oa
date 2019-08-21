@@ -5,6 +5,7 @@
             <ul id="labelTree" class="easyui-tree" data-options="url:'/label/list',animate: true,method : 'GET'">
             </ul>
         </div>
+        
         <!--面板右部-->
         <div data-options="region:'center'" style="padding:5px">
         <!--EasyUI的数据表格-->
