@@ -30,11 +30,13 @@ import org.springframework.stereotype.Repository;
 
 import com.oa.dao.DeptDao;
 import com.oa.mapper.DepartmentAttributeMapper;
+import com.oa.mapper.LabelAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
 import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Employee;
+import com.oa.pojo.Label;
 import com.oa.util.OAResult;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
@@ -191,7 +193,7 @@ public class DeptDaoImpl implements DeptDao {
 		dept.setO(o);
 		Name dn = buildDn(dept);
 		String emplyo = dn.toString();
-		/** 
+		/**
 		 * 来一个判断，如果部门里面还有人则不删除部门，如果部门人数为0则删除该空部门。
 		 */
 		LdapQuery query3 = query().attributes("cn", "o", "ou").where("objectclass").is("person").and("o").is(emplyo)
@@ -212,57 +214,55 @@ public class DeptDaoImpl implements DeptDao {
 
 	@Override
 	public OAResult edit(Department dept) {
-		
+
 		String description = dept.getId();
 		List<Department> list = ldapTemplate.search(
-				query().where("objectclass").is("organizationalUnit")
-				.and("description").is(description),
+				query().where("objectclass").is("organizationalUnit").and("description").is(description),
 				new DepartmentAttributeMapper());
 		Department olddept = (Department) list.get(0);
-		
+
 		dept.setIsParent("1");
 		dept.setIsLastDept(olddept.getIsLastDept());
 
 		Name oldDn = buildDn(olddept);
-    	Name newDn=buildDn(dept);
-    	
-        String Pid=ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper()).getId();
-    	dept.setParentId(Pid);
-    	
-        DirContextOperations context = ldapTemplate.lookupContext(oldDn);
-    	
-    	mapToContext(dept, context);
-        //修改部门属性
-    	newDn=buildDn(dept);
-        ldapTemplate.modifyAttributes(context);//修改除条目外的其他属性
-        ldapTemplate.rename(oldDn, newDn);
-        
-        //修改这个部门下部门人员的上级部门
-        //部门
-        List<Department> listdept = ldapTemplate.search(
-			      query().base(dept.getDn()).where("objectclass").is("organizationalUnit"),
-			      new DepartmentAttributeMapper());
-        
-        for(int i=0;i<listdept.size();i++){
-        	Department nextdept=listdept.get(i);
-        	nextdept.setO(nextdept.getO().replace(olddept.getDn(), dept.getDn()));
-        	DirContextOperations context2 = ldapTemplate.lookupContext(nextdept.getDn());
-        	context2.setAttributeValue("l", nextdept.getO());
-        	ldapTemplate.modifyAttributes(context2);
-        }
-        //人员
-        List<Employee> listemp = ldapTemplate.search(
-			      query().base(dept.getDn()).where("objectclass").is("person"),
-			      new PersonAttributeMapper());
-        
-        for(int i=0;i<listemp.size();i++){
-        	Employee nextemp=listemp.get(i);
-        	nextemp.setO(nextemp.getO().replace(olddept.getDn(), dept.getDn()));
-        	DirContextOperations context2 = ldapTemplate.lookupContext(nextemp.getDn());
-        	context2.setAttributeValue("o", nextemp.getO());
-        	ldapTemplate.modifyAttributes(context2);
-        }
- 		return OAResult.ok();
+		Name newDn = buildDn(dept);
+
+		String Pid = ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper()).getId();
+		dept.setParentId(Pid);
+
+		DirContextOperations context = ldapTemplate.lookupContext(oldDn);
+
+		mapToContext(dept, context);
+		// 修改部门属性
+		newDn = buildDn(dept);
+		ldapTemplate.modifyAttributes(context);// 修改除条目外的其他属性
+		ldapTemplate.rename(oldDn, newDn);
+
+		// 修改这个部门下部门人员的上级部门
+		// 部门
+		List<Department> listdept = ldapTemplate.search(
+				query().base(dept.getDn()).where("objectclass").is("organizationalUnit"),
+				new DepartmentAttributeMapper());
+
+		for (int i = 0; i < listdept.size(); i++) {
+			Department nextdept = listdept.get(i);
+			nextdept.setO(nextdept.getO().replace(olddept.getDn(), dept.getDn()));
+			DirContextOperations context2 = ldapTemplate.lookupContext(nextdept.getDn());
+			context2.setAttributeValue("l", nextdept.getO());
+			ldapTemplate.modifyAttributes(context2);
+		}
+		// 人员
+		List<Employee> listemp = ldapTemplate.search(query().base(dept.getDn()).where("objectclass").is("person"),
+				new PersonAttributeMapper());
+
+		for (int i = 0; i < listemp.size(); i++) {
+			Employee nextemp = listemp.get(i);
+			nextemp.setO(nextemp.getO().replace(olddept.getDn(), dept.getDn()));
+			DirContextOperations context2 = ldapTemplate.lookupContext(nextemp.getDn());
+			context2.setAttributeValue("o", nextemp.getO());
+			ldapTemplate.modifyAttributes(context2);
+		}
+		return OAResult.ok();
 
 	}
 
@@ -317,10 +317,25 @@ public class DeptDaoImpl implements DeptDao {
 				maxId2 = id2;
 			}
 		}
-		if (maxId1 > maxId2) {
+		List<Label> list3 = ldapTemplate.search(query().where("objectclass").is("groupOfNames").and("o").is("0"),
+				new LabelAttributeMapper());
+		long maxId3 = -1;
+		for (Label label : list3) {
+			long id1 = Long.parseLong(label.getId());
+			long id2 = Long.parseLong(label.getParentId());
+			if (maxId3 < id1) {
+				maxId3 = id1;
+			}
+			if (maxId3 < id2) {
+				maxId3 = id2;
+			}
+		}
+		if (maxId1 > maxId2 && maxId1 > maxId3) {
 			return OAResult.ok(maxId1 + 1 + "");
-		} else {
+		} else if (maxId2 > maxId1 && maxId2 > maxId3) {
 			return OAResult.ok(maxId2 + 1 + "");
+		} else {
+			return OAResult.ok(maxId3 + 1 + "");
 		}
 	}
 

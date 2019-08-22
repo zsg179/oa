@@ -42,7 +42,7 @@ public class DeptController {
 
 	@RequestMapping("/department/query/info")
 	@ResponseBody
-	public EasyUIDataGridResult geteDeptInfoById(String id) {
+	public EasyUIDataGridResult geteDeptInfoById(@RequestParam(value = "id", defaultValue = "-1") String id) {
 		EasyUIDataGridResult result = deptService.geteDeptInfoById(id);
 		return result;
 	}
