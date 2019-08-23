@@ -33,7 +33,6 @@
 					return ;
 				}
 				
-				/* 发起url为/label/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/label/addMember",$("#memberAddForm").serialize(), function(data){
 					if(data.status == 200){
 					    $.messager.alert('提示','新增员工成功!');/*如果返回的状态为200说明员工添加成功*/

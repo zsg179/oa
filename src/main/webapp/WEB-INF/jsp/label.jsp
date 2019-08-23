@@ -63,6 +63,15 @@ $(function(){
                 top: e.pageY
             });
         },
+        onAfterEdit : function(node){
+        	$.post("/rest/label/edit",{id:node.id,name:node.text},function(data){
+    			if(data.status == 200){
+    				$.messager.alert('提示','编辑标签成功!',undefined,function(){
+    					$("#labelTree").tree("reload")
+    			 })
+    			}
+    		});
+        }
 	});
 });
 function menuHandler(item){
@@ -78,13 +87,6 @@ function menuHandler(item){
 		});
 	}else if(item.name === "rename"){
 		tree.tree('beginEdit',node.target);
-		$.post("/rest/label/edit",{id:node.id,name:node.text},function(data){
-			if(data.status == 200){
-				$.messager.alert('提示','编辑标签成功!',undefined,function(){
-					$("#labelTree").tree("reload")
-				})
-			}
-		});
 	}else if(item.name === "delete"){
 		$.messager.confirm('确认','确定删除名为 '+node.text+' 的标签吗？',function(r){
 			if(r){
