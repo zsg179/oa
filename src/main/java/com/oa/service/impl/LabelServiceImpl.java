@@ -59,8 +59,7 @@ public class LabelServiceImpl implements LabelService {
 
 	@Override
 	public OAResult update(String id, String text) {
-		// TODO Auto-generated method stub
-		return null;
+		return labelDao.update(id, text);
 	}
 }
 

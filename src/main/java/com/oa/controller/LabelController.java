@@ -99,8 +99,9 @@ public class LabelController {
 	 */
 	@RequestMapping("/rest/label/edit")
 	@ResponseBody
-	public OAResult update(String id, String text) {
-		return null;
+	public OAResult update(String id, String name) {
+		
+		return labelService.update(id, name);
 	}
 
 	/**
