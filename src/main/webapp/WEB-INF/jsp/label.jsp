@@ -5,6 +5,15 @@
             <ul id="labelTree" class="easyui-tree" data-options="url:'/label/list',animate: true,method : 'GET'">
             </ul>
         </div>
+        <div id="labelMenu" class="easyui-menu" style="width:120px;" data-options="onClick:menuHandler">
+               <div data-options="iconCls:'icon-add',name:'addMember'">添加员工</div>
+               <div class="menu-sep"></div>
+               <div data-options="iconCls:'icon-remove',name:'deleteMember'">删除员工</div>
+               <div class="menu-sep"></div>
+               <div data-options="iconCls:'icon-pencil',name:'rename'">重命名标签</div>
+               <div class="menu-sep"></div>
+               <div data-options="iconCls:'icon-cancel',name:'delete'">删除标签</div>
+        </div>
         
         <!--面板右部-->
         <div data-options="region:'center'" style="padding:5px">
@@ -13,7 +22,7 @@
             <table class="easyui-datagrid" id="labelList" data-options="toolbar:contentListToolbar,singleSelect:false,collapsible:true,method:'get',url:'/label/query/info',queryParams:{id:200}">
 		    <thead>
 		        <tr>
-		            <th data-options="field:'member',width:700">员工信息</th>
+		            <th data-options="field:'member',width:900">员工信息</th>
 		        </tr>
 		    </thead>
 		</table>
@@ -35,57 +44,62 @@ $(function(){
 	});
 });
 var contentListToolbar = [{
-    text:'新增标签',
+    text:'添加标签',
     iconCls:'icon-add',
     handler:function(){
-    	var node = $("#labelTree").tree("getSelected");
-    	if(!node || !$("#labelTree").tree("isLeaf",node.target)){
-    		$.messager.alert('提示','新增标签必须选择一条标签记录!');
-    		return ;
-    	}
     	TT.createWindow({
 			url : "/label-add"
 		}); 
     }
-},{
-    text:'编辑标签',
-    iconCls:'icon-edit',
-    handler:function(){
-    	var ids = TT.getSelectionsIds("#labelList");
-    	if(ids.length == 0){
-    		$.messager.alert('提示','必须选择一条标签记录才能编辑!');
-    		return ;
-    	}
-    	if(ids.indexOf(',') > 0){
-    		$.messager.alert('提示','只能选择一条标签记录!');
-    		return ;
-    	}
+}]
+
+$(function(){
+	$("#labelTree").tree({
+		onContextMenu: function(e,node){
+            e.preventDefault();
+            $(this).tree('select',node.target);
+            $('#labelMenu').menu('show',{
+                left: e.pageX,
+                top: e.pageY
+            });
+        },
+	});
+});
+function menuHandler(item){
+	var tree = $("#labelTree");
+	var node = tree.tree("getSelected");
+	if(item.name === "addMember"){
 		TT.createWindow({
-			url : "/label-edit"
-		});    	
-    }
-},{
-    text:'删除标签',
-    iconCls:'icon-cancel',
-    handler:function(){
-    	var ids = TT.getSelectionsIds("#labelList");
-    	if(ids.length == 0){
-    		$.messager.alert('提示','未选中标签记录!');
-    		return ;
-    	}
-    	$.messager.confirm('确认','确定删除ID为 '+ids+' 的标签吗？',function(r){
-    	    if (r){
-    	    	var params = {"ids":ids};
-            	$.post("/label/delete",params, function(data){
+			url : "/label-memberAdd"
+		});
+	}else if(item.name === "deleteMember"){
+		TT.createWindow({
+			url : "/label-memberDelete"
+		});
+	}else if(item.name === "rename"){
+		tree.tree('beginEdit',node.target);
+		$.post("/rest/label/edit",{id:node.id,name:node.text},function(data){
+			if(data.status == 200){
+				$.messager.alert('提示','编辑标签成功!',undefined,function(){
+					$("#labelTree").tree("reload")
+				})
+			}
+		});
+	}else if(item.name === "delete"){
+		$.messager.confirm('确认','确定删除名为 '+node.text+' 的标签吗？',function(r){
+			if(r){
+            	$.post("/label/delete",{id:node.id}, function(data){
         			if(data.status == 200){
         				$.messager.alert('提示','删除标签成功!',undefined,function(){
+        					tree.tree("remove",node.target);
         					$("#labelList").datagrid("reload");
-        					$("#labelTree").tree("reload");
-        				});
-        			}
+        					$("#labelTree").tree("reload")
+        				})
+        			}     			
         		});
-    	    }
-    	});
-    }
-}];
+			}
+		});
+	}
+}
+
 </script>

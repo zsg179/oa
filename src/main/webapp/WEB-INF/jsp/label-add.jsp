@@ -12,9 +12,6 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div class=label-add style="padding:10px 10px 10px 10px">
 	<form id="labelAddForm" class="itemForm" method="post">
-	<div id="hideTree">
-	<ul id="labelTree" class="easyui-tree" data-options="url:'/label/list',animate: true,method : 'GET'"></ul>
-    </div>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>标签名:</td>
@@ -42,7 +39,7 @@ var nodePar = $("#labelTree").tree("getParent",node.target); /*通过子节点�
 				$.post("/label/save",$("#labelAddForm").serialize(), function(data){
 					if(data.status == 200){
 					    $.messager.alert('提示','新增标签成功!');/*如果返回的状态为200说明标签添加成功*/
-					    $("#labelTree").tree("reload",nodePar.target)/*标签添加成功后，标签列表要进行重新加载*/
+					    $("#labelTree").tree("reload")/*标签添加成功后，标签列表要进行重新加载*/
 					    TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					}
 				});
@@ -52,7 +49,6 @@ var nodePar = $("#labelTree").tree("getParent",node.target); /*通过子节点�
 				labelAddEditor.html('');
 			}
 	};
-	$("#hideTree").hide();
 </script>
 
 <style>
