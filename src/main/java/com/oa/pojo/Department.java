@@ -1,10 +1,5 @@
 package com.oa.pojo;
 
-import static org.springframework.ldap.query.LdapQueryBuilder.query;
-
-import java.util.List;
-
-import com.oa.mapper.DepartmentAttributeMapper;
 
 public class Department {
 	private String deptName;//ou

@@ -14,7 +14,9 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.oa.dao.LabelDao;
+import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.LabelAttributeMapper;
+import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
 import com.oa.pojo.Label;
@@ -89,8 +91,15 @@ public class LabelDaoImpl implements LabelDao {
 
 	@Override
 	public OAResult update(String id, String text) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Label> list = ldapTemplate.search(
+			      query().where("objectclass").is("groupOfNames")
+			             .and("description").is(id),
+			      new LabelAttributeMapper());
+		Label old=list.get(0);
+		String oldname=old.getCn();
+		ldapTemplate.rename("cn="+oldname+",ou=标签","cn="+text+",ou=标签");
+		
+		return OAResult.ok();
 	}
 
 }

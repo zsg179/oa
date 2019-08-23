@@ -1,32 +1,20 @@
 package com.oa.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
-import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Repository;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
-
 import javax.naming.Name;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
-
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
@@ -219,16 +207,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		mapToContext(emp, context);
 
 		// 处理标签
+		//System.out.println("处理标签");
 		String regex = ","; 
-		String label=oldemp.getLabel(); 
+		String label=oldemp.getLabel()+","; 
+		//System.out.println(label);
 		String[] array1 =label.split(regex); 
-		for(int i =0;i<array1.length-1; i++){
-			 removeMemberFromGroup(array1[i],oldemp); 
-		} 
-		label=emp.getLabel();
+		for(int i=0;i<array1.length; i++){
+			//System.out.println(array1[i]);
+			if(array1[i].equals("")==false){
+			removeMemberFromGroup(array1[i],oldemp); } 
+		}
+		label=emp.getLabel()+",";
 		String[] array2 = label.split(regex); 
-		for(int i =0;i<array2.length-1;i++){ 
-			addMemberToGroup(array2[i],emp); 
+		for(int i=0;i<array2.length;i++){ 
+			if(array1[i].equals("")==false){
+			addMemberToGroup(array2[i],emp); }
 		}
 		 
 		ldapTemplate.modifyAttributes(context);
@@ -245,18 +238,25 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public void addMemberToGroup(String groupName, Employee emp) {
 		Name groupDn = buildGroupDn(groupName);
 		Name userDn = buildDn(emp);
+		
 		DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
 		ctx.addAttributeValue("member", userDn);
-		ldapTemplate.update(ctx);
+		//ldapTemplate.update(ctx);
+		ldapTemplate.modifyAttributes(ctx);
 	}
 
 	// 从标签移除人员
 	public void removeMemberFromGroup(String groupName, Employee emp) {
 		Name groupDn = buildGroupDn(groupName);
 		Name userDn = buildDn(emp);
+		
+		//System.out.println("移除"+groupDn.toString());
+		
 		DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
 		ctx.removeAttributeValue("member", userDn);
-		ldapTemplate.update(ctx);
+		//ldapTemplate.update(ctx);
+		ldapTemplate.modifyAttributes(ctx);
+		
 	}
 
 	
@@ -273,8 +273,6 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		context.setAttributeValue("ou", emp.getOu());
 		context.setAttributeValue("o", emp.getO());
 		context.setAttributeValue("st", emp.getIsParent());
-
-
 	}
 
 	@Override
