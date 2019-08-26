@@ -99,6 +99,7 @@ public class LabelDaoImpl implements LabelDao {
 		String oldname=old.getCn();
 		ldapTemplate.rename("cn="+oldname+",ou=标签","cn="+text+",ou=标签");
 		
+		
 		return OAResult.ok();
 	}
 
