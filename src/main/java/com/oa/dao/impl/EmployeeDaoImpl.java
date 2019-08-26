@@ -209,7 +209,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		// 处理标签
 		//System.out.println("处理标签");
 		String regex = ","; 
-		String label=oldemp.getLabel()+","; 
+		String label=oldemp.getLabel(); 
 		//System.out.println(label);
 		String[] array1 =label.split(regex); 
 		for(int i=0;i<array1.length; i++){
@@ -217,7 +217,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			if(array1[i].equals("")==false){
 			removeMemberFromGroup(array1[i],oldemp); } 
 		}
-		label=emp.getLabel()+",";
+		label=emp.getLabel();
 		String[] array2 = label.split(regex); 
 		for(int i=0;i<array2.length;i++){ 
 			if(array1[i].equals("")==false){

@@ -5,20 +5,22 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
+import javax.naming.Name;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
 
 import com.oa.dao.LabelDao;
-import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.LabelAttributeMapper;
+import com.oa.mapper.PersonAttributeMapper;
 import com.oa.pojo.Department;
 import com.oa.pojo.EasyUIDataGridResult;
 import com.oa.pojo.EasyUITreeNote;
+import com.oa.pojo.Employee;
 import com.oa.pojo.Label;
 import com.oa.pojo.LabelMember;
 import com.oa.util.OAResult;
@@ -97,10 +99,33 @@ public class LabelDaoImpl implements LabelDao {
 			      new LabelAttributeMapper());
 		Label old=list.get(0);
 		String oldname=old.getCn();
+		//修改人员中标签属性的名称
+		List<String> members=old.getMembers();
+		for (int i = 0; i < members.size(); i++) {
+			Name dn=buildDn(members.get(i));
+			Employee emp=ldapTemplate.lookup(dn, new PersonAttributeMapper());
+			emp.setLabel(emp.getLabel().replace(oldname, text));
+			DirContextOperations context = ldapTemplate.lookupContext(emp.getDn());
+			context.setAttributeValue("employeeType", emp.getLabel());
+			ldapTemplate.modifyAttributes(context);
+		}
+		
+		
 		ldapTemplate.rename("cn="+oldname+",ou=标签","cn="+text+",ou=标签");
 		
-		
 		return OAResult.ok();
+	}
+    private Name buildDn(String DN) {//按照DN构建路径
+    	
+    	//LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance("dc=poke_domain,dc=com");
+    	LdapNameBuilder  ldapNameBuilder = LdapNameBuilder.newInstance( );
+    	String regex = ",";
+    	String[] array = DN.split(regex); 
+    	
+    	for(int i =array.length-1;i>=0 ; i--){
+    		ldapNameBuilder.add(array[i]);
+        }
+        return ldapNameBuilder.build();
 	}
 
 }
