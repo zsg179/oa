@@ -46,6 +46,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		emp.setIsParent("0");//将st置为0
 		emp.setParentId(number);//设置parentId
 		Name dn = buildDn(emp);
+		String regex = ","; 
+		String label=emp.getLabel()+",";
+		String[] array3 = label.split(regex); 
+		for(int i=0;i<array3.length;i++){ 
+			if(array3[i].equals("")==false){
+			addMemberToGroup(array3[i],emp); }
+		}
 		ldapTemplate.bind(dn, null, buildAttributes(emp));
 		return OAResult.ok();
 	}
@@ -71,6 +78,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		attrs.put("title", emp.getTitle());
 		return attrs;
 	}
+	// 添加人员到标签
+	public void addMemberToGroup1(String groupName, Employee emp) {
+		Name groupDn = buildGroupDn(groupName);
+		Name userDn = buildDn(emp);
+		DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
+		ctx.addAttributeValue("member", userDn);
+		ldapTemplate.modifyAttributes(ctx);
+		}
 
 	@Override
 	public OAResult delete(String ids) {
