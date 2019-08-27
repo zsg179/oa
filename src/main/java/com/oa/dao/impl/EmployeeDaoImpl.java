@@ -47,7 +47,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		emp.setParentId(number);//设置parentId
 		Name dn = buildDn(emp);
 		String regex = ","; 
-		String label=emp.getLabel()+",";
+		String label=emp.getLabel();
 		String[] array3 = label.split(regex); 
 		for(int i=0;i<array3.length;i++){ 
 			if(array3[i].equals("")==false){
@@ -238,7 +238,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			if(array1[i].equals("")==false){
 			addMemberToGroup(array2[i],emp); }
 		}
-		 
+		//修改人员属性
 		ldapTemplate.modifyAttributes(context);
 		ldapTemplate.rename(olddn, newdn);
 

@@ -84,6 +84,27 @@ public class LabelDaoImpl implements LabelDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	  /*public OAResult delete(String id) {
+			List<Label> list = ldapTemplate.search(
+				      query().where("objectclass").is("groupOfNames")
+				             .and("description").is(id),
+				      new LabelAttributeMapper());
+			Label label=list.get(0);
+			String name=label.getCn();
+			//修改人员中标签属性的名称
+			List<String> members=label.getMembers();//获取标签中的人员路径
+			for (int i = 0; i < members.size(); i++) {
+				Name dn=buildDn(members.get(i));//构建DN
+				Employee emp=ldapTemplate.lookup(dn, new PersonAttributeMapper());//找到人员,找不到会报错
+				emp.setLabel(emp.getLabel().replace(name+",", ""));
+				DirContextOperations context = ldapTemplate.lookupContext(emp.getDn());
+				context.setAttributeValue("employeeType", emp.getLabel());
+				ldapTemplate.modifyAttributes(context);
+			}
+			ldapTemplate.unbind("cn="+name+",ou=标签", true);
+			
+			return OAResult.ok();
+		}*/
 
 	@Override
 	public OAResult deleteMember(String id) {
@@ -100,11 +121,11 @@ public class LabelDaoImpl implements LabelDao {
 		Label old=list.get(0);
 		String oldname=old.getCn();
 		//修改人员中标签属性的名称
-		List<String> members=old.getMembers();
+		List<String> members=old.getMembers();//获取标签中的人员路径
 		for (int i = 0; i < members.size(); i++) {
-			Name dn=buildDn(members.get(i));
-			Employee emp=ldapTemplate.lookup(dn, new PersonAttributeMapper());
-			emp.setLabel(emp.getLabel().replace(oldname, text));
+			Name dn=buildDn(members.get(i));//构建DN
+			Employee emp=ldapTemplate.lookup(dn, new PersonAttributeMapper());//找到人员,找不到会报错
+			emp.setLabel(emp.getLabel().replace(oldname, text));//用text取代字符串中的oldname
 			DirContextOperations context = ldapTemplate.lookupContext(emp.getDn());
 			context.setAttributeValue("employeeType", emp.getLabel());
 			ldapTemplate.modifyAttributes(context);
@@ -128,4 +149,5 @@ public class LabelDaoImpl implements LabelDao {
         return ldapNameBuilder.build();
 	}
 
+  
 }

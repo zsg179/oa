@@ -257,13 +257,37 @@ public class DeptDaoImpl implements DeptDao {
 
 		for (int i = 0; i < listemp.size(); i++) {
 			Employee nextemp = listemp.get(i);
+			String OldEmpDn=nextemp.getDn();
 			nextemp.setO(nextemp.getO().replace(olddept.getDn(), dept.getDn()));
 			DirContextOperations context2 = ldapTemplate.lookupContext(nextemp.getDn());
 			context2.setAttributeValue("o", nextemp.getO());
 			ldapTemplate.modifyAttributes(context2);
+			
+			
+			String NewEmpDn=nextemp.getDn();
+			// 处理标签
+			String regex = ","; 
+			String label=nextemp.getLabel(); 
+			String[] array1 =label.split(regex);
+			//System.out.println(OldEmpDn+"    "+NewEmpDn);
+			for(int j=0;j<array1.length; j++){
+				if(array1[j].equals("")==false){
+					//System.out.println(array1[j]);
+					Name groupDn = buildGroupDn(array1[j]);
+					DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
+					ctx.addAttributeValue("member", NewEmpDn);
+					ctx.removeAttributeValue("member", OldEmpDn);
+					ldapTemplate.modifyAttributes(ctx);
+				}
+				 
+			}
 		}
+		
 		return OAResult.ok();
 
+	}
+	private Name buildGroupDn(String groupName) {
+		return LdapNameBuilder.newInstance().add("ou=标签").add("cn", groupName).build();
 	}
 
 	// ou
