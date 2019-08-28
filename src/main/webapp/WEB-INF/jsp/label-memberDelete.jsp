@@ -12,6 +12,7 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div class=memberDelete style="padding:10px 10px 10px 10px">
 	<form id="memberDeleteForm" class="itemForm" method="post">
+	<input type="hidden" name="labelId" value="${param.labelId}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工id:</td>
@@ -41,7 +42,7 @@
 					    TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					}
 					else{
-						 $.messager.alert('提示','删除员工失败，请确认员工id是否输入正确！');
+						 $.messager.alert('提示','删除员工失败，请确认员工id和员工标签是否唯一！');
 					}
 				});
 			},

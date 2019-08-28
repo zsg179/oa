@@ -77,13 +77,14 @@ $(function(){
 function menuHandler(item){
 	var tree = $("#labelTree");
 	var node = tree.tree("getSelected");
+	var labelId= node.id;
 	if(item.name === "addMember"){
 		TT.createWindow({
 			url : "/label-memberAdd"
 		});
 	}else if(item.name === "deleteMember"){
 		TT.createWindow({
-			url : "/label-memberDelete"
+			url : "/label-memberDelete?&labelId="+labelId
 		});
 	}else if(item.name === "rename"){
 		tree.tree('beginEdit',node.target);
