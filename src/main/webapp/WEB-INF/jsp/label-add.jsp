@@ -16,7 +16,11 @@
 	        <tr>
 	            <td>标签名:</td>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="cn" style="width: 280px;"></input></td>
-	        </tr>      
+	        </tr> 
+	        <tr>
+	            <td>员工id:</td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="id" style="width: 280px;"></input></td>
+            </tr>
 	    </table>
 	</form>
 	<div style="padding:10px">
