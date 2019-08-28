@@ -48,7 +48,7 @@ public class LabelServiceImpl implements LabelService {
 	@Override
 	public OAResult delete(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return labelDao.delete(id);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class LabelController {
 	@RequestMapping("/label/delete")
 	@ResponseBody
 	public OAResult delete(String id) {
-		return null;
+		return labelService.delete(id);
 	}
 
 	/**

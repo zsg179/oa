@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.Name;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Repository;
 
@@ -81,8 +84,105 @@ public class LabelDaoImpl implements LabelDao {
 
 	@Override
 	public OAResult delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		String description=id;
+        //找出cn，cn表示标签
+        LdapQuery query2 = query().base("").attributes("cn", "description").where("objectclass").is("groupOfNames")
+				.and("description").is(description);
+
+        List<String> list2 = ldapTemplate.search(query2, new AttributesMapper<String>() {
+	    public String mapFromAttributes(Attributes attrs) throws NamingException {
+	    return (String) attrs.get("cn").get();
+	   }
+       });
+        String DN=null;
+        for (String str : list2) {
+			DN = str;
+		}     
+        //获取标签的cn
+        String regex = ",";
+		String[] array = DN.split(regex);
+		String deleLabel=array[0];
+           
+        Name dn = buildGDn(DN);//DN是一串字符串
+        
+        //menber属性
+        List<Label> mlist=ldapTemplate.search(
+        		query().where("objectclass").is("groupOfNames")
+        		.and("description").is(id),
+        		new LabelAttributeMapper());
+        
+        Label old=mlist.get(0);
+        
+        //修改人员标签属性的名称
+        List<String> menbers=old.getMembers();
+        
+        boolean flag=false;
+        //删除前的是否最后一个标签判断，只有一个标签则不删。否则删。
+        for(int i=0;i<menbers.size();i++){
+        	Name dn2=buildGrDn(menbers.get(i));
+        	Employee emp = (Employee) ldapTemplate.lookup(dn2,new PersonAttributeMapper());
+        	String oldLabel=emp.getLabel();
+        	if(oldLabel.equals(deleLabel)){
+        	   	flag=true;	
+        	}
+        }
+        if(flag==true)
+        	return OAResult.unOk();//不符合删除条件则直接退出，什么也不干。
+        	
+        //******正式删除
+        for(int i=0;i<menbers.size();i++){
+        	Name dn2=buildGrDn(menbers.get(i));
+        	Employee emp = (Employee) ldapTemplate.lookup(dn2,new PersonAttributeMapper());
+        	String oldLabel=emp.getLabel();
+        	if(oldLabel.equals(deleLabel)){
+        		//直接删除
+        		//String newL="null";
+        		//emp.setLabel(emp.getLabel().replace(oldLabel, newL));
+        		
+        	}
+        	else{
+        		//只删除那个，别的保留
+        		String[] array2 = oldLabel.split(regex);
+        		String newLabel="";
+        		
+        		for(int j=0;j<array2.length;j++){
+        			if(array2[j].equals(deleLabel))
+        			{
+        				array2[j]="";
+        			}
+        			newLabel=newLabel.concat(array2[j]);
+        			if(array2[j].equals("")||j==array2.length-1||j==0)
+        				newLabel=newLabel.concat("");
+        			else
+        				newLabel=newLabel.concat(",");		
+        		}
+        	    emp.setLabel(emp.getLabel().replace(oldLabel,newLabel));
+        	}
+        	
+        	DirContextOperations context=ldapTemplate.lookupContext(emp.getDn());
+        	context.setAttributeValue("employeeType", emp.getLabel());
+        	ldapTemplate.modifyAttributes(context);
+  
+        	
+        }
+		
+		ldapTemplate.unbind(dn);
+		return OAResult.ok();
+	}
+	protected Name buildGrDn(String DN) {
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		String regex = ",";
+		String[] array = DN.split(regex);
+		for (int i = array.length - 1; i >= 0; i--) {
+		ldapNameBuilder.add(array[i]);
+		}
+		return ldapNameBuilder.build();
+	}
+	 protected Name buildGDn(String cn) {
+	      return LdapNameBuilder.newInstance()
+	        .add("ou=标签")
+	        .add("cn", cn)
+	        .build();
 	}
 	  /*public OAResult delete(String id) {
 			List<Label> list = ldapTemplate.search(
