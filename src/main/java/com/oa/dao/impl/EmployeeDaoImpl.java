@@ -34,7 +34,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public OAResult create(Employee emp) {
-		//根据前端传的ID号设置要修改的emp
+		
 		String number=emp.getOu();
 		List<Department> list = ldapTemplate.search(
 				query().where("objectclass").is("organizationalUnit")
@@ -202,7 +202,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		emp.setOu(dept.getDeptName());//设置ou
 		emp.setIsParent("0");//设置st
 		emp.setParentId(number);//设置父节点ID
-		
+		emp.setLabel(emp.getLabel().trim());
 		//获取修改前的节点
 		String description=emp.getId();
 		List<Employee> listemp = ldapTemplate.search(
@@ -233,9 +233,11 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			removeMemberFromGroup(array1[i],oldemp); } 
 		}
 		label=emp.getLabel();
+		//System.out.println(label);
 		String[] array2 = label.split(regex); 
 		for(int i=0;i<array2.length;i++){ 
-			if(array1[i].equals("")==false){
+			//System.out.println(array2[i]);
+			if(array2[i].equals("")==false){
 			addMemberToGroup(array2[i],emp); }
 		}
 		//修改人员属性

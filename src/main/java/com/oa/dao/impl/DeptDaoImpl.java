@@ -263,9 +263,8 @@ public class DeptDaoImpl implements DeptDao {
 			context2.setAttributeValue("o", nextemp.getO());
 			ldapTemplate.modifyAttributes(context2);
 			
-			
 			String NewEmpDn=nextemp.getDn();
-			// 处理标签
+			// 处理标签，改变标签里的人员DN
 			String regex = ","; 
 			String label=nextemp.getLabel(); 
 			String[] array1 =label.split(regex);
@@ -278,11 +277,9 @@ public class DeptDaoImpl implements DeptDao {
 					ctx.addAttributeValue("member", NewEmpDn);
 					ctx.removeAttributeValue("member", OldEmpDn);
 					ldapTemplate.modifyAttributes(ctx);
-				}
-				 
+				}	 
 			}
 		}
-		
 		return OAResult.ok();
 
 	}
@@ -292,10 +289,8 @@ public class DeptDaoImpl implements DeptDao {
 
 	// ou
 	protected void mapToContext(Department OU, DirContextOperations context) {
-
 		// 将修改后的属性值赋给context的属性
 		// context.setAttributeValue("ou", OU.getDeptName());会报错
-
 		context.setAttributeValue("l", OU.getO());
 		context.setAttributeValue("st", OU.getIsParent());
 		context.setAttributeValue("description", OU.getId());
