@@ -66,9 +66,10 @@ $(function(){
         onAfterEdit : function(node){
         	$.post("/rest/label/edit",{id:node.id,name:node.text},function(data){
     			if(data.status == 200){
-    				$.messager.alert('提示','编辑标签成功!',undefined,function(){
     					$("#labelTree").tree("reload")
-    			 })
+    			}
+    			else{
+    				$.messager.alert('提示','重命名标签失败!')
     			}
     		});
         }
@@ -78,6 +79,7 @@ function menuHandler(item){
 	var tree = $("#labelTree");
 	var node = tree.tree("getSelected");
 	var labelId= node.id;
+	var datagrid = $("#labelList");
 	if(item.name === "addMember"){
 		TT.createWindow({
 			url : "/label-memberAdd"
@@ -100,12 +102,7 @@ function menuHandler(item){
         				})
         			} 
         			else{
-            				$.messager.alert('提示','删除标签失败!员工至少保留一个标签！请单独删除员工标签',undefined,function(){
-            					tree.tree("remove",node.target);
-            					$("#labelList").datagrid("reload");
-            					$("#labelTree").tree("reload")
-            				})
-            			 
+            				$.messager.alert('提示','删除标签失败!员工至少保留一个标签，请单独删除员工标签')	 
         			}
         		});
 			}

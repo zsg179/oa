@@ -36,19 +36,16 @@
 				
 				$.post("/label/deleteMember",$("#memberDeleteForm").serialize(), function(data){
 					if(data.status == 200){
+						TT.closeCurrentWindow();  /* 关闭弹出窗口 */	
 					    $.messager.alert('提示','删除员工成功!');/*如果返回的状态为200说明员工删除成功*/
-					    
-					    //$("#labelList").datagrid("reload");/*员工删除成功后，员工列表要进行重新加载*/
-					    //$("#labelTree").tree("reload")/*员工删除成功后，标签树要进行重新加载*/
-					    //TT.closeCurrentWindow();/* 关闭弹出窗口 */	
-					    
+					    $("#labelList").datagrid("reload");//*员工删除成功后，员工列表要进行重新加载*/
 					}
 					else if(data.status == 150){
-					    $.messager.alert('提示','必须保留至少一个员工标签，移除员工失败。!');/*如果返回的状态为200说明员工删除成功*/
+					    $.messager.alert('提示','必须保留至少一个员工标签，移除员工失败!');
 					    	
 					}
 					else if(data.status == 151){
-					    $.messager.alert('提示','该员工不属于标签下，请到正确的标签下删除!');/*如果返回的状态为200说明员工删除成功*/
+					    $.messager.alert('提示','该员工不属于标签下，请到正确的标签下删除!');
 					    
 					}
 					else{

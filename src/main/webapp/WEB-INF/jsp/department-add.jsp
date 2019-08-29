@@ -56,9 +56,9 @@ var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部�
 				/* 发起url为/department/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/department/save",$("#departmentAddForm").serialize(), function(data){
 					if(data.status == 200){
+						TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					    $.messager.alert('提示','新增部门成功!');/*如果返回的状态为200说明部门添加成功*/
 					    $("#departmentTree").tree("reload",node.target)/*部门添加成功后，部门列表要进行重新加载*/
-					    TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					}
 				});
 			},
