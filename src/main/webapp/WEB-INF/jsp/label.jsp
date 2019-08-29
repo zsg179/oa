@@ -98,7 +98,15 @@ function menuHandler(item){
         					$("#labelList").datagrid("reload");
         					$("#labelTree").tree("reload")
         				})
-        			}     			
+        			} 
+        			else{
+            				$.messager.alert('提示','删除标签失败!员工至少保留一个标签！请单独删除员工标签',undefined,function(){
+            					tree.tree("remove",node.target);
+            					$("#labelList").datagrid("reload");
+            					$("#labelTree").tree("reload")
+            				})
+            			 
+        			}
         		});
 			}
 		});

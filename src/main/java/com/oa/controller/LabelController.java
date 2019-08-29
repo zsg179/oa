@@ -116,6 +116,6 @@ public class LabelController {
 	@RequestMapping("/label/deleteMember")
 	@ResponseBody
 	public OAResult deleteMember(String labelId, String id) {
-		return null;
+		return labelService.deleteMember(labelId, id);
 	}
 }

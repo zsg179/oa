@@ -206,11 +206,149 @@ public class LabelDaoImpl implements LabelDao {
 			return OAResult.ok();
 		}*/
 
+	@SuppressWarnings("null")
 	@Override
-	public OAResult deleteMember(String id) {
+	public OAResult deleteMember(String labelId, String id) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		//**********************************************************
+		// 找出了部门
+		LdapQuery query2 = query().base("").attributes("cn", "description").where("objectclass").is("groupOfNames")
+				.and("description").is(labelId);
+
+        List<String> list2 = ldapTemplate.search(query2, new AttributesMapper<String>() {
+	    public String mapFromAttributes(Attributes attrs) throws NamingException {
+	    return (String) attrs.get("cn").get();
+	   }
+       });
+        String employoutype=null;
+        for (String str : list2) {
+			employoutype = str;
+		}
+        //System.out.println(employoutype+" 部门标签");
+        //**************************************
+        
+     // 找出了员工部门
+     		LdapQuery query = query().base("").attributes("ou", "description").where("objectclass").is("person")
+     				.and("description").is(id);
+
+     		List<String> list = ldapTemplate.search(query, new AttributesMapper<String>() {
+     			public String mapFromAttributes(Attributes attrs) throws NamingException {
+     				return (String) attrs.get("ou").get();
+     			}
+     		});
+     		String deptName = null;
+     		for (String str : list) {
+     			deptName = str;
+     		}
+     		// 找出o
+     		LdapQuery query3 = query().base("").attributes("o", "description").where("objectclass").is("person")
+     				.and("description").is(id);
+     		List<String> list3 = ldapTemplate.search(query3, new AttributesMapper<String>() {
+     			public String mapFromAttributes(Attributes attrs) throws NamingException {
+     				return (String) attrs.get("o").get();
+     			}
+     		});
+     		String o = null;
+     		for (String str : list3) {
+     			o = str;
+     		}
+     		// 找员工cn
+     		LdapQuery query4 = query().base("").attributes("cn", "description").where("objectclass").is("person")
+     				.and("description").is(id);
+     		List<String> list4 = ldapTemplate.search(query4, new AttributesMapper<String>() {
+     			public String mapFromAttributes(Attributes attrs) throws NamingException {
+     				return (String) attrs.get("cn").get();
+     			}
+     		});
+     		String cn = null;
+     		for (String str : list4) {
+     			cn = str;
+     		}
+     		Employee p = new Employee();
+     		p.setO(o);
+     		p.setFullName(cn);
+     		p.setOu(deptName);
+
+     		Name DN = buildDnEm(p);//
+     
+        //Name DN=buildGmDn(o,cn);//构建DN
+		Employee emp=ldapTemplate.lookup(DN, new PersonAttributeMapper());//找到人员,找不到会报错
+		String oldLabel=emp.getLabel();
+        //System.out.println(emp+" 员工路径");
+        //System.out.println(DN+" ****DN");
+        
+        //找出员工标签然后进行和部门标签进行对比。
+        String regex=",";
+        String[] array = oldLabel.split(regex);
+        String newLabel="";
+        
+        List<String> arrlist = new ArrayList<String>();
+        for (int k=0;k<array.length;k++) {
+ 			arrlist.add(array[k]);
+ 			//System.out.println("进去arrlist"+array[k]);
+ 		}
+        if(arrlist.contains(employoutype)){
+        	if(array.length==1){//只有一个标签，但是和部门标签不同则查找错误
+        		//System.out.println("只有一个待删标签");//150,表示必须保留至少一个员工标签，移除员工失败。
+				return OAResult.unOk_3();
+			}
+		else//多个标签，删除
+		{
+    		//System.out.println("多个待删标签");
+			for(int j=0;j<array.length;j++){
+				//System.out.println(array[j]+"数组之前");
+    			if(array[j].equals(employoutype))
+    			{
+    				array[j]="";
+    				//System.out.println(array[j]+"数组");
+    			}
+    			//System.out.println("加入newLabel");
+    			newLabel=newLabel.concat(array[j]);
+    			//System.out.println("newLabel="+newLabel);
+    			if(array[j].equals("")||j==array.length-1||j==0)
+    				newLabel=newLabel.concat("");
+    			else
+    				newLabel=newLabel.concat(",");		
+    		}
+			//System.out.println("进入修改标签属性。");
+    	    emp.setLabel(emp.getLabel().replace(oldLabel,newLabel));
+    	    DirContextOperations context=ldapTemplate.lookupContext(emp.getDn());
+        	context.setAttributeValue("employeeType", emp.getLabel());
+        	ldapTemplate.modifyAttributes(context);
+		}	
+        }
+        
+        else{
+    		//System.out.println("不符合删除条件");
+        	return OAResult.unOk_2();//151.该员工不属于标签下，请到正确的标签下删除。
+        }
+        	
+        	
+        return OAResult.ok();
 	}
+	protected Name buildGmDn(String DN,String cn) {
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		String regex = ",";
+		String[] array = DN.split(regex);
+		for (int i = array.length - 1; i >= 0; i--) {
+		ldapNameBuilder.add(array[i]);
+		}
+		ldapNameBuilder.add(cn);
+		return ldapNameBuilder.build();
+	}
+	protected Name buildDnEm(Employee person) {
+ 		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+ 		String sDN = person.getO();
+ 		String regex = ",";
+ 		String[] array = sDN.split(regex);
+ 		for (int i = array.length - 1; i >= 0; i--) {
+ 			ldapNameBuilder.add(array[i]);
+ 		}
+ 		// ldapNameBuilder.add("ou",person.getOu());
+ 		ldapNameBuilder.add("cn", person.getFullName());
+ 		return ldapNameBuilder.build();
+ 	}
 
 	@Override
 	public OAResult update(String id, String text) {

@@ -39,6 +39,15 @@ public class OAResult implements Serializable {
 		
 		return new OAResult(0, "UNOK");
 	}
+	
+    public static OAResult unOk_2() {
+		
+		return new OAResult(151, "UNOK_2");
+	}
+    public static OAResult unOk_3() {
+		
+		return new OAResult(150, "UNOK_3");
+	}
 
 	public OAResult() {
 

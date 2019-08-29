@@ -62,7 +62,7 @@ public interface LabelService {
 	 *            员工id
 	 * @return
 	 */
-	OAResult deleteMember(String id);
+	OAResult deleteMember(String labelId, String id);
 
 	/**
 	 * 重命名标签
