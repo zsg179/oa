@@ -7,7 +7,11 @@ import java.util.List;
 
 import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
@@ -174,6 +178,7 @@ public class LabelDaoImpl implements LabelDao {
 		String regex = ",";
 		String[] array = DN.split(regex);
 		for (int i = array.length - 1; i >= 0; i--) {
+			
 		ldapNameBuilder.add(array[i]);
 		}
 		return ldapNameBuilder.build();
@@ -227,6 +232,8 @@ public class LabelDaoImpl implements LabelDao {
 		}
         //System.out.println(employoutype+" 部门标签");
         //**************************************
+        
+        
         
      // 找出了员工部门
      		LdapQuery query = query().base("").attributes("ou", "description").where("objectclass").is("person")
@@ -316,6 +323,37 @@ public class LabelDaoImpl implements LabelDao {
     	    DirContextOperations context=ldapTemplate.lookupContext(emp.getDn());
         	context.setAttributeValue("employeeType", emp.getLabel());
         	ldapTemplate.modifyAttributes(context);
+        	
+        	//进入部门标签删除属性
+        	List<Label> menberlist = ldapTemplate.search(
+				      query().where("objectclass").is("groupOfNames")
+				             .and("description").is(labelId),
+				      new LabelAttributeMapper());//查询到了部门
+			Label label=menberlist.get(0);
+			String name=label.getCn();
+			//修改人员中标签属性的名称
+			
+			Name empCN=DN;
+		    //System.out.println("员工DN是"+empCN);
+			List<String> members=label.getMembers();//获取标签中的人员路径
+			for (int i = 0; i < members.size(); i++) {
+				Name menberdn=buildGrDn(members.get(i));//userDn
+				if(menberdn.equals(empCN)){
+					//System.out.println("找到了");
+					Name groupDn=buildGDn(employoutype);
+				      Attribute attr = new BasicAttribute("member", menberdn.toString());
+				      ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attr);
+				      ldapTemplate.modifyAttributes(groupDn, new ModificationItem[] {item});
+					//System.out.println("移除函数调用");
+	
+					break;//结束循环退出
+				}
+					
+				
+			}
+			
+        	
+        	
 		}	
         }
         
@@ -382,6 +420,7 @@ public class LabelDaoImpl implements LabelDao {
     	String[] array = DN.split(regex); 
     	
     	for(int i =array.length-1;i>=0 ; i--){
+    		
     		ldapNameBuilder.add(array[i]);
         }
         return ldapNameBuilder.build();
