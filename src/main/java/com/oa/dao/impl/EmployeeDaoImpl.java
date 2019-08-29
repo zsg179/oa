@@ -222,7 +222,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		mapToContext(emp, context);
 
 		// 处理标签
-		//System.out.println("处理标签");
+		//移除旧标签
 		String regex = ","; 
 		String label=oldemp.getLabel(); 
 		//System.out.println(label);
@@ -232,6 +232,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			if(array1[i].equals("")==false){
 			removeMemberFromGroup(array1[i],oldemp); } 
 		}
+		//添加新标签
 		label=emp.getLabel();
 		//System.out.println(label);
 		String[] array2 = label.split(regex); 

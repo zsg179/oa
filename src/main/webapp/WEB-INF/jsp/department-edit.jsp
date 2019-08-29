@@ -61,10 +61,10 @@ var departmentEditPage = {
 			
 			$.post("/rest/department/edit",$("#departmentEditForm").serialize(), function(data){
 				if(data.status == 200){
+					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 					$.messager.alert('提示','编辑内容成功!');
 					$("#departmentList").datagrid("reload");
 					$("#departmentTree").tree("reload",root.target)/*部门编辑成功后，部门列表要进行重新加载*/
-					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 				}
 			});
 		},

@@ -120,9 +120,9 @@
 				/* 发起url为/staff/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/staff/save",$("#staffAddForm").serialize(), function(data){
 					if(data.status == 200){
+						TT.closeCurrentWindow();/* 关闭弹出窗口 */
 						$.messager.alert('提示','新增员工成功!');/*如果返回的状态为200说明员工添加成功*/
-    					$("#staffList").datagrid("reload",root.targrt);/*部门添加成功后，部门列表要进行重新加载*/
-    					TT.closeCurrentWindow();/* 关闭弹出窗口 */
+    					$("#staffList").datagrid("reload",root.targrt);/*员工添加成功后，员工列表要进行重新加载*/
 					}
 				});
 			},

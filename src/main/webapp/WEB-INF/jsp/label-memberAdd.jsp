@@ -35,10 +35,10 @@
 				
 				$.post("/label/addMember",$("#memberAddForm").serialize(), function(data){
 					if(data.status == 200){
+						TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					    $.messager.alert('提示','新增员工成功!');/*如果返回的状态为200说明员工添加成功*/
 					    $("#labelList").datagrid("reload");
 					    $("#labelTree").tree("reload")/*员工添加成功后，标签树要进行重新加载*/
-					    TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					}
 				});
 			},

@@ -42,9 +42,9 @@ var nodePar = $("#labelTree").tree("getParent",node.target); /*通过子节点�
 				/* 发起url为/label/save的请求 ，将表单中的数据序列化为key-value形式的字符串 */
 				$.post("/label/save",$("#labelAddForm").serialize(), function(data){
 					if(data.status == 200){
+						TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					    $.messager.alert('提示','新增标签成功!');/*如果返回的状态为200说明标签添加成功*/
 					    $("#labelTree").tree("reload")/*标签添加成功后，标签列表要进行重新加载*/
-					    TT.closeCurrentWindow();/* 关闭弹出窗口 */	
 					}
 				});
 			},
