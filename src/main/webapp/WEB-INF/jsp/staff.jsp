@@ -5,7 +5,7 @@
 <!--  @author 卢春宇
       @date 2019年8月9日 上午11:20:13
       @version 1.0  -->
-<div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:500,noheader:true,border:false" style="padding:10px;">
+<div class="easyui-panel" title="Nested Panel" data-options="width:'100%',minHeight:650,noheader:true,border:false" style="padding:10px;">
     <div class="easyui-layout" data-options="fit:true">
         <!--面板左部-->
         <div data-options="region:'west',split:false" style="width:250px;padding:5px">

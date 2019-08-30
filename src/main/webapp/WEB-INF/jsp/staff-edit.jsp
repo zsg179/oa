@@ -138,8 +138,8 @@ var staffEditPage = {
 			$.post("/rest/staff/edit",$("#staffEditForm").serialize(), function(data){
 				if(data.status == 200){
 					TT.closeCurrentWindow();/* 关闭弹出窗口 */
-					$("#staffList").datagrid("reload");
-					$("#staffTree").tree("reload",root.target)/*员工编辑成功后，员工列表要进行重新加载*/
+					$("#staffList").datagrid("reload");/*员工编辑成功后，员工列表要进行重新加载*/
+					$("#staffTree").tree("reload",root.target)
 				}
 			});
 		},

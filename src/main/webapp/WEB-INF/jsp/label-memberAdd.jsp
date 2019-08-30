@@ -12,6 +12,7 @@
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <div class=memberAdd style="padding:10px 10px 10px 10px">
 	<form id="memberAddForm" class="itemForm" method="post">
+	<input type="hidden" name="labelId" value="${param.labelId}"/>
 	    <table cellpadding="5">
 	        <tr>
 	            <td>员工id:</td>
