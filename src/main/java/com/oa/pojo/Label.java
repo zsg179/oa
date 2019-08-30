@@ -1,5 +1,6 @@
 package com.oa.pojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Label {
 	private String cn;//标签名
-	private List<String> members;//内含成员
+	private List<String> members=new ArrayList<String>();//内含成员
 	private String id;//description
 	private String parentId;//businessCategory
 	private String isParent;//o

@@ -35,7 +35,7 @@ public interface LabelService {
 	 * @param label
 	 * @return
 	 */
-	OAResult create(Label label);
+	OAResult create(Label label,String empId);
 
 	/**
 	 * 新增员工

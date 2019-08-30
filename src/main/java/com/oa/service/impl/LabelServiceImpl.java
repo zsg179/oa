@@ -34,9 +34,9 @@ public class LabelServiceImpl implements LabelService {
 	}
 
 	@Override
-	public OAResult create(Label label) {
+	public OAResult create(Label label,String empId) {
 		// TODO Auto-generated method stub
-		return null;
+		return labelDao.create(label,empId);
 	}
 
 	@Override

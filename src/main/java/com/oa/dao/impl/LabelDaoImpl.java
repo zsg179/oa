@@ -10,6 +10,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
@@ -78,10 +79,45 @@ public class LabelDaoImpl implements LabelDao {
 	}
 
 	@Override
-	public OAResult create(Label label) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public OAResult create(Label label,String id) {
+		List<Employee> listemp = ldapTemplate.search(
+			      query().where("objectclass").is("person")
+			             .and("description").is(id),
+			             new PersonAttributeMapper());
+		Employee emp=(Employee)listemp.get(0);
+		//Label label1=list.get(0);
+		String q=emp.getDn();
+		//System.out.println(q);
+	    label.addMember(q);
+		label.setCn(label.getCn());//设置cn
+		label.setId(label.getId());//设置description
+		label.setIsParent("0");//将st置为0
+		label.setParentId("46");//设置parentId
+		Name dn = buildDn(label);
+		ldapTemplate.bind(dn, null, buildAttributes(label));
+		return OAResult.ok();
+		}
+	private Attributes buildAttributes(Label label) {
+		BasicAttributes attrs = new BasicAttributes();	     
+		BasicAttribute ocattr = new BasicAttribute("objectClass");	     
+		ocattr.add("groupOfNames");	      
+		ocattr.add("top");	      
+		attrs.put(ocattr);	     
+		attrs.put("cn", label.getCn());//显示标签组
+		for(int i=0;i<label.getMembers().size();i++)
+		{	attrs.put("member",label.getMembers().get(i));}
+		attrs.put("description", label.getId());//显示id          	      
+		attrs.put("o",label.getIsParent());      
+		attrs.put("businessCategory", label.getParentId());//显示父节点     
+		return attrs;
+		}
+				
+	protected Name buildDn(Label label) {
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		ldapNameBuilder.add("ou", "标签").add("cn", label.getCn()).build();
+		return ldapNameBuilder.build();
+		}
+
 
 	@Override
 	public OAResult addMember(String labelId, String id) {

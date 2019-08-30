@@ -69,8 +69,8 @@ public class LabelController {
 	 */
 	@RequestMapping("/label/save")
 	@ResponseBody
-	public OAResult create(Label label) {
-		return null;
+	public OAResult create(Label label,String empId) {
+		return labelService.create(label, empId);
 	}
 
 	/**
