@@ -41,6 +41,9 @@
 					    $("#labelList").datagrid("reload");
 					    $("#labelTree").tree("reload")/*员工添加成功后，标签树要进行重新加载*/
 					}
+					else{
+						 $.messager.alert('提示',data.msg);
+					}
 				});
 			},
 			clearForm : function(){

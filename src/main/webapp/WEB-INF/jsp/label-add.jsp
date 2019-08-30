@@ -50,6 +50,9 @@ var nodePar = $("#labelTree").tree("getParent",node.target); /*通过子节点�
 					    $.messager.alert('提示','新增标签成功!');/*如果返回的状态为200说明标签添加成功*/
 					    $("#labelTree").tree("reload")/*标签添加成功后，标签列表要进行重新加载*/
 					}
+					else{
+						 $.messager.alert('提示',data.msg);
+					}
 				});
 			},
 			clearForm : function(){

@@ -49,7 +49,7 @@
 					    
 					}
 					else{
-						 $.messager.alert('提示','删除员工失败，请确认员工id和员工标签是否唯一！');
+						 $.messager.alert('提示',data.msg);
 					}
 				});
 			},

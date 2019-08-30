@@ -313,6 +313,11 @@ public class LabelDaoImpl implements LabelDao {
 				return (String) attrs.get("o").get();
 			}
 		});
+		if(list3.isEmpty()){
+			//System.out.println("该员工不存在");
+			return OAResult.build(500, "不存在该员工！");
+		}
+			
 		String o = null;
 		for (String str : list3) {
 			o = str;
