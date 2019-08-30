@@ -85,7 +85,7 @@ public class LabelController {
 	@RequestMapping("/label/addMember")
 	@ResponseBody
 	public OAResult addMember(String labelId, String id) {
-		return null;
+		return labelService.addMember(labelId, id);
 	}
 
 	/**

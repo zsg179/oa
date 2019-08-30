@@ -81,9 +81,29 @@ public class LabelDaoImpl implements LabelDao {
 	}
 
 	@Override
-	public OAResult addMember(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public OAResult addMember(String labelId, String id) {
+		List<Label> list = ldapTemplate.search(
+			      query().where("objectclass").is("groupOfNames")
+			             .and("description").is(labelId),
+			      new LabelAttributeMapper());
+		Label label =list.get(0);
+		
+		List<Employee> listemp = ldapTemplate.search(
+			      query().where("objectclass").is("person")
+			             .and("description").is(id),
+			             new PersonAttributeMapper());
+		Employee emp=(Employee)listemp.get(0);
+		
+		//label.addMember(emp.getDn());
+		Name groupDn = buildGroupDn(label.getCn());
+		DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
+		ctx.addAttributeValue("member", emp.getDn());
+		ldapTemplate.modifyAttributes(ctx);
+		
+		return OAResult.ok();
+	}
+	private Name buildGroupDn(String groupName) {
+		return LdapNameBuilder.newInstance().add("ou=标签").add("cn", groupName).build();
 	}
 
 	@Override

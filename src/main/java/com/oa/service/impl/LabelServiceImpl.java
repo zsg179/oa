@@ -40,9 +40,9 @@ public class LabelServiceImpl implements LabelService {
 	}
 
 	@Override
-	public OAResult addMember(String id) {
+	public OAResult addMember(String labelId, String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return labelDao.addMember(labelId, id);
 	}
 
 	@Override

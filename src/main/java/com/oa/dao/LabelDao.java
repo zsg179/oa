@@ -44,7 +44,7 @@ public interface LabelDao {
 	 *            员工id
 	 * @return
 	 */
-	OAResult addMember(String id);
+	OAResult addMember(String labelId, String id);
 
 	/**
 	 * 删除标签
