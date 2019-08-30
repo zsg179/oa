@@ -23,7 +23,7 @@
 	        </tr> 
 	        <tr>
 	            <td>员工id:</td>
-	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="id" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true,prompt:'新建标签下至少需要一个员工'" type="text" name="id" style="width: 280px;"></input></td>
             </tr>
 	    </table>
 	</form>
