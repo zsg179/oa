@@ -123,6 +123,10 @@
 						TT.closeCurrentWindow();/* 关闭弹出窗口 */
 						$.messager.alert('提示','新增员工成功!');/*如果返回的状态为200说明员工添加成功*/
     					$("#staffList").datagrid("reload",root.targrt);/*员工添加成功后，员工列表要进行重新加载*/
+<<<<<<< HEAD
+=======
+    					$("#staffTree").tree("reload",root.target)
+>>>>>>> branch 'master' of https://github.com/zsg179/oa.git
 					}
 				});
 			},

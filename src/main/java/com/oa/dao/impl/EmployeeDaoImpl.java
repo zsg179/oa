@@ -12,9 +12,13 @@ import java.util.List;
 import java.util.Random;
 import javax.naming.Name;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
+
 import com.oa.dao.EmployeeDao;
 import com.oa.mapper.DepartmentAttributeMapper;
 import com.oa.mapper.PersonAttributeMapper;
@@ -105,7 +109,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 				return (String) attrs.get("ou").get();
 			}
 		});
-		String deptName = null;
+		String deptName = null;//////////////////部门
 		for (String str : list) {
 			deptName = str;
 		}
@@ -138,10 +142,32 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		p.setFullName(cn);
 		p.setOu(deptName);
 
-		Name dn = buildDnEm(p);//
+		Name dn = buildDnEm(p);//员工路径
+		
+		Employee emp=ldapTemplate.lookup(dn, new PersonAttributeMapper());//找到人员,找不到会报错
+		String oldLabel=emp.getLabel();//找到员工两个或者两个以上的标签
+		String regex=",";
+        String[] arrayLabel = oldLabel.split(regex);//该员工标签数组
+        for(int i=0;i<arrayLabel.length;i++){//采用数组循环删除标签
+        ///System.out.println("员工路径"+dn.toString());
+		Name groupDn=buildGDn(arrayLabel[i]);
+	      Attribute attr = new BasicAttribute("member", dn.toString());
+	      ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attr);
+	      ldapTemplate.modifyAttributes(groupDn, new ModificationItem[] {item});
+		//System.out.println("移除函数调用"+(i+1));
+        }
+		
+		
+		
 		ldapTemplate.unbind(dn);
 
 		return OAResult.ok();
+	}
+	protected Name buildGDn(String cn) {
+	      return LdapNameBuilder.newInstance()
+	        .add("ou=标签")
+	        .add("cn", cn)
+	        .build();
 	}
 
 	protected Name buildDnEm(Employee person) {

@@ -14,6 +14,10 @@
 	<form id="labelAddForm" class="itemForm" method="post">
 	    <table cellpadding="5">
 	        <tr>
+	            <td>标签id:</td>
+	            <td><input class="easyui-textbox easyui-validatebox"  readonly="true"  data-options="required:true" type="text" value="${param.labelId }" name="labelId" style="width: 280px;"></input></td>
+	        </tr> 
+	        <tr>
 	            <td>标签名:</td>
 	            <td><input class="easyui-textbox easyui-validatebox"  data-options="required:true" type="text" name="cn" style="width: 280px;"></input></td>
 	        </tr> 
