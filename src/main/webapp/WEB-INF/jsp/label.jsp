@@ -47,9 +47,14 @@ var contentListToolbar = [{
     text:'添加标签',
     iconCls:'icon-add',
     handler:function(){
+    	$.post("/department/gen/id",function(data){
+    		if(data.status==200){
+    			var labelId=data.data;
     	TT.createWindow({
-			url : "/label-add"
-		}); 
+			url : "/label-add?labelId="+labelId
+		   }); 
+    	  }
+    	})
     }
 }]
 
