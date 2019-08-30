@@ -149,7 +149,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		String regex=",";
         String[] arrayLabel = oldLabel.split(regex);//该员工标签数组
         for(int i=0;i<arrayLabel.length;i++){//采用数组循环删除标签
-        //System.out.println("员工路径"+dn.toString());
+        ///System.out.println("员工路径"+dn.toString());
 		Name groupDn=buildGDn(arrayLabel[i]);
 	      Attribute attr = new BasicAttribute("member", dn.toString());
 	      ModificationItem item = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, attr);
