@@ -84,6 +84,9 @@ public class LabelDaoImpl implements LabelDao {
 			      query().where("objectclass").is("person")
 			             .and("description").is(id),
 			             new PersonAttributeMapper());
+		if(listemp==null||listemp.size()<=0){
+			return OAResult.build(500, "不存在该员工！");
+		}
 		Employee emp=(Employee)listemp.get(0);
 		//Label label1=list.get(0);
 		String q=emp.getDn();
@@ -128,11 +131,10 @@ public class LabelDaoImpl implements LabelDao {
 		Label label = list.get(0);
 		
 		List<Employee> listemp=new ArrayList<Employee>();
-		try{
 		listemp = ldapTemplate.search(
 				query().where("objectclass").is("person").and("description").is(id), new PersonAttributeMapper());
-		}
-		catch(Exception e){return OAResult.build(500, "不存在该员工");}
+		if(listemp==null||listemp.size()<=0)
+		{return OAResult.build(500, "不存在该员工!");}
 		
 		Employee emp = (Employee) listemp.get(0);
 		
