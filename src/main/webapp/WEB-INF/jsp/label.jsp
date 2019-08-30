@@ -19,7 +19,7 @@
         <div data-options="region:'center'" style="padding:5px">
         <!--EasyUI的数据表格-->
         <!-- toolbar:contentListToolbar”这句代码的意思是定义了工具栏，工具栏中有多个功能（新增/编辑/删除）  -->
-            <table class="easyui-datagrid" id="labelList" data-options="toolbar:contentListToolbar,singleSelect:true,collapsible:true,method:'get',url:'/label/query/info',queryParams:{id:200}">
+            <table class="easyui-datagrid" id="labelList" data-options="toolbar:contentListToolbar,singleSelect:true,collapsible:true,method:'get',url:'/label/query/info',queryParams:{id:-200}">
 		    <thead>
 		        <tr>
 		            <th data-options="field:'member',width:900">员工信息</th>
@@ -47,12 +47,9 @@ var contentListToolbar = [{
     text:'添加标签',
     iconCls:'icon-add',
     handler:function(){
-    	var tree = $("#labelTree");
-    	var node = tree.tree("getSelected");
-    	var id= node.id;
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
-    		var labelId=data.data;
+    		var id=data.data;
     	    TT.createWindow({
 			  url : "/label-add?id="+id
 		   }); 
