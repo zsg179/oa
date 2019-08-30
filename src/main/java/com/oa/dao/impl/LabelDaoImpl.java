@@ -100,6 +100,12 @@ public class LabelDaoImpl implements LabelDao {
 		ctx.addAttributeValue("member", emp.getDn());
 		ldapTemplate.modifyAttributes(ctx);
 		
+		Name userDn = buildDn(emp.getDn());
+		DirContextOperations context2 = ldapTemplate.lookupContext(userDn);
+		emp.setLabel(emp.getLabel()+","+label.getCn());
+		context2.setAttributeValue("employeeType", emp.getLabel());
+		ldapTemplate.modifyAttributes(context2);
+		
 		return OAResult.ok();
 	}
 	private Name buildGroupDn(String groupName) {
