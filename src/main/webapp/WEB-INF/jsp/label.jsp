@@ -47,11 +47,14 @@ var contentListToolbar = [{
     text:'添加标签',
     iconCls:'icon-add',
     handler:function(){
+    	var tree = $("#labelTree");
+    	var node = tree.tree("getSelected");
+    	var id= node.id;
     	$.post("/department/gen/id",function(data){
     		if(data.status==200){
-    			var labelId=data.data;
-    	TT.createWindow({
-			url : "/label-add?labelId="+labelId
+    		var labelId=data.data;
+    	    TT.createWindow({
+			  url : "/label-add?id="+id
 		   }); 
     	  }
     	})
@@ -107,7 +110,7 @@ function menuHandler(item){
         				})
         			} 
         			else{
-            				$.messager.alert('提示','删除标签失败!员工至少保留一个标签，请单独删除员工标签')	 
+            			$.messager.alert('提示','删除标签失败!员工至少保留一个标签，请单独删除员工标签')	 
         			}
         		});
 			}
@@ -115,4 +118,19 @@ function menuHandler(item){
 	}
 }
 
+/* $('#labelTree').tree({
+	onLoadSuccess: function (node, data) {
+	    if (data.length > 0) {
+	          //找到第一个元素
+	          var n = $('#labelTree').tree('find', data[0].id);
+	          //调用选中事件
+	          $('#labelTree').tree('select', n.target);
+	          //调用其它函数
+	           display(data[0].id);
+	             }
+	      }, 
+})
+ $("#labelList").datagrid({
+	 
+})  */
 </script>
