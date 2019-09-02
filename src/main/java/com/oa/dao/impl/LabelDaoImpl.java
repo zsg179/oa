@@ -98,6 +98,11 @@ public class LabelDaoImpl implements LabelDao {
 		label.setParentId("46");//设置parentId
 		Name dn = buildDn(label);
 		ldapTemplate.bind(dn, null, buildAttributes(label));
+		//同步修改人员标签
+		Attribute attr2 = new BasicAttribute("employeeType", emp.getLabel()+","+label.getCn());
+		ModificationItem item2 = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr2);
+		Name dnEm = buildDnEm(emp);
+		ldapTemplate.modifyAttributes(dnEm, new ModificationItem[] { item2 });
 		return OAResult.ok();
 		}
 	private Attributes buildAttributes(Label label) {
