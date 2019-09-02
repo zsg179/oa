@@ -88,6 +88,8 @@ var contentListToolbar = [{
           var email=row.email
           var label=row.label
           var o=row.o
+          o=o.split(',')[o.split(',').length - 1];
+          o=o.split('=')[o.split('=').length - 1];
           var ou=row.ou
   		  TT.createWindow({
   			url : "/staff-edit?id="+id+"&fullName="+encodeURI(encodeURI(fullName))+"&lastName="+encodeURI(encodeURI(lastName))

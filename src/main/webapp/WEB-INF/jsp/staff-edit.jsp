@@ -40,8 +40,11 @@
 	        </tr>  
 	        <tr>
 	            <td>公司:</td>
+	             <%String o = request.getParameter("o"); 
+	              o = java.net.URLDecoder.decode(o,"UTF-8");
+	            %>
 	            <td>
-	            <input id="o" name="o" class="easyui-combobox" style="width: 280px;"  panelHeight="auto" data-options="
+	            <input id="o" name="o" class="easyui-combobox" style="width: 280px;"<%--  value="<%=o%>" --%>  panelHeight="auto" data-options="
 				    valueField: 'id',
 				    textField: 'text',
 				    url: '/getCompany',
@@ -59,7 +62,10 @@
 	        <tr>
 	            <td>部门:</td>
 	            <td>
-	            <input id="ou" name="ou" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
+	             <%String ou = request.getParameter("ou"); 
+	              ou = java.net.URLDecoder.decode(ou,"UTF-8");
+	            %>
+	            <input id="ou" name="ou" class="easyui-combobox" style="width: 280px;"  <%-- value="<%=ou%>" --%> panelHeight="auto" data-options="
 	            valueField:'id',
 	            textField:'text',
 	            prompt: '请选择部门',
@@ -77,7 +83,10 @@
 	        <tr>
 	            <td>职位:</td>
 	            <td>
-	            <input id="title" name="title" class="easyui-combobox" style="width: 280px;" panelHeight="auto" data-options="
+	             <%String title = request.getParameter("title"); 
+	              title = java.net.URLDecoder.decode(title,"UTF-8");
+	            %>
+	            <input id="title" name="title" class="easyui-combobox" style="width: 280px;" <%-- value="<%=title%>" --%>  panelHeight="auto" data-options="
 	            valueField:'id',
 	            textField:'text',
 	            prompt: '请选择职位',
@@ -104,7 +113,7 @@
 	             <%String label = request.getParameter("label"); 
 	             label = java.net.URLDecoder.decode(label,"UTF-8");
 	            %>
-	            <td><input id="label" name="label" class="easyui-combobox" <%--  value="<%=label%>" --%> style="width: 280px;" data-options=" 
+	            <td><input id="label" name="label" class="easyui-combobox" <%-- value="<%=label%>" --%> style="width: 280px;" data-options=" 
 	            prompt: '请选择标签',
 	            url: '/getLabel',
 				method:'get',
@@ -162,7 +171,7 @@ var staffEditPage = {
 	                 }
 	             }); 
 	         });
-	         $("#hideTree").hide();	         
+	         $("#hideTree").hide();	
 </script>
 
 </body>

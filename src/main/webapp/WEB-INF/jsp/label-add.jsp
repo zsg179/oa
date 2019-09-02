@@ -6,10 +6,11 @@
       @date 2019年8月20日 上午10:16:35
       @version 1.0  -->
 
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link href="/js/kindeditor-4.1.10/themes/default/default.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/kindeditor-all-min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+
 <div class=label-add style="padding:10px 10px 10px 10px">
 	<form id="labelAddForm" class="itemForm" method="post">
 	    <table cellpadding="5">
@@ -60,8 +61,5 @@ var nodePar = $("#labelTree").tree("getParent",node.target); /*通过子节点�
 				labelAddEditor.html('');
 			}
 	};
+	 
 </script>
-
-<style>
-
-</style>
