@@ -161,7 +161,7 @@ public class DeptDaoImpl implements DeptDao {
 		for (String id : idList) {
 			description = id;// 获取到前台的部门编号
 		}
-		// 找出了部门
+		// 找出了部门,市场部
 		LdapQuery query = query().base("").attributes("ou", "description").where("objectclass").is("organizationalUnit")
 				.and("description").is(description);
 
@@ -174,7 +174,7 @@ public class DeptDaoImpl implements DeptDao {
 		for (String str : list) {
 			deptName = str; // ou
 		}
-		// 找出o
+		// 找出o，判断是否还有分支部门会使用到list2
 		LdapQuery query2 = query().base("").attributes("l", "description").where("objectclass").is("organizationalUnit")
 				.and("description").is(description);
 		List<String> list2 = ldapTemplate.search(query2, new AttributesMapper<String>() {
@@ -182,7 +182,7 @@ public class DeptDaoImpl implements DeptDao {
 				return (String) attrs.get("l").get();
 			}
 		});
-		String o = null;
+		String o = null;//使用
 		for (String str : list2) {
 			o = str;
 		}
@@ -204,12 +204,52 @@ public class DeptDaoImpl implements DeptDao {
 			}
 		});
 		int employNumbur = list3.size();
+		//判断他的旁支是否还有，上级部门是否变成最后一级部门
+		
+		//Name dnSJ = buildDn(dept);
+		LdapQuery query4 = query().attributes("ou", "l").where("objectclass").is("organizationalUnit").and("l").is(o);
+		List<String> list4 = ldapTemplate.search(query4, new AttributesMapper<String>() {
+			public String mapFromAttributes(Attributes attrs) throws NamingException {
+				//System.out.println("查找符合条件的部门"+(String) attrs.get("ou").get());
+				return (String) attrs.get("ou").get();
+			}
+		});
+		//System.out.println("list4的长度="+list4.size());
+		//进行修改属性操作
+		
+		
+		
+		
 		if (employNumbur == 0) {
+			//进行修改属性操作
+			if(list4.size()-1==0){
+				//进入上层目录
+				Name scDN=buildCDn(o);//使用o
+				//System.out.println("上级的路径"+scDN.toString());
+				//Name groupDn = buildGDn(employoutype);
+				Attribute attr = new BasicAttribute("facsimileTelephoneNumber", "1");
+				ModificationItem item = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, attr);
+				ldapTemplate.modifyAttributes(scDN, new ModificationItem[] { item });
+				
+			}
+			else{
+				
+			}
 			ldapTemplate.unbind(dn);
 			return OAResult.ok();
 		} else {
 			return OAResult.unOk();
 		}
+	}
+	protected Name buildCDn(String DN) {
+		LdapNameBuilder ldapNameBuilder = LdapNameBuilder.newInstance();
+		String regex = ",";
+		String[] array = DN.split(regex);
+		for (int i = array.length - 1; i >= 0; i--) {
+			ldapNameBuilder.add(array[i]);
+		}
+		//ldapNameBuilder.add("ou", dept.getDeptName());
+		return ldapNameBuilder.build();
 	}
 
 	@Override
