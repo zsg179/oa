@@ -52,16 +52,6 @@
 var node = $("#departmentTree").tree("getSelected");/* 得到用户选中的部门节点 */
 var nodePar = $("#departmentTree").tree("getParent",node.target); /*通过子节点获取父节点 */
 var root = $("#departmentTree").tree('getRoot'); 
-$('#departmentTree').tree({
-onBeforeExpand:function(node){
-    expnode.push(node.id.toString());
-},
-onBeforeCollapse:function (node) {
-    var i=expnode.indexOf(node.id.toString());
-    if(i>=0){
-        expnode.splice(i,1);
-    }
-}})
 
 var departmentEditPage = {
 		submitForm : function(){
@@ -74,8 +64,8 @@ var departmentEditPage = {
 				if(data.status == 200){
 					TT.closeCurrentWindow();/* 关闭弹出窗口 */
 					$.messager.alert('提示','编辑内容成功!');
+					$("#departmentTree").tree("reload",root.target)/*部门编辑成功后，部门树要进行重新加载*/
 					$('#departmentList').datagrid('loadData', { total: 0, rows: [] });  
-				    $("#departmentTree").tree("reload")/*部门编辑成功后，部门列表要进行重新加载*/
 				}
 			});
 		},

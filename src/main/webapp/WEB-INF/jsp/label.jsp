@@ -48,12 +48,15 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){
     	$.post("/department/gen/id",function(data){
-    		if(data.status==200){
+    	if(data.status==200){
     		var id=data.data;
     	    TT.createWindow({
 			  url : "/label-add?id="+id
 		   }); 
     	  }
+    	else{
+			$.messager.alert('提示', '生成id出错！');
+		}
     	})
     }
 }]
