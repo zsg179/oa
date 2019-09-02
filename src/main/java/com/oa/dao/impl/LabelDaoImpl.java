@@ -143,20 +143,23 @@ public class LabelDaoImpl implements LabelDao {
 		
 		Employee emp = (Employee) listemp.get(0);
 		
-		
+		if(emp.getLabel().contains(label.getCn())==false){
 		// label.addMember(emp.getDn());
-		Name groupDn = buildGroupDn(label.getCn());
-		DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
-		ctx.addAttributeValue("member", emp.getDn());
-		ldapTemplate.modifyAttributes(ctx);
+			Name groupDn = buildGroupDn(label.getCn());
+	    	DirContextOperations ctx = ldapTemplate.lookupContext(groupDn);
+		    ctx.addAttributeValue("member", emp.getDn());
+		    ldapTemplate.modifyAttributes(ctx);
+		    Name userDn = buildDn(emp.getDn());
+	    	DirContextOperations context2 = ldapTemplate.lookupContext(userDn);
+	    	emp.setLabel(emp.getLabel() + "," + label.getCn());
+	    	context2.setAttributeValue("employeeType", emp.getLabel());
+	    	ldapTemplate.modifyAttributes(context2);
 
-		Name userDn = buildDn(emp.getDn());
-		DirContextOperations context2 = ldapTemplate.lookupContext(userDn);
-		emp.setLabel(emp.getLabel() + "," + label.getCn());
-		context2.setAttributeValue("employeeType", emp.getLabel());
-		ldapTemplate.modifyAttributes(context2);
-
-		return OAResult.ok();
+		    return OAResult.ok();
+		}
+		else {
+			return OAResult.build(500, "已存在该员工");
+		}
 	}
 
 	private Name buildGroupDn(String groupName) {
