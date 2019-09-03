@@ -105,7 +105,7 @@ function menuHandler(item){
         			if(data.status == 200){
         				$.messager.alert('提示','删除标签成功!',undefined,function(){
         					tree.tree("remove",node.target);
-        					$("#labelList").datagrid("reload");
+        					$('#labelList').datagrid('loadData', { total: 0, rows: [] });  
         					$("#labelTree").tree("reload")
         				})
         			} 
