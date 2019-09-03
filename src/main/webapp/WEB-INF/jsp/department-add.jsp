@@ -34,7 +34,7 @@
 	        </tr> 
 	        <tr>
 	            <td>职位:</td>
-	            <td><input class="easyui-textbox easyui-validatebox" prompt="输入多个职位时用逗号隔开" data-options="required:true" type="text" name="position" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox easyui-validatebox" prompt="输入多个职位时用分号隔开" data-options="required:true" type="text" name="position" style="width: 280px;"></input></td>
 	        </tr>     
 	    </table>
 	</form>
