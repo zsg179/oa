@@ -272,6 +272,15 @@ public class DeptDaoImpl implements DeptDao {
 
 		DirContextOperations context = ldapTemplate.lookupContext(oldDn);
 		
+	   //判断是否有人员同级
+		List<Employee> tjemp = ldapTemplate.search(
+				query().where("objectclass").is("person")
+				.and("businessCategory").is(Pid),
+				new PersonAttributeMapper());
+		if(tjemp.size()>0){
+			return OAResult.build(500, "不能移动到有人员的部门，人员和部门不能同级");
+		}
+		
 		// 修改部门属性
 		mapToContext(dept, context);
 		newDn = buildDn(dept);
