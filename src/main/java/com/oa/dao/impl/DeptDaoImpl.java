@@ -271,19 +271,36 @@ public class DeptDaoImpl implements DeptDao {
 		dept.setParentId(Pid);
 
 		DirContextOperations context = ldapTemplate.lookupContext(oldDn);
-
-		mapToContext(dept, context);
+		
 		// 修改部门属性
+		mapToContext(dept, context);
 		newDn = buildDn(dept);
 		ldapTemplate.modifyAttributes(context);// 修改除条目外的其他属性
 		ldapTemplate.rename(oldDn, newDn);
+				
 
+		//修改上级部门
+		List<Department> osjdept = ldapTemplate.search(
+				query().where("objectclass").is("organizationalUnit")
+				.and("businessCategory").is(olddept.getParentId()),
+				new DepartmentAttributeMapper());
+		if(osjdept.size()<1){
+			Department nextdept = ldapTemplate.lookup(olddept.getO(), new DepartmentAttributeMapper());
+			DirContextOperations context1 = ldapTemplate.lookupContext(nextdept.getDn());
+			context1.setAttributeValue("facsimileTelephoneNumber", "1");
+			ldapTemplate.modifyAttributes(context1);
+		}
+		Department nsjdept=ldapTemplate.lookup(dept.getO(), new DepartmentAttributeMapper());
+		DirContextOperations context1 = ldapTemplate.lookupContext(nsjdept.getDn());
+		context1.setAttributeValue("facsimileTelephoneNumber", "0");
+		ldapTemplate.modifyAttributes(context1);
+		
 		// 修改这个部门下部门人员的上级部门
 		// 部门
 		List<Department> listdept = ldapTemplate.search(
 				query().base(dept.getDn()).where("objectclass").is("organizationalUnit"),
 				new DepartmentAttributeMapper());
-
+		
 		for (int i = 0; i < listdept.size(); i++) {
 			Department nextdept = listdept.get(i);
 			nextdept.setO(nextdept.getO().replace(olddept.getDn(), dept.getDn()));
@@ -294,7 +311,7 @@ public class DeptDaoImpl implements DeptDao {
 		// 人员
 		List<Employee> listemp = ldapTemplate.search(query().base(dept.getDn()).where("objectclass").is("person"),
 				new PersonAttributeMapper());
-
+		
 		for (int i = 0; i < listemp.size(); i++) {
 			Employee nextemp = listemp.get(i);
 			String OldEmpDn=nextemp.getDn();
