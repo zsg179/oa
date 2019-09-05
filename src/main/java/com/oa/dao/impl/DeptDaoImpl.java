@@ -13,9 +13,6 @@ import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
@@ -122,6 +119,15 @@ public class DeptDaoImpl implements DeptDao {
 		// 补全pojo
 		dept.setIsParent("1");
 		dept.setIsLastDept("1");
+		
+		//判断是否有同级人员
+		List<Employee> tjemp = ldapTemplate.search(
+				query().where("objectclass").is("person")
+				.and("businessCategory").is(dept.getParentId()),
+				new PersonAttributeMapper());
+		if(tjemp.size()>0){
+			return OAResult.build(500, "创建失败，人员和部门不能同级");
+		}
 		// 修改上级部门为非最后一级部门
 		List<Department> list = ldapTemplate.search(query().where("description").is(dept.getParentId()),
 				new DepartmentAttributeMapper());
